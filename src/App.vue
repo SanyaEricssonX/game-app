@@ -1,36 +1,50 @@
 <template>
-  <div id="app">
-    <h1>Счетчик: {{ count }}</h1>
-    <button @click="increment">Увеличить на 1</button>
+  <div class="app" v-cloak>
+    <div class="wrapper">
+      <app-header></app-header>
+      <main class="main">
+        <router-view></router-view>
+      </main>
+      <app-footer></app-footer>
+    </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
+import AppFooter from "@/components/AppFooter";
+import AppHeader from "@/components/AppHeader";
 export default {
+  extends: {},
+  props: {},
   data() {
-    return {
-      count: 0,
-    };
+    return {};
   },
-  methods: {
-    increment() {
-      this.count += 1;
-    },
-  },
+  computed: {},
+  components: { AppFooter, AppHeader },
+  watch: {},
+  methods: {},
+  beforeCreate() {},
+  mounted() {},
 };
 </script>
 
 <style>
-#app {
-  text-align: center;
-  margin-top: 50px;
-  font-family: Bahnschrift;
+.scroll-lock {
+  overflow: hidden;
 }
-button {
-  padding: 10px 20px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
-  cursor: pointer;
+</style>
+
+<style scoped>
+[v-cloak] {
+  display: none;
+}
+.wrapper {
+  position: relative;
+}
+.main {
+  min-height: calc(100vh - 130px);
+  /* border-top: 2px solid var(--color-light);
+  border-bottom: 2px solid var(--color-light);*/
 }
 </style>
 

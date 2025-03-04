@@ -1,4 +1,16 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import "./assets/style/normalize.css";
+import "./assets/style/index.css";
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import components from "@/components/UI";
 
-createApp(App).mount('#app')
+const app = createApp(App);
+
+components.forEach((component) => {
+  app.component(component.name, component);
+});
+
+app.use(store).use(router).mount("#app");
+
