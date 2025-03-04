@@ -24,11 +24,11 @@ export default {
 <style>
 .btn {
   padding: 10px 20px;
-  border: 1px solid var(--color-light);
+  /* border: 1px solid var(--color-light); */
   border-radius: 5px;
   line-height: 1;
-  color: var(--color-light);
-  background-color: unset;
+  color: var(--color-dark);
+  background-color: var(--color-light);
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.2s linear;
 }

@@ -5,6 +5,9 @@
 :root {
   --color-dark: #191919;
   --color-light: #fcfcfc;
+  --color-red: #ff495c;
+  --color-green: #3ddc97;
+  --color-blue: #256eff;
 }
 
 html,

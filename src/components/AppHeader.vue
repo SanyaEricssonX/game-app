@@ -8,6 +8,7 @@
         <li class="nav__item"><a href="" class="nav__link">Инвентарь</a></li>
         <li class="nav__item"><a href="" class="nav__link">Магазин</a></li>
         <li class="nav__item"><a href="" class="nav__link">Карта</a></li>
+        <li class="nav__item"><a href="" class="nav__link">Помощь</a></li>
       </ul>
     </div>
   </footer>
@@ -58,8 +59,13 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+.nav__item {
+  padding: 5px;
+}
 .nav__item:not(:last-child) {
   margin-right: 50px;
+}
+.nav__item:hover {
 }
 .nav__link {
   color: var(--color-light);
