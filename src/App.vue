@@ -2,7 +2,8 @@
   <div class="app" v-cloak>
     <div class="wrapper">
       <app-header></app-header>
-      <main class="main">
+      <main class="container main">
+        <user-profile></user-profile>
         <router-view></router-view>
       </main>
       <app-footer></app-footer>
@@ -13,6 +14,7 @@
 <script type="text/javascript">
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
+import UserProfile from "@/components/UserProfile";
 export default {
   extends: {},
   props: {},
@@ -20,7 +22,7 @@ export default {
     return {};
   },
   computed: {},
-  components: { AppFooter, AppHeader },
+  components: { AppFooter, AppHeader, UserProfile },
   watch: {},
   methods: {},
   beforeCreate() {},
@@ -42,9 +44,9 @@ export default {
   position: relative;
 }
 .main {
+  display: flex;
   min-height: calc(100vh - 130px);
-  /* border-top: 2px solid var(--color-light);
-  border-bottom: 2px solid var(--color-light);*/
 }
+
 </style>
 

@@ -1,17 +1,25 @@
 <template>
-  <footer class="header">
+  <header class="header">
     <div class="container header-container">
       <span class="logo">
         <a class="logo__text" @click="goToHomePage">RA</a>
       </span>
       <ul class="nav-list">
-        <li class="nav__item"><a href="" class="nav__link">Инвентарь</a></li>
-        <li class="nav__item"><a href="" class="nav__link">Магазин</a></li>
-        <li class="nav__item"><a href="" class="nav__link">Карта</a></li>
-        <li class="nav__item"><a href="" class="nav__link">Помощь</a></li>
+        <li class="nav__item">
+          <a href="" class="nav__link" @click="goToInventoryPage">Инвентарь</a>
+        </li>
+        <li class="nav__item">
+          <a href="" class="nav__link" @click="goToShopPage">Магазин</a>
+        </li>
+        <li class="nav__item">
+          <a href="" class="nav__link" @click="goToMapPage">Карта</a>
+        </li>
+        <li class="nav__item">
+          <a href="" class="nav__link" @click="goToHelpPage">Помощь</a>
+        </li>
       </ul>
     </div>
-  </footer>
+  </header>
 </template>
 
 <script type="text/javascript">
@@ -31,6 +39,26 @@ export default {
         location.reload();
       });
     },
+    goToInventoryPage() {
+      this.$router.push({ name: "Inventory" }).then(() => {
+        location.reload();
+      });
+    },
+    goToShopPage() {
+      this.$router.push({ name: "Shop" }).then(() => {
+        location.reload();
+      });
+    },
+    goToMapPage() {
+      this.$router.push({ name: "Map" }).then(() => {
+        location.reload();
+      });
+    },
+    goToHelpPage() {
+      this.$router.push({ name: "Help" }).then(() => {
+        location.reload();
+      });
+    },
   },
   beforeCreate() {},
   mounted() {},
@@ -38,6 +66,9 @@ export default {
 </script>
 
 <style scoped>
+.p {
+  color: var(--color-light);
+}
 .header-container {
   display: flex;
   padding: 25px 0;
@@ -60,12 +91,14 @@ export default {
   align-items: center;
 }
 .nav__item {
-  padding: 5px;
+  padding: 5px 0;
 }
 .nav__item:not(:last-child) {
   margin-right: 50px;
 }
 .nav__item:hover {
+  transform: translateY(1px);
+  border-bottom: 1px solid var(--color-light);
 }
 .nav__link {
   color: var(--color-light);
