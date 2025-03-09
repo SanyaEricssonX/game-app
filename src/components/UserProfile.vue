@@ -1,33 +1,73 @@
 <template>
   <div class="profile-container">
     <h2 class="profile__header">Профиль</h2>
-    <ul class="characteristics-list">
-      <li class="characteristics__item"><h4 class="item__title"> HP : </h4>{{ playerCurrentHp }}/{{ playerMaxHp }}</li>
-      <li class="characteristics__item"><h4 class="item__title"> Урон : </h4>{{ playerDamage }}</li>
-      <li class="characteristics__item"><h4 class="item__title"> Защита : </h4>{{ playerArmor }}</li>
+    <ul class="list characteristics-list">
+      <li class="item characteristics__item">
+        <h4 class="item__title">Уровень :</h4>
+        {{ $store.state.playerLevel }}
+      </li>
+      <li class="item characteristics__item">
+        <h4 class="item__title">HP :</h4>
+        {{ $store.state.playerCurrentHp }}/{{ $store.state.playerMaxHp }}
+      </li>
+      <li class="item characteristics__item">
+        <h4 class="item__title">Урон :</h4>
+        {{ $store.state.playerDamage }}
+      </li>
+      <li class="item characteristics__item">
+        <h4 class="item__title">Защита :</h4>
+        {{ $store.state.playerArmor }}
+      </li>
     </ul>
+
+    <ul class="list resources-list">
+      <li class="item resources__item">
+        <h4 class="item__title">Золото :</h4>
+        {{ $store.state.playerGold }}
+      </li>
+      <li class="item resources__item">
+        <h4 class="item__title">Древесина :</h4>
+        {{ $store.state.playerResources.wood }}
+      </li>
+      <li class="item resources__item">
+        <h4 class="item__title">Камень :</h4>
+        {{ $store.state.playerResources.stone }}
+      </li>
+      <li class="item resources__item">
+        <h4 class="item__title">Железо :</h4>
+        {{ $store.state.playerResources.iron }}
+      </li>
+    </ul>
+    <base-button class="profile__btn" @click="resetData"
+      >Сброс данных</base-button
+    >
   </div>
 </template>
 
 <script type="text/javascript">
+import { downloadData } from "@/services/downloadData";
+
 export default {
   name: "user-profile",
   extends: {},
   props: {},
   data() {
-    return {
-      playerMaxHp: 100,
-      playerCurrentHp: 100,
-      playerDamage: 10,
-      playerArmor: 5,
-    };
+    return {};
   },
   computed: {},
   components: {},
   watch: {},
-  methods: {},
+  methods: {
+    resetData() {
+      localStorage.clear();
+      downloadData();
+    },
+  },
+  updated() {},
   beforeCreate() {},
-  mounted() {},
+  mounted() {
+    downloadData();
+  },
 };
 </script>
 
@@ -37,24 +77,37 @@ export default {
   align-items: center;
   flex-direction: column;
   padding: 20px 10px;
-  width: 33%;
-  max-height: 20vh;
+  /* width: 33%; */
+  max-height: 42vh;
   background-color: var(--color-light);
   color: var(--color-dark);
 }
 .profile__header {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
-.characteristics-list {
+.list {
   width: 100%;
 }
-.characteristics__item {
+.characteristics-list,
+.resources-list {
+  margin-bottom: 30px;
+}
+.item {
   display: flex;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 .item__title {
   font-weight: 600;
   font-size: 18px;
   margin-right: 5px;
+}
+.profile__btn {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+}
+.profile__btn:hover {
+  background-color: var(--color-red);
+  color: var(--color-light);
 }
 </style>
