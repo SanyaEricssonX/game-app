@@ -24,6 +24,7 @@
 import { startBattle } from "@/services/battleLogic";
 import Enemies from "@/services/enemies";
 import { downloadData } from "@/services/downloadData";
+import player from "@/services/player";
 
 export default {
   name: "MapPage",
@@ -39,13 +40,14 @@ export default {
       isBattleEnd: false,
       enemies: [],
       enemiesInstance: [],
+      // playerInstance: []
     };
   },
   computed: {},
   components: {},
   watch: {},
   methods: {
-    startBattle(enemy) {
+    async startBattle(enemy) {
       this.selectedEnemy = enemy;
       const battleResult = startBattle(
         this.$store.state.playerCurrentHp,
@@ -62,6 +64,7 @@ export default {
           "playerExperience",
           this.$store.state.playerExperience
         );
+        player.playerLevel();
 
         // Оставшееся ХП
         if (battleResult.currentHp > 0) {
@@ -118,6 +121,8 @@ export default {
   created() {
     this.enemiesInstance = new Enemies();
     this.enemies = this.enemiesInstance.getEnemies();
+
+    // this.playerInstance = new Player();
   },
   mounted() {},
 };

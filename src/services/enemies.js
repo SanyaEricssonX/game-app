@@ -2,7 +2,7 @@ export default class Enemies {
 
   constructor() {
     this.enemies = [
-      { id: 0, name: "Скелет", level: 1, hp: 30, damage: 5, experience: 10 },
+      { id: 0, name: "Скелет", level: 1, hp: 30, damage: 5, experience: 100 },
       { id: 1, name: "Зомби", level: 1, hp: 50, damage: 3, experience: 10 },
       { id: 2, name: "Гоблин", level: 1, hp: 40, damage: 4, experience: 10 },
       { id: 3, name: "Орк", level: 2, hp: 70, damage: 8, experience: 30 },
