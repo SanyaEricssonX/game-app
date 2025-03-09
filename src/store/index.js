@@ -10,7 +10,10 @@ export default createStore({
     playerDamage: 10,
     playerArmor: 5,
     playerGold: 0,
-    playerResources: {wood: 0, stone: 0, iron: 0}
+    playerResources: {wood: 0, stone: 0, iron: 0},
+    defaultPlayerMaxHp: 100,
+    defaultPlayerDamage: 10,
+    defaultPlayerArmor: 5
   },
   getters: {},
   mutations: {

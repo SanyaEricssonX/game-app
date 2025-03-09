@@ -22,7 +22,7 @@
 
 <script type="text/javascript">
 import { startBattle } from "@/services/battleLogic";
-import Enemies from "@/services/enemies";
+import enemies from "@/services/enemies";
 import { downloadData } from "@/services/downloadData";
 import player from "@/services/player";
 
@@ -39,8 +39,6 @@ export default {
       selectedEnemy: null,
       isBattleEnd: false,
       enemies: [],
-      enemiesInstance: [],
-      // playerInstance: []
     };
   },
   computed: {},
@@ -58,14 +56,6 @@ export default {
       setTimeout(() => {
         this.battleLog = battleResult.log;
 
-        // Опыт
-        this.$store.state.playerExperience += battleResult.experience;
-        localStorage.setItem(
-          "playerExperience",
-          this.$store.state.playerExperience
-        );
-        player.playerLevel();
-
         // Оставшееся ХП
         if (battleResult.currentHp > 0) {
           localStorage.setItem("playerCurrentHp", battleResult.currentHp);
@@ -73,8 +63,16 @@ export default {
           localStorage.setItem("playerCurrentHp", 0);
         }
 
+        // Опыт
+        this.$store.state.playerExperience += battleResult.experience;
+        localStorage.setItem(
+          "playerExperience",
+          this.$store.state.playerExperience
+        );
+        player.playerCharacteristics();
+
         // Дроп
-        const drop = this.enemiesInstance.randomDrop(enemy.id);
+        const drop = enemies.randomDrop(enemy.id);
         this.$store.state.playerGold += Math.floor(
           Math.random() * drop.gold + 1
         );
@@ -119,10 +117,7 @@ export default {
   },
   beforeCreate() {},
   created() {
-    this.enemiesInstance = new Enemies();
-    this.enemies = this.enemiesInstance.getEnemies();
-
-    // this.playerInstance = new Player();
+    this.enemies = enemies.enemies;
   },
   mounted() {},
 };
