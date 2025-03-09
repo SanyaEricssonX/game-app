@@ -22,3 +22,23 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Components Script Sample
+```
+<script type="text/javascript">
+export default {
+  name: "component-name",
+  extends: {},
+  props: {},
+  data() {
+    return {};
+  },
+  computed: {},
+  components: {},
+  watch: {},
+  methods: {},
+  beforeCreate() {},
+  mounted() {},
+};
+</script>
+```

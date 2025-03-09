@@ -1,36 +1,54 @@
 <template>
-  <div id="app">
-    <h1>Счетчик: {{ count }}</h1>
-    <button @click="increment">Увеличить на 1</button>
+  <div class="app" v-cloak>
+    <div class="wrapper">
+      <app-header></app-header>
+      <main class="container main">
+        <user-profile class="profile-block"></user-profile>
+        <router-view class="router-block"></router-view>
+      </main>
+      <app-footer></app-footer>
+    </div>
   </div>
 </template>
 
-<script>
+<script type="text/javascript">
+import AppFooter from "@/components/AppFooter";
+import AppHeader from "@/components/AppHeader";
+import UserProfile from "@/components/UserProfile";
 export default {
+  extends: {},
+  props: {},
   data() {
-    return {
-      count: 0,
-    };
+    return {};
   },
-  methods: {
-    increment() {
-      this.count += 1;
-    },
-  },
+  computed: {},
+  components: { AppFooter, AppHeader, UserProfile },
+  watch: {},
+  methods: {},
+  beforeCreate() {},
+  mounted() {},
 };
 </script>
 
 <style>
-#app {
-  text-align: center;
-  margin-top: 50px;
-  font-family: Bahnschrift;
+.scroll-lock {
+  overflow: hidden;
 }
-button {
-  padding: 10px 20px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
-  cursor: pointer;
+</style>
+
+<style scoped>
+[v-cloak] {
+  display: none;
+}
+.wrapper {
+  position: relative;
+}
+.main {
+  display: flex;
+  min-height: calc(100vh - 130px);
+}
+.profile-block {
+  width: 33%;
 }
 </style>
 
