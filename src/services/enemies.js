@@ -2,16 +2,16 @@ class enemies {
 
   constructor() {
     this.list = [
-      { id: 0, name: "Скелет", level: 1, hp: 30, damage: 5, experience: 10, time: 3000 },
-      { id: 1, name: "Зомби", level: 1, hp: 50, damage: 3, experience: 10, time: 3000 },
-      { id: 2, name: "Гоблин", level: 1, hp: 40, damage: 4, experience: 10, time: 3000 },
-      { id: 3, name: "Орк", level: 2, hp: 70, damage: 8, experience: 30, time: 6000 },
-      { id: 4, name: "Волк", level: 2, hp: 50, damage: 10, experience: 30, time: 60000 },
-      { id: 5, name: "Скелет-лучник", level: 2, hp: 30, damage: 15, experience: 30, time: 6000 },
-      { id: 6, name: "Медведь", level: 3, hp: 100, damage: 22, experience: 80, time: 10000 },
-      { id: 7, name: "Разбойник", level: 3, hp: 80, damage: 30, experience: 80, time: 10000 },
-      { id: 8, name: "Арахнид", level: 3, hp: 90, damage: 25, experience: 80, time: 10000 },
-      { id: 9, name: "Тестовый", level: 5, hp: 1, damage: 0, experience: 500, time: 3000 }
+      { id: 0, name: "Скелет", level: 1, hp: 30, damage: 5, armor: 1, experience: 10, time: 3000 },
+      { id: 1, name: "Зомби", level: 1, hp: 50, damage: 3, armor: 1, experience: 10, time: 3000 },
+      { id: 2, name: "Гоблин", level: 1, hp: 40, damage: 4, armor: 1, experience: 10, time: 3000 },
+      { id: 3, name: "Орк", level: 2, hp: 70, damage: 8, armor: 2, experience: 30, time: 6000 },
+      { id: 4, name: "Волк", level: 2, hp: 50, damage: 10, armor: 2, experience: 30, time: 60000 },
+      { id: 5, name: "Скелет-лучник", level: 2, hp: 30, damage: 15, armor: 2, experience: 30, time: 6000 },
+      { id: 6, name: "Медведь", level: 3, hp: 100, damage: 22, armor: 3, experience: 80, time: 10000 },
+      { id: 7, name: "Разбойник", level: 3, hp: 80, damage: 30, armor: 3, experience: 80, time: 10000 },
+      { id: 8, name: "Арахнид", level: 3, hp: 90, damage: 25, armor: 3, experience: 80, time: 10000 },
+      { id: 9, name: "Тестовый", level: 5, hp: 1, damage: 0, armor: 1, experience: 500, time: 3000 }
     ]
   }
 
