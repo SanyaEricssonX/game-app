@@ -1,4 +1,6 @@
-export function startBattle(playerCurrentHp, playerDamage, enemy) {
+import player from "../services/player";
+
+export function startBattle(playerCurrentHp, playerDamage, playerArmor, enemy) {
   let enemyCurrentHp = enemy.hp;
   let battleLog = [];
 
@@ -11,8 +13,10 @@ export function startBattle(playerCurrentHp, playerDamage, enemy) {
       return { result: "win", log: battleLog, currentHp: playerCurrentHp, experience: enemy.experience };
     }
 
-    playerCurrentHp -= enemy.damage;
-    battleLog.push(`${enemy.name} нанес вам ${enemy.damage} урона`);
+    const decreaseDamage = player.decreaseDamage(playerArmor);
+    const finalDamage = enemy.damage - Math.ceil(enemy.damage / 100 * decreaseDamage);
+    playerCurrentHp -= finalDamage;
+    battleLog.push(`${enemy.name} нанес вам ${finalDamage} урона`);
 
     if (playerCurrentHp <= 0) {
       battleLog.push("Вас убили!");

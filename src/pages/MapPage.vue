@@ -29,9 +29,7 @@ import player from "@/services/player";
 export default {
   name: "MapPage",
   extends: {},
-  props: {
-    enemy: Object,
-  },
+  props: {},
   data() {
     return {
       result: null,
@@ -50,6 +48,7 @@ export default {
       const battleResult = startBattle(
         this.$store.state.playerCurrentHp,
         this.$store.state.playerDamage,
+        this.$store.state.playerArmor,
         enemy
       );
 
@@ -60,7 +59,10 @@ export default {
         if (battleResult.currentHp > 0) {
           localStorage.setItem("playerCurrentHp", battleResult.currentHp);
         } else {
-          localStorage.setItem("playerCurrentHp", 0);
+          player.isDead(battleResult.currentHp);
+          downloadData();
+          this.isBattleEnd = true;
+          return;
         }
 
         // Опыт
@@ -69,7 +71,7 @@ export default {
           "playerExperience",
           this.$store.state.playerExperience
         );
-        player.playerCharacteristics();
+        player.Characteristics();
 
         // Дроп
         const drop = enemies.randomDrop(enemy.id);
@@ -107,7 +109,7 @@ export default {
 
         downloadData();
         this.isBattleEnd = true;
-      }, 3000);
+      }, enemy.time);
     },
     resetSelection() {
       this.selectedEnemy = null;
@@ -117,7 +119,7 @@ export default {
   },
   beforeCreate() {},
   created() {
-    this.enemies = enemies.enemies;
+    this.enemies = enemies.list;
   },
   mounted() {},
 };
