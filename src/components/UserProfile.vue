@@ -61,6 +61,7 @@ export default {
     resetData() {
       localStorage.clear();
       downloadData();
+      this.$store.dispatch("triggerSortEnemies");
     },
   },
   updated() {},

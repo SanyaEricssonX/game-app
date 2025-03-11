@@ -1,8 +1,5 @@
 <template>
-  <div class="container main-container">
-    <h1>Счетчик: {{ count }}</h1>
-    <base-button @click="increment">Увеличить на 1</base-button>
-  </div>
+  <div class="container main-container"></div>
 </template>
 
 <script type="text/javascript">
@@ -11,18 +8,12 @@ export default {
   extends: {},
   props: {},
   data() {
-    return {
-      count: 0,
-    };
+    return {};
   },
   computed: {},
   components: {},
   watch: {},
-  methods: {
-    increment() {
-      this.count += 1;
-    },
-  },
+  methods: {},
   beforeCreate() {},
   mounted() {},
 };

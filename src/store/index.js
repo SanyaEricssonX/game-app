@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    count: 1,
+    triggerSortEnemies: false,
     playerExperience: 0,
     playerLevel: 1,
     playerMaxHp: 100,
@@ -10,17 +10,23 @@ export default createStore({
     playerDamage: 10,
     playerArmor: 5,
     playerGold: 0,
-    playerResources: {wood: 0, stone: 0, iron: 0},
+    playerResources: { wood: 0, stone: 0, iron: 0 },
     defaultPlayerMaxHp: 100,
     defaultPlayerDamage: 10,
-    defaultPlayerArmor: 5
+    defaultPlayerArmor: 5,
+    levelIsUp: false,
   },
   getters: {},
   mutations: {
-    // setPlayerCurrentHp(state, newValue) {
-    //   state.playerCurrentHp = newValue;
-    // }
+    setTriggerMethod(state, value) {
+      state.triggerSortEnemies = value;
+    }
   },
-  actions: {},
+  actions: {
+    triggerSortEnemies({ commit }) {
+      commit("setTriggerMethod", true);
+      setTimeout(() => commit("setTriggerMethod", false), 1000);
+    }
+  },
   modules: {},
 });

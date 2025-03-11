@@ -4,14 +4,20 @@ import store from "../store";
 
 class player {
   constructor() {
-    this.experienceForLevel = [30, 150, 300, 500, 800, 1200, 1700, 2300, 3000, 3800, 4700, 5700, 6800, 8000, 9300, 10700, 12200, 13800, 15500];
+    this.experienceForLevel = [50, 150, 300, 500, 800, 1200, 1700, 2300, 3000, 3800, 4700, 5700, 6800, 8000, 9300, 10700, 12200, 13800, 15500];
     this.increaseDamagePerLevel = [2, 5, 9, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85];
     this.increaseMaxHpPerLevel = [10, 21, 33, 46, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270];
     this.increaseArmorPerLevel = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28];
     this.isLevelIncreased = false;
+    this.infoByLevel = {
+      2: ["Получен доступ к крафту предметов"],
+      3: ["Доступны новые товары в магазине"],
+      4: ["Доступен выбор профессии"],
+      5: ["Доступны новые товары в магазине", "Доступно строительство"]
+    };
   }
 
-  Characteristics() {
+  characteristics() {
     this.levelUp();
     this.damageUp();
     this.maxHpUp();
@@ -30,10 +36,20 @@ class player {
       if (store.state.playerExperience >= this.experienceForLevel[i] && store.state.playerExperience < this.experienceForLevel[i + 1]) {
         store.state.playerLevel = i + 2;
 
-        this.currentHpToMax();
+        if (store.state.playerLevel > localStorage.getItem("playerLevel")) {
+          this.isLevelIncreased = true;
+          store.state.levelIsUp = true;
+        }
 
         localStorage.setItem("playerLevel", store.state.playerLevel);
       }
+    }
+    // Условие для взятия 20 уровня
+    if (store.state.playerExperience >= 15500 && store.state.playerLevel > localStorage.getItem("playerLevel")) {
+      store.state.playerLevel = 20;
+      localStorage.setItem("playerLevel", store.state.playerLevel);
+      this.isLevelIncreased = true;
+      store.state.levelIsUp = true;
     }
   }
 
@@ -64,12 +80,6 @@ class player {
     }
   }
 
-  currentHpToMax() {
-    if (store.state.playerLevel > localStorage.getItem("playerLevel")) {
-      return this.isLevelIncreased = true;
-    }
-  }
-
   isDead(currentHp) {
     if (currentHp <= 0) {
       localStorage.removeItem("playerExperience");
@@ -90,6 +100,13 @@ class player {
     // 50 - 50%
     // 70 - 58%
     // 100 - 66%
+  }
+
+  levelUpInfo() {
+    if (store.state.playerLevel <= 5) {
+      const level = store.state.playerLevel;
+      return this.infoByLevel[level];
+    }
   }
 }
 

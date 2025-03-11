@@ -2,10 +2,11 @@
   <div class="container map-container">
     <div class="enemy-block" v-if="!selectedEnemy && !isBattleEnd">
       <h3 class="enemy-block__header">Найдены противники:</h3>
-      <div class="enemies" v-for="enemy in enemies" :key="enemy.id">
+      <div class="enemies" v-for="enemy in sortedEnemies" :key="enemy.id">
         <base-button @click="startBattle(enemy)">
           {{ enemy.name }}
         </base-button>
+        <span class="enemy__level">{{ enemy.level }} Lvl</span>
       </div>
     </div>
     <div class="battle-block" v-else-if="selectedEnemy && !isBattleEnd">
@@ -36,12 +37,23 @@ export default {
       battleLog: [],
       selectedEnemy: null,
       isBattleEnd: false,
-      enemies: [],
+      sortedEnemies: [],
+      // levelIsUp: false,
     };
   },
-  computed: {},
+  computed: {
+    triggerSortEnemies() {
+      return this.$store.state.triggerSortEnemies;
+    },
+  },
   components: {},
-  watch: {},
+  watch: {
+    triggerSortEnemies(newValue) {
+      if (newValue) {
+        this.sortEnemies();
+      }
+    },
+  },
   methods: {
     async startBattle(enemy) {
       this.selectedEnemy = enemy;
@@ -71,7 +83,12 @@ export default {
           "playerExperience",
           this.$store.state.playerExperience
         );
-        player.Characteristics();
+        player.characteristics();
+        // Проверяем увеличился ли уровень
+        if (this.$store.state.levelIsUp) {
+          this.showModal();
+          this.$store.state.levelIsUp = false;
+        }
 
         // Дроп
         const drop = enemies.randomDrop(enemy.id);
@@ -108,6 +125,7 @@ export default {
         );
 
         downloadData();
+        this.sortEnemies();
         this.isBattleEnd = true;
       }, enemy.time);
     },
@@ -116,10 +134,26 @@ export default {
       this.battleLog = [];
       this.isBattleEnd = false;
     },
+    sortEnemies() {
+      this.sortedEnemies = [];
+      for (let i = 0; i < enemies.list.length; i++) {
+        if (
+          enemies.list[i].level == this.$store.state.playerLevel ||
+          enemies.list[i].level == this.$store.state.playerLevel - 1 ||
+          enemies.list[i].level == this.$store.state.playerLevel + 1 ||
+          enemies.list[i].level < 0
+        ) {
+          this.sortedEnemies.push(enemies.list[i]);
+        }
+      }
+    },
+    showModal() {
+      this.$emit("show-modal");
+    },
   },
   beforeCreate() {},
   created() {
-    this.enemies = enemies.list;
+    this.sortEnemies();
   },
   mounted() {},
 };
@@ -129,10 +163,21 @@ export default {
 .map-container {
   display: flex;
 }
+.enemy-block__header {
+  margin-bottom: 30px;
+}
 .result {
   max-width: 200px;
 }
 .result__item {
   margin-bottom: 15px;
+}
+.enemy__level {
+  margin-left: 3px;
+  padding: 10px 10px;
+  border-radius: 5px;
+  line-height: 1;
+  color: var(--color-dark);
+  background-color: var(--color-light);
 }
 </style>
