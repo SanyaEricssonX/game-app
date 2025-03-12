@@ -5,6 +5,7 @@ export function startBattle(playerCurrentHp, playerDamage, playerArmor, enemy) {
   let battleLog = [];
 
   while (playerCurrentHp > 0 && enemyCurrentHp > 0) {
+    // Игрок атакует
     const decreasePlayerDamage = player.decreaseDamage(enemy.armor);
     const finalPlayerDamage = playerDamage - Math.ceil(playerDamage / 100 * decreasePlayerDamage);
     enemyCurrentHp -= finalPlayerDamage;
@@ -15,6 +16,7 @@ export function startBattle(playerCurrentHp, playerDamage, playerArmor, enemy) {
       return { result: "win", log: battleLog, currentHp: playerCurrentHp, experience: enemy.experience };
     }
 
+    // Монстр атакует
     const decreaseEnemyDamage = player.decreaseDamage(playerArmor);
     const finalEnemyDamage = enemy.damage - Math.ceil(enemy.damage / 100 * decreaseEnemyDamage);
     playerCurrentHp -= finalEnemyDamage;
