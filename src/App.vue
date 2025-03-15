@@ -9,7 +9,7 @@
         <level-up-info @close-modal="closeModal" @click.stop></level-up-info>
       </modal-window>
 
-      <app-header></app-header>
+      <app-header class="header"></app-header>
       <main class="container main">
         <user-profile class="profile-block"></user-profile>
         <router-view class="router-block" @show-modal="openModal"></router-view>
@@ -67,10 +67,10 @@ export default {
 }
 .main {
   display: flex;
-  min-height: calc(100vh - 130px);
+  min-height: calc(100vh - 150px);
 }
 .profile-block {
-  width: 33%;
+  height: min-content;
 }
 </style>
 

@@ -1,6 +1,8 @@
 <template>
   <div class="container inventory-container">
-    Inventory
+    <ul class="inventory-list" v-for="item in playerInventory" :key="item.id">
+      <li class="inventory__item">{{ item }}</li>
+    </ul>
   </div>
 </template>
 
@@ -10,13 +12,18 @@ export default {
   extends: {},
   props: {},
   data() {
-    return {};
+    return {
+      playerInventory: [],
+    };
   },
   computed: {},
   components: {},
   watch: {},
   methods: {},
   beforeCreate() {},
+  created() {
+    this.playerInventory = this.$store.state.playerInventory;
+  },
   mounted() {},
 };
 </script>

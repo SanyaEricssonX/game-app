@@ -1,21 +1,21 @@
 <template>
   <header class="header">
     <div class="container header-container">
-      <span class="logo">
-        <a class="logo__text" @click="goToHomePage">RA</a>
+      <span class="logo" @click="goToHomePage(0)">
+        <span class="logo__text">DD</span>
       </span>
       <ul class="nav-list">
-        <li class="nav__item">
-          <a href="" class="nav__link" @click="goToInventoryPage">Инвентарь</a>
+        <li class="nav__item" @click="goToInventoryPage(1)">
+          <span class="nav__link">Инвентарь</span>
         </li>
-        <li class="nav__item">
-          <a href="" class="nav__link" @click="goToShopPage">Магазин</a>
+        <li class="nav__item" @click="goToShopPage(2)">
+          <span class="nav__link">Магазин</span>
         </li>
-        <li class="nav__item">
-          <a href="" class="nav__link" @click="goToMapPage">Карта</a>
+        <li class="nav__item" @click="goToMapPage(3)">
+          <span class="nav__link">Карта</span>
         </li>
-        <li class="nav__item">
-          <a href="" class="nav__link" @click="goToHelpPage">Помощь</a>
+        <li class="nav__item" @click="goToHelpPage(4)">
+          <span class="nav__link">Помощь</span>
         </li>
       </ul>
     </div>
@@ -62,6 +62,7 @@ export default {
   },
   beforeCreate() {},
   mounted() {},
+  beforeUpdate() {},
 };
 </script>
 
@@ -71,7 +72,7 @@ export default {
 }
 .header-container {
   display: flex;
-  padding: 25px 0;
+  padding: 35px 0;
 }
 .logo {
   display: block;
@@ -91,17 +92,24 @@ export default {
   align-items: center;
 }
 .nav__item {
-  padding: 5px 0;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 .nav__item:not(:last-child) {
   margin-right: 50px;
 }
 .nav__item:hover {
   transform: translateY(1px);
-  border-bottom: 1px solid var(--color-light);
+  border-bottom: 2px solid var(--color-light);
 }
 .nav__link {
   color: var(--color-light);
   font-family: Bahnschrift;
+}
+.active {
+  background-color: var(--color-light);
+}
+.active_link {
+  color: var(--color-dark);
 }
 </style>

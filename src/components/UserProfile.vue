@@ -78,10 +78,8 @@ export default {
   align-items: center;
   flex-direction: column;
   padding: 20px 10px;
-  /* width: 33%; */
-  max-height: 42vh;
-  background-color: var(--color-light);
-  color: var(--color-dark);
+  width: 210px;
+  border: 2px solid var(--color-light);
 }
 .profile__header {
   margin-bottom: 30px;
@@ -98,9 +96,9 @@ export default {
   margin-bottom: 7px;
 }
 .item__title {
-  font-weight: 600;
-  font-size: 18px;
   margin-right: 5px;
+  font-weight: 600;
+  font-size: 17px;
 }
 .profile__btn {
   width: 100%;

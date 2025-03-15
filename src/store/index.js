@@ -14,6 +14,7 @@ export default createStore({
     defaultPlayerMaxHp: 100,
     defaultPlayerDamage: 10,
     defaultPlayerArmor: 5,
+    playerInventory: [],
     levelIsUp: false,
   },
   getters: {},
