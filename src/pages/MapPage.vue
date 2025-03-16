@@ -38,7 +38,6 @@ export default {
       selectedEnemy: null,
       isBattleEnd: false,
       sortedEnemies: [],
-      // levelIsUp: false,
     };
   },
   computed: {
@@ -84,10 +83,9 @@ export default {
           this.$store.state.playerExperience
         );
         player.characteristics();
-        // Проверяем увеличился ли уровень
+        // Если уровень повысился, то открываем модальное окно
         if (this.$store.state.levelIsUp) {
           this.showModal();
-          this.$store.state.levelIsUp = false;
         }
 
         // Дроп

@@ -26,8 +26,8 @@
 
     <div class="shop-block">
       <div class="shop-box" v-if="selectedTab == 1">
-        <ul class="item-list" v-for="item in weaponList" :key="item.id">
-          <li class="list__item">
+        <ul class="item-list">
+          <li class="list__item" v-for="item in weaponList" :key="item.id">
             <span class="item__logo"></span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
@@ -42,15 +42,17 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{ item.price }}</span>
-              <base-button class="btn" @click="buyItem(item.id)">Купить</base-button>
+              <base-button class="btn" @click="buyItem(item.id)"
+                >Купить</base-button
+              >
             </div>
           </li>
         </ul>
       </div>
 
       <div class="shop-box" v-if="selectedTab == 2">
-        <ul class="item-list" v-for="item in armorList" :key="item.id">
-          <li class="list__item">
+        <ul class="item-list">
+          <li class="list__item" v-for="item in armorList" :key="item.id">
             <span class="item__logo"></span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
@@ -66,15 +68,17 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{ item.price }}</span>
-              <base-button class="btn">Купить</base-button>
+              <base-button class="btn" @click="buyItem(item.id)"
+                >Купить</base-button
+              >
             </div>
           </li>
         </ul>
       </div>
 
       <div class="shop-box" v-if="selectedTab == 3">
-        <ul class="item-list" v-for="item in consumablesList" :key="item.id">
-          <li class="list__item">
+        <ul class="item-list">
+          <li class="list__item" v-for="item in consumablesList" :key="item.id">
             <span class="item__logo"></span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
@@ -88,7 +92,9 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{ item.price }}</span>
-              <base-button class="btn">Купить</base-button>
+              <base-button class="btn" @click="buyItem(item.id)"
+                >Купить</base-button
+              >
             </div>
           </li>
         </ul>
@@ -110,6 +116,7 @@ export default {
       weaponList: [],
       armorList: [],
       consumablesList: [],
+      allItems: [],
       selectedTab: 1,
     };
   },
@@ -125,16 +132,37 @@ export default {
     },
     buyItem(itemId) {
       let inventory = this.$store.state.playerInventory;
-      inventory.push(itemId);
-      this.$store.state.playerInventory = inventory;
-      localStorage.setItem("playerInventory", JSON.stringify(inventory));
-    }
+      let item;
+
+      for (let i = 0; i < this.allItems.length; i++) {
+        if (this.allItems[i].id == itemId) {
+          item = this.allItems[i];
+          break;
+        }
+      }
+
+      if (item.price <= this.$store.state.playerGold) {
+        this.$store.state.playerGold -= item.price;
+        localStorage.setItem("playerGold", this.$store.state.playerGold);
+
+        inventory.push(itemId);
+        this.$store.state.playerInventory = inventory;
+        localStorage.setItem("playerInventory", JSON.stringify(inventory));
+      } else {
+        this.$store.state.purchaseFailed = true;
+        this.showModal();
+      }
+    },
+    showModal() {
+      this.$emit("show-modal");
+    },
   },
   beforeCreate() {},
   created() {
     this.weaponList = items.weaponList;
     this.armorList = items.armorList;
     this.consumablesList = items.consumablesList;
+    this.allItems = items.list();
   },
   mounted() {},
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="container inventory-container">
-    <ul class="inventory-list" v-for="item in playerInventory" :key="item.id">
-      <li class="inventory__item">{{ item }}</li>
+    <ul class="inventory-list">
+      <li class="inventory__item" v-for="item in playerInventory" :key="item.id">{{ item }}</li>
     </ul>
   </div>
 </template>
@@ -31,5 +31,12 @@ export default {
 <style scoped>
 .inventory-container {
   display: flex;
+}
+.inventory-list {
+  display: flex;
+  flex-direction: column;
+}
+.inventory__item {
+  margin-top: 15px;
 }
 </style>

@@ -32,24 +32,19 @@ class player {
   }
 
   levelUp() {
-    for (let i = 0; i < this.experienceForLevel.length; i++) {
+    for (let i = 0; i < this.experienceForLevel.length - 1; i++) {
       if (store.state.playerExperience >= this.experienceForLevel[i] && store.state.playerExperience < this.experienceForLevel[i + 1]) {
         store.state.playerLevel = i + 2;
-
-        if (store.state.playerLevel > localStorage.getItem("playerLevel")) {
-          this.isLevelIncreased = true;
-          store.state.levelIsUp = true;
-        }
-
-        localStorage.setItem("playerLevel", store.state.playerLevel);
       }
     }
     // Условие для взятия 20 уровня
-    if (store.state.playerExperience >= 15500 && store.state.playerLevel > localStorage.getItem("playerLevel")) {
+    if (store.state.playerExperience >= 15500) {
       store.state.playerLevel = 20;
-      localStorage.setItem("playerLevel", store.state.playerLevel);
+    }
+    if (store.state.playerLevel > localStorage.getItem("playerLevel")) {
       this.isLevelIncreased = true;
       store.state.levelIsUp = true;
+      localStorage.setItem("playerLevel", store.state.playerLevel);
     }
   }
 

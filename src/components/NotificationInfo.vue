@@ -1,11 +1,16 @@
 <template>
   <div class="modal-container">
-    <h4 class="modal__header">
-      Вы достигли уровня {{ $store.state.playerLevel }}
-    </h4>
-    <p class="modal__desc" v-for="info in infoByLevel" :key="info.id">
-      {{ info }}
-    </p>
+    <div class="levelup-block" v-if="$store.state.levelIsUp">
+      <h4 class="modal__header">
+        Вы достигли уровня {{ $store.state.playerLevel }}
+      </h4>
+      <p class="modal__desc" v-for="info in infoByLevel" :key="info.id">
+        {{ info }}
+      </p>
+    </div>
+    <div class="purchase-block" v-else-if="$store.state.purchaseFailed">
+      <h4 class="modal__header">Не хватает золота</h4>
+    </div>
   </div>
 </template>
 
@@ -13,7 +18,7 @@
 import player from "@/services/player";
 
 export default {
-  name: "level-up-info",
+  name: "notification-info",
   extends: {},
   props: {
     isModalOpen: {

@@ -16,6 +16,7 @@ export default createStore({
     defaultPlayerArmor: 5,
     playerInventory: [],
     levelIsUp: false,
+    purchaseFailed: false,
   },
   getters: {},
   mutations: {

@@ -6,7 +6,10 @@
         @close="closeModal"
         @click="closeModal"
       >
-        <level-up-info @close-modal="closeModal" @click.stop></level-up-info>
+        <notification-info
+          @close-modal="closeModal"
+          @click.stop
+        ></notification-info>
       </modal-window>
 
       <app-header class="header"></app-header>
@@ -24,7 +27,7 @@ import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import UserProfile from "@/components/UserProfile";
 import ModalWindow from "@/components/ModalWindow";
-import LevelUpInfo from "@/components/LevelUpInfo";
+import NotificationInfo from "@/components/NotificationInfo";
 export default {
   extends: {},
   props: {},
@@ -35,7 +38,13 @@ export default {
     };
   },
   computed: {},
-  components: { AppFooter, AppHeader, UserProfile, ModalWindow, LevelUpInfo },
+  components: {
+    AppFooter,
+    AppHeader,
+    UserProfile,
+    ModalWindow,
+    NotificationInfo,
+  },
   watch: {},
   methods: {
     openModal() {
@@ -44,6 +53,10 @@ export default {
     },
     closeModal() {
       this.isModalOpen = false;
+
+      this.$store.state.levelIsUp = false;
+      this.$store.state.purchaseFailed = false;
+
       document.querySelector("body").classList.remove("scroll-lock");
     },
   },
