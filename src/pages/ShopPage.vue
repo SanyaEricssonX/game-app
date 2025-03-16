@@ -196,10 +196,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.active {
-  background-color: var(--color-light);
-  color: var(--color-dark);
-}
 .list__item {
   display: flex;
   align-items: center;
@@ -241,5 +237,9 @@ export default {
 .btn {
   margin-top: 15px;
   padding: 5px 10px;
+}
+.active {
+  background-color: var(--color-light);
+  color: var(--color-dark);
 }
 </style>

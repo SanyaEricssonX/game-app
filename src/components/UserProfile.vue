@@ -1,43 +1,58 @@
 <template>
   <div class="profile-container">
-    <h2 class="profile__header">Профиль</h2>
-    <ul class="list characteristics-list">
-      <li class="item characteristics__item">
-        <h4 class="item__title">Уровень :</h4>
-        {{ $store.state.playerLevel }}
-      </li>
-      <li class="item characteristics__item">
-        <h4 class="item__title">HP :</h4>
-        {{ $store.state.playerCurrentHp }}/{{ $store.state.playerMaxHp }}
-      </li>
-      <li class="item characteristics__item">
-        <h4 class="item__title">Урон :</h4>
-        {{ $store.state.playerDamage }}
-      </li>
-      <li class="item characteristics__item">
-        <h4 class="item__title">Защита :</h4>
-        {{ $store.state.playerArmor }}
-      </li>
-    </ul>
-
-    <ul class="list resources-list">
-      <li class="item resources__item">
-        <h4 class="item__title">Золото :</h4>
-        {{ $store.state.playerGold }}
-      </li>
-      <li class="item resources__item">
-        <h4 class="item__title">Древесина :</h4>
-        {{ $store.state.playerResources.wood }}
-      </li>
-      <li class="item resources__item">
-        <h4 class="item__title">Камень :</h4>
-        {{ $store.state.playerResources.stone }}
-      </li>
-      <li class="item resources__item">
-        <h4 class="item__title">Железо :</h4>
-        {{ $store.state.playerResources.iron }}
-      </li>
-    </ul>
+    <div class="profile-block">
+      <h2 class="profile__header">Характеристики</h2>
+      <ul class="list characteristics-list">
+        <li class="item characteristics__item">
+          <h4 class="item__title">Уровень :</h4>
+          {{ $store.state.playerLevel }}
+        </li>
+        <li class="item characteristics__item">
+          <h4 class="item__title">HP :</h4>
+          {{ $store.state.playerCurrentHp }}/{{ $store.state.playerMaxHp }}
+        </li>
+        <li class="item characteristics__item">
+          <h4 class="item__title">Урон :</h4>
+          {{ $store.state.playerDamage }}
+        </li>
+        <li class="item characteristics__item">
+          <h4 class="item__title">Защита :</h4>
+          {{ $store.state.playerArmor }}
+        </li>
+      </ul>
+    </div>
+    <div class="profile-block">
+      <h2 class="profile__header">Ресурсы</h2>
+      <ul class="list resources-list">
+        <li class="item resources__item">
+          <h4 class="item__title">Золото :</h4>
+          {{ $store.state.playerGold }}
+        </li>
+        <li class="item resources__item">
+          <h4 class="item__title">Древесина :</h4>
+          {{ $store.state.playerResources.wood }}
+        </li>
+        <li class="item resources__item">
+          <h4 class="item__title">Камень :</h4>
+          {{ $store.state.playerResources.stone }}
+        </li>
+        <li class="item resources__item">
+          <h4 class="item__title">Железо :</h4>
+          {{ $store.state.playerResources.iron }}
+        </li>
+      </ul>
+    </div>
+    <div class="profile-block">
+      <h2 class="profile__header">Экипировка</h2>
+      <ul class="list equipment-list">
+        <li class="equipment__item">Шлем</li>
+        <li class="equipment__item">Верхний доспех</li>
+        <li class="equipment__item">Нижний доспех</li>
+        <li class="equipment__item">Перчатки</li>
+        <li class="equipment__item">Сапоги</li>
+        <li class="equipment__item">Оружие</li>
+      </ul>
+    </div>
     <base-button class="profile__btn" @click="resetData"
       >Сброс данных</base-button
     >
@@ -74,26 +89,25 @@ export default {
 
 <style scoped>
 .profile-container {
+  border: 2px solid var(--color-light);
+}
+.profile-block {
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 20px 10px;
+  padding: 10px;
   width: 210px;
-  border: 2px solid var(--color-light);
 }
 .profile__header {
   margin-bottom: 30px;
+  font-size: 22px;
 }
 .list {
   width: 100%;
 }
-.characteristics-list,
-.resources-list {
-  margin-bottom: 30px;
-}
 .item {
   display: flex;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
 }
 .item__title {
   margin-right: 5px;
@@ -108,5 +122,13 @@ export default {
 .profile__btn:hover {
   background-color: var(--color-red);
   color: var(--color-light);
+}
+.equipment-list {
+  display: flex;
+  flex-direction: column;
+}
+.equipment__item {
+  margin-bottom: 10px;
+  height: 35px;
 }
 </style>
