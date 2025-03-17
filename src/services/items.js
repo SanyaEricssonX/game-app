@@ -1,16 +1,16 @@
 class items {
   constructor() {
     this.weaponList = [
-      { id: 1000, name: "Тренировочный меч", category: "sword", damage: 10, armor: 0, hp: 0, durability: 5, requiredLevel: 1, price: 20 },
-      { id: 1001, name: "Железный меч", category: "sword", damage: 20, armor: 0, hp: 0, durability: 15, requiredLevel: 3, price: 60 },
-      { id: 1002, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", damage: 5000, armor: 0, hp: 0, durability: 1000, requiredLevel: 3, price: 1000000 },
+      { id: 1000, name: "Тренировочный меч", category: "sword", damage: 10, durability: 5, requiredLevel: 1, price: 20 },
+      { id: 1001, name: "Железный меч", category: "sword", damage: 20, durability: 15, requiredLevel: 3, price: 60 },
+      { id: 1002, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", damage: 5000, durability: 1000, requiredLevel: 3, price: 1000000 },
     ];
     this.armorList = [
-      { id: 1010, name: "Тренировочный жилет", category: "upperArmor", damage: 0, armor: 3, hp: 10, durability: 5, requiredLevel: 1, price: 10 },
-      { id: 1011, name: "Легкие сапоги", category: "boots", damage: 0, armor: 2, hp: 10, durability: 5, requiredLevel: 1, price: 10 },
-      { id: 1012, name: "Железная кираса", category: "upperArmor", damage: 0, armor: 10, hp: 30, durability: 15, requiredLevel: 3, price: 50 },
-      { id: 1013, name: "Железные сапоги", category: "boots", damage: 0, armor: 5, hp: 30, durability: 15, requiredLevel: 3, price: 50 },
-      { id: 1014, name: "Железный шлем", category: "helmet", damage: 0, armor: 5, hp: 30, durability: 15, requiredLevel: 3, price: 50 },
+      { id: 1010, name: "Тренировочный жилет", category: "upperArmor", armor: 3, hp: 10, durability: 5, requiredLevel: 1, price: 10 },
+      { id: 1011, name: "Легкие сапоги", category: "boots", armor: 2, hp: 10, durability: 5, requiredLevel: 1, price: 10 },
+      { id: 1012, name: "Железная кираса", category: "upperArmor", armor: 10, hp: 30, durability: 15, requiredLevel: 3, price: 50 },
+      { id: 1013, name: "Железные сапоги", category: "boots", armor: 5, hp: 30, durability: 15, requiredLevel: 3, price: 50 },
+      { id: 1014, name: "Железный шлем", category: "helmet", armor: 5, hp: 30, durability: 15, requiredLevel: 3, price: 50 },
     ];
     this.consumablesList = [
       { id: 1020, name: "Малый эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 30 HP", amount: 30, durability: 0, requiredLevel: 1, price: 15 },

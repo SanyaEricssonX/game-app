@@ -53,10 +53,15 @@
           class="inventory__item"
           v-for="item in inventoryCells"
           :key="item.id"
+          @click="showTooltip(item)"
         >
           <span class="inventory__item__id" v-show="item > 999">
             {{ item }}
           </span>
+          <base-tooltip
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == item"
+          ></base-tooltip>
         </li>
       </ul>
       <div class="inventory-list" v-if="selectedTab == 2">
@@ -67,7 +72,7 @@
 </template>
 
 <script type="text/javascript">
-import items from "@/services/items"
+import items from "@/services/items";
 
 export default {
   name: "InventoryPage",
@@ -79,6 +84,8 @@ export default {
       inventoryCells: [],
       playerInventory: [],
       allItems: [],
+      tooltip: { visible: false, text: "Предмет" },
+      selectedItem: null,
     };
   },
   computed: {},
@@ -90,6 +97,91 @@ export default {
     },
     isActiveBtn(tabNumber) {
       return this.selectedTab == tabNumber;
+    },
+    showTooltip(item) {
+      let newItem;
+
+      this.selectedItem = item;
+
+      for (let i = 0; i < this.allItems.length; i++) {
+        if (this.allItems[i].id == item) {
+          newItem = this.allItems[i];
+        }
+      }
+
+      // if (newItem) {
+      //   this.tooltip.text = newItem.name;
+      // } else {
+      //   this.tooltip.text = String(item);
+      // }
+
+      this.tooltip.visible = true;
+      this.tooltip.text = this.tooltipContent(newItem);
+    },
+    // tooltipContent(item) {
+    //   const category = item.id.toString().slice(0, 3);
+
+    //   if (category == "100") {
+    //     return {
+    //       id: item.id,
+    //       name: item.name,
+    //       damage: item.damage,
+    //       durability: 5,
+    //       requiredLevel: item.requiredLevel,
+    //     };
+    //   } else {
+    //     return {
+    //       id: item.id,
+    //       name: item.name,
+    //       damage: item.damage,
+    //       durability: 5,
+    //       requiredLevel: item.requiredLevel,
+    //     };
+    //   }
+    // },
+    tooltipContent(item) {
+      let contentForTooltip = {};
+
+      for (let key in item) {
+        if (key == "name") {
+          contentForTooltip = item[key];
+        } else if (
+          key == "damage" ||
+          key == "armor" ||
+          key == "hp" ||
+          key == "desc" ||
+          key == "durability" ||
+          key == "requiredLevel"
+        ) {
+          contentForTooltip += item[key];
+        }
+        // switch (key) {
+        //   case "name":
+        //     contentForTooltip = item[key];
+        //     break;
+        //   case "damage":
+        //     contentForTooltip += item[key];
+        //     break;
+        //   case "armor":
+        //     contentForTooltip += item[key];
+        //     break;
+        //   case "hp":
+        //     contentForTooltip += item[key];
+        //     break;
+        //   case "desc":
+        //     contentForTooltip += item[key];
+        //     break;
+        //   case "durability":
+        //     contentForTooltip += item[key];
+        //     break;
+        //   case "requiredLevel":
+        //     contentForTooltip += item[key];
+        //     break;
+        //   default:
+        //     break;
+        // }
+      }
+      return contentForTooltip;
     },
   },
   beforeCreate() {},
@@ -152,6 +244,7 @@ export default {
   border: 2px solid var(--color-light);
 }
 .inventory__item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
