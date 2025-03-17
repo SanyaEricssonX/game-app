@@ -85,5 +85,11 @@ export default {
 .profile-block {
   height: min-content;
 }
+.router-block {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 35px;
+  width: calc(100% - 210px);
+}
 </style>
 

@@ -1,5 +1,6 @@
 <template>
   <div class="container shop-container">
+    <h2 class="shop__header">Магазин</h2>
     <ul class="nav-list">
       <li
         class="nav__item"
@@ -21,6 +22,20 @@
         @click="activeContent(3)"
       >
         <h4 class="item__header">Расходные</h4>
+      </li>
+      <li
+        class="nav__item partition"
+        :class="{ active: isActiveBtn(4) }"
+        @click="activeContent(4)"
+      >
+        <h4 class="item__header">Починка</h4>
+      </li>
+      <li
+        class="nav__item"
+        :class="{ active: isActiveBtn(5) }"
+        @click="activeContent(5)"
+      >
+        <h4 class="item__header">Продажа</h4>
       </li>
     </ul>
 
@@ -169,11 +184,9 @@ export default {
 </script>
 
 <style scoped>
-.shop-container {
-  display: flex;
-  flex-direction: column;
-  padding: 0 35px;
-  width: calc(100% - 210px);
+.shop__header {
+  margin-bottom: 30px;
+  font-size: 22px;
 }
 .nav-list {
   display: flex;
@@ -189,7 +202,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding-right: 30px;
-  max-height: 70vh;
+  max-height: 65vh;
   overflow: auto;
 }
 .shop-box {
@@ -223,7 +236,7 @@ export default {
   flex-direction: column;
 }
 .item__desc {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 .desc {
   width: 400px;

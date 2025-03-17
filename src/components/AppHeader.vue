@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container header-container">
       <span class="logo" @click="goToHomePage(0)">
-        <span class="logo__text">DD</span>
+        <span class="logo__text">R</span>
       </span>
       <ul class="nav-list">
         <li class="nav__item" @click="goToInventoryPage(1)">
@@ -77,7 +77,7 @@ export default {
 .logo {
   display: block;
   margin-right: auto;
-  padding-right: 2px;
+  padding-right: 3px;
   width: 50px;
   height: 50px;
   text-align: right;
@@ -85,6 +85,9 @@ export default {
   background-color: var(--color-light);
   color: var(--color-dark);
   cursor: pointer;
+}
+.logo__text {
+  font-size: 18px;
 }
 .nav-list {
   display: flex;
@@ -105,6 +108,7 @@ export default {
 .nav__link {
   color: var(--color-light);
   font-family: Bahnschrift;
+  font-size: 18px;
 }
 .active {
   background-color: var(--color-light);

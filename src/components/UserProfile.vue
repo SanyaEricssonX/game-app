@@ -42,17 +42,6 @@
         </li>
       </ul>
     </div>
-    <div class="profile-block">
-      <h2 class="profile__header">Экипировка</h2>
-      <ul class="list equipment-list">
-        <li class="equipment__item">Шлем</li>
-        <li class="equipment__item">Верхний доспех</li>
-        <li class="equipment__item">Нижний доспех</li>
-        <li class="equipment__item">Перчатки</li>
-        <li class="equipment__item">Сапоги</li>
-        <li class="equipment__item">Оружие</li>
-      </ul>
-    </div>
     <base-button class="profile__btn" @click="resetData"
       >Сброс данных</base-button
     >
@@ -122,13 +111,5 @@ export default {
 .profile__btn:hover {
   background-color: var(--color-red);
   color: var(--color-light);
-}
-.equipment-list {
-  display: flex;
-  flex-direction: column;
-}
-.equipment__item {
-  margin-bottom: 10px;
-  height: 35px;
 }
 </style>
