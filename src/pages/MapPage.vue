@@ -2,10 +2,11 @@
   <div class="container map-container">
     <div class="enemy-block" v-if="!selectedEnemy && !isBattleEnd">
       <h3 class="enemy-block__header">Найдены противники:</h3>
-      <div class="enemies" v-for="enemy in enemies" :key="enemy.id">
+      <div class="enemies" v-for="enemy in sortedEnemies" :key="enemy.id">
         <base-button @click="startBattle(enemy)">
           {{ enemy.name }}
         </base-button>
+        <span class="enemy__level">{{ enemy.level }} Lvl</span>
       </div>
     </div>
     <div class="battle-block" v-else-if="selectedEnemy && !isBattleEnd">
@@ -22,39 +23,58 @@
 
 <script type="text/javascript">
 import { startBattle } from "@/services/battleLogic";
-import Enemies from "@/services/enemies";
+import enemies from "@/services/enemies";
 import { downloadData } from "@/services/downloadData";
+import player from "@/services/player";
 
 export default {
   name: "MapPage",
   extends: {},
-  props: {
-    enemy: Object,
-  },
+  props: {},
   data() {
     return {
       result: null,
       battleLog: [],
       selectedEnemy: null,
       isBattleEnd: false,
-      enemies: [],
-      enemiesInstance: [],
+      sortedEnemies: [],
     };
   },
-  computed: {},
+  computed: {
+    triggerSortEnemies() {
+      return this.$store.state.triggerSortEnemies;
+    },
+  },
   components: {},
-  watch: {},
+  watch: {
+    triggerSortEnemies(newValue) {
+      if (newValue) {
+        this.sortEnemies();
+      }
+    },
+  },
   methods: {
-    startBattle(enemy) {
+    async startBattle(enemy) {
       this.selectedEnemy = enemy;
       const battleResult = startBattle(
         this.$store.state.playerCurrentHp,
         this.$store.state.playerDamage,
+        this.$store.state.playerArmor,
         enemy
       );
 
       setTimeout(() => {
         this.battleLog = battleResult.log;
+
+        // Оставшееся ХП
+        if (battleResult.currentHp > 0) {
+          localStorage.setItem("playerCurrentHp", battleResult.currentHp);
+        } else {
+          player.isDead(battleResult.currentHp);
+          downloadData();
+          this.isBattleEnd = true;
+          return;
+        }
 
         // Опыт
         this.$store.state.playerExperience += battleResult.experience;
@@ -62,16 +82,14 @@ export default {
           "playerExperience",
           this.$store.state.playerExperience
         );
-
-        // Оставшееся ХП
-        if (battleResult.currentHp > 0) {
-          localStorage.setItem("playerCurrentHp", battleResult.currentHp);
-        } else {
-          localStorage.setItem("playerCurrentHp", 0);
+        player.characteristics();
+        // Если уровень повысился, то открываем модальное окно
+        if (this.$store.state.levelIsUp) {
+          this.showModal();
         }
 
         // Дроп
-        const drop = this.enemiesInstance.randomDrop(enemy.id);
+        const drop = enemies.randomDrop(enemy.id);
         this.$store.state.playerGold += Math.floor(
           Math.random() * drop.gold + 1
         );
@@ -105,19 +123,35 @@ export default {
         );
 
         downloadData();
+        this.sortEnemies();
         this.isBattleEnd = true;
-      }, 3000);
+      }, enemy.time);
     },
     resetSelection() {
       this.selectedEnemy = null;
       this.battleLog = [];
       this.isBattleEnd = false;
     },
+    sortEnemies() {
+      this.sortedEnemies = [];
+      for (let i = 0; i < enemies.list.length; i++) {
+        if (
+          enemies.list[i].level == this.$store.state.playerLevel ||
+          enemies.list[i].level == this.$store.state.playerLevel - 1 ||
+          enemies.list[i].level == this.$store.state.playerLevel + 1 ||
+          enemies.list[i].level < 0
+        ) {
+          this.sortedEnemies.push(enemies.list[i]);
+        }
+      }
+    },
+    showModal() {
+      this.$emit("show-modal");
+    },
   },
   beforeCreate() {},
   created() {
-    this.enemiesInstance = new Enemies();
-    this.enemies = this.enemiesInstance.getEnemies();
+    this.sortEnemies();
   },
   mounted() {},
 };
@@ -127,10 +161,21 @@ export default {
 .map-container {
   display: flex;
 }
+.enemy-block__header {
+  margin-bottom: 30px;
+}
 .result {
   max-width: 200px;
 }
 .result__item {
   margin-bottom: 15px;
+}
+.enemy__level {
+  margin-left: 3px;
+  padding: 10px 10px;
+  border-radius: 5px;
+  line-height: 1;
+  color: var(--color-dark);
+  background-color: var(--color-light);
 }
 </style>

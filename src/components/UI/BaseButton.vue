@@ -24,7 +24,6 @@ export default {
 <style>
 .btn {
   padding: 10px 20px;
-  /* border: 1px solid var(--color-light); */
   border-radius: 5px;
   line-height: 1;
   color: var(--color-dark);

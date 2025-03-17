@@ -51,4 +51,9 @@ export function downloadData() {
   } else {
     store.state.playerResources.iron = 0;
   }
+  if (localStorage.getItem("playerInventory") != null) {
+    store.state.playerInventory = JSON.parse(localStorage.getItem("playerInventory"));
+  } else {
+    store.state.playerInventory = [];
+  }
 }
