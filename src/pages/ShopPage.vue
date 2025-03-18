@@ -149,6 +149,7 @@ export default {
       let inventory = this.$store.state.playerInventory;
       let item;
 
+      // Находим предмет в общем списке предметов
       for (let i = 0; i < this.allItems.length; i++) {
         if (this.allItems[i].id == itemId) {
           item = this.allItems[i];
@@ -156,6 +157,7 @@ export default {
         }
       }
 
+      // Проверяем хватает ли золота на покупку
       if (item.price <= this.$store.state.playerGold) {
         this.$store.state.playerGold -= item.price;
         localStorage.setItem("playerGold", this.$store.state.playerGold);

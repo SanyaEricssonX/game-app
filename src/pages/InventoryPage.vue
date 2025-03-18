@@ -55,12 +55,14 @@
           :key="item.id"
           @click="showTooltip(item)"
         >
-          <span class="inventory__item__id" v-show="item > 999">
-            {{ item }}
+          <span class="inventory__item__id" v-show="item.id > 999">
+            {{ item.id }}
           </span>
           <base-tooltip
             :tooltip="tooltip"
-            v-show="tooltip.visible && selectedItem == item"
+            v-show="
+              tooltip.visible && selectedItem == item.cellId && item.id > 999
+            "
           ></base-tooltip>
         </li>
       </ul>
@@ -84,7 +86,12 @@ export default {
       inventoryCells: [],
       playerInventory: [],
       allItems: [],
-      tooltip: { visible: false, text: "Предмет" },
+      tooltip: {
+        visible: false,
+        text: "Предмет",
+        btnText: "",
+        btnColor: "green",
+      },
       selectedItem: null,
     };
   },
@@ -99,87 +106,69 @@ export default {
       return this.selectedTab == tabNumber;
     },
     showTooltip(item) {
-      let newItem;
+      if (item.id > 999) {
+        let newItem;
 
-      this.selectedItem = item;
+        this.selectedItem = item.cellId;
 
-      for (let i = 0; i < this.allItems.length; i++) {
-        if (this.allItems[i].id == item) {
-          newItem = this.allItems[i];
+        for (let i = 0; i < this.allItems.length; i++) {
+          if (this.allItems[i].id == item.id) {
+            newItem = this.allItems[i];
+          }
         }
+
+        this.tooltip.visible = true;
+        this.tooltip.text = this.tooltipContent(newItem);
+      }
+    },
+
+    tooltipContent(item) {
+      let contentForTooltip = [];
+      const category = item.id.toString().slice(0, 3);
+
+      // Цвет кнопки
+      if (this.$store.state.playerLevel < item.requiredLevel) {
+        this.tooltip.btnColor = "red";
       }
 
-      // if (newItem) {
-      //   this.tooltip.text = newItem.name;
-      // } else {
-      //   this.tooltip.text = String(item);
-      // }
+      // Текст для кнопки
+      if (category == "102") {
+        this.tooltip.btnText = "Использовать";
+      } else {
+        this.tooltip.btnText = "Надеть";
+      }
 
-      this.tooltip.visible = true;
-      this.tooltip.text = this.tooltipContent(newItem);
-    },
-    // tooltipContent(item) {
-    //   const category = item.id.toString().slice(0, 3);
-
-    //   if (category == "100") {
-    //     return {
-    //       id: item.id,
-    //       name: item.name,
-    //       damage: item.damage,
-    //       durability: 5,
-    //       requiredLevel: item.requiredLevel,
-    //     };
-    //   } else {
-    //     return {
-    //       id: item.id,
-    //       name: item.name,
-    //       damage: item.damage,
-    //       durability: 5,
-    //       requiredLevel: item.requiredLevel,
-    //     };
-    //   }
-    // },
-    tooltipContent(item) {
-      let contentForTooltip = {};
-
+      // Текст в описание предмета
       for (let key in item) {
-        if (key == "name") {
-          contentForTooltip = item[key];
-        } else if (
-          key == "damage" ||
-          key == "armor" ||
-          key == "hp" ||
-          key == "desc" ||
-          key == "durability" ||
-          key == "requiredLevel"
-        ) {
-          contentForTooltip += item[key];
+        switch (key) {
+          case "name":
+            contentForTooltip.push(item[key]);
+            break;
+          case "damage":
+            contentForTooltip.push(`Урон: ${item[key]}`);
+            break;
+          case "armor":
+            contentForTooltip.push(`Защита: ${item[key]}`);
+            break;
+          case "hp":
+            contentForTooltip.push(`HP: ${item[key]}`);
+            break;
+          case "desc":
+            contentForTooltip.push(item[key]);
+            break;
+          case "durability":
+            if (category == "102") {
+              break;
+            } else {
+              contentForTooltip.push(`Прочность: ${item[key]}`);
+            }
+            break;
+          case "requiredLevel":
+            contentForTooltip.push(`Уровень: ${item[key]}`);
+            break;
+          default:
+            break;
         }
-        // switch (key) {
-        //   case "name":
-        //     contentForTooltip = item[key];
-        //     break;
-        //   case "damage":
-        //     contentForTooltip += item[key];
-        //     break;
-        //   case "armor":
-        //     contentForTooltip += item[key];
-        //     break;
-        //   case "hp":
-        //     contentForTooltip += item[key];
-        //     break;
-        //   case "desc":
-        //     contentForTooltip += item[key];
-        //     break;
-        //   case "durability":
-        //     contentForTooltip += item[key];
-        //     break;
-        //   case "requiredLevel":
-        //     contentForTooltip += item[key];
-        //     break;
-        //   default:
-        //     break;
-        // }
       }
       return contentForTooltip;
     },
@@ -189,11 +178,26 @@ export default {
     this.allItems = items.list();
     this.playerInventory = this.$store.state.playerInventory;
 
+    // Заполняем ячейки инвентаря купленными предметами
     for (let i = 0; i < 50; i++) {
+      let item = {};
+      let newValue;
+      const newKey = "cellId";
+
+      // Если есть купленный предмет, то записываем в ячейку полный объект из списка всех предметов
       if (this.playerInventory[i]) {
-        this.inventoryCells.push(this.playerInventory[i]);
+        for (let index = 0; index < this.allItems.length; index++) {
+          if (this.allItems[index].id == this.playerInventory[i]) {
+            item = this.allItems[index];
+          }
+        }
+        this.inventoryCells.push(item);
+        newValue = i;
+        let newInventoryCells = this.inventoryCells[i];
+        // Дописываем в объект id ячейки, чтобы при нажатии на ячейку открывался тултип только у этой ячейки
+        this.inventoryCells[i] = { [newKey]: newValue, ...newInventoryCells };
       } else {
-        this.inventoryCells.push(i);
+        this.inventoryCells.push({ [newKey]: i });
       }
     }
   },

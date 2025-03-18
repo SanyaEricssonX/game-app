@@ -2,7 +2,12 @@
   <div>
     <transition name="fade">
       <div class="tooltip">
-        {{ tooltip.text }}
+        <p class="desc" v-for="paragraph in tooltip.text" :key="paragraph.id">
+          {{ paragraph }}
+        </p>
+        <base-button class="btn" :class="{ active: btnColor('red') }">{{
+          tooltip.btnText
+        }}</base-button>
       </div>
     </transition>
   </div>
@@ -24,31 +29,35 @@ export default {
   computed: {},
   components: {},
   watch: {},
-  methods: {},
+  methods: {
+    btnColor(color) {
+      return this.tooltip.btnColor == color;
+    },
+  },
   beforeCreate() {},
   mounted() {},
 };
 </script>
 
-<style>
+<style scoped>
 .tooltip {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 3px 5px;
-  font-size: 15px;
+  padding: 10px 15px;
+  font-size: 18px;
   color: var(--color-dark);
-  border-radius: 5px;
+  border-radius: 2px;
   background-color: var(--color-light);
-  transform: translateY(-130%);
+  transform: translateY(-100%);
 }
 .tooltip::after {
   content: "";
   position: absolute;
-  right: 12%;
+  right: 9%;
   top: 100%;
-  border: 5px solid transparent;
-  border-top: 5px solid var(--color-light);
+  border: 9px solid transparent;
+  border-top: 9px solid var(--color-light);
 }
 .fade-enter {
   opacity: 0;
@@ -60,5 +69,30 @@ export default {
 .fade-leave-active {
   transition: all 0.3s ease;
   opacity: 0;
+}
+.desc {
+  width: 250px;
+}
+.desc:nth-child(1) {
+  font-family: Bahnschrift;
+  font-weight: 900;
+  font-size: 20px;
+}
+.desc:not(:last-child) {
+  margin-bottom: 10px;
+}
+.btn {
+  padding: 7px 15px;
+  margin-top: 5px;
+  border: 1px solid var(--color-dark);
+  font-size: 16px;
+}
+.btn:hover {
+  background-color: var(--color-green);
+}
+.active:hover {
+  background-color: var(--color-red);
+  color: var(--color-light);
+  font-weight: 900;
 }
 </style>
