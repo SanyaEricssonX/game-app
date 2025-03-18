@@ -16,6 +16,8 @@ export default createStore({
     defaultPlayerDamage: 10,
     defaultPlayerArmor: 5,
     playerInventory: [],
+    playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0 },
+    playerBonusCharacteristics: { damage: 0, armor: 0, hp: 0 },
     levelIsUp: false,
     purchaseFailed: false,
   },

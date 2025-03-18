@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import store from "../store";
+import items from "../services/items";
 
 class player {
   constructor() {
@@ -101,6 +102,53 @@ class player {
     if (store.state.playerLevel <= 5) {
       const level = store.state.playerLevel;
       return this.infoByLevel[level];
+    }
+  }
+  equipmentCharacteristics() {
+    let allItems = items.list();
+    let equipment = store.state.playerEquipment;
+    let item = {};
+    let bonusCharacteristics = { damage: 0, armor: 0, hp: 0 };
+
+    for (let key in equipment) {
+      if (equipment[key] != 0) {
+        for (let index = 0; index < allItems.length; index++) {
+          if (allItems[index].id == equipment[key]) {
+            item = allItems[index];
+            for (let characteristic in item) {
+              if (characteristic == "damage") {
+                bonusCharacteristics.damage += item[characteristic];
+              } else if (characteristic == "armor") {
+                bonusCharacteristics.armor += item[characteristic];
+              } else if (characteristic == "hp") {
+                bonusCharacteristics.hp += item[characteristic];
+              }
+            }
+          }
+        }
+      }
+    }
+    // Созраняем бонусные характеристики в LocalStorage
+    store.state.playerBonusCharacteristics = bonusCharacteristics;
+    localStorage.setItem("playerBonusCharacteristics", bonusCharacteristics);
+  }
+  increaseCharacteristics() {
+    const bonuses = store.state.playerBonusCharacteristics;
+
+    for (let key in bonuses) {
+      if (key == "damage") {
+        store.state.playerDamage += bonuses[key];
+        localStorage.setItem("playerDamage", store.state.playerDamage);
+      } else if (key == "armor") {
+        store.state.playerDamage += bonuses[key];
+        localStorage.setItem("playerArmor", store.state.playerArmor);
+      } else if (key == "hp") {
+        store.state.playerMaxHp += bonuses[key];
+        localStorage.setItem("playerMaxHp", store.state.playerMaxHp);
+
+        store.state.playerCurrentHp += bonuses[key];
+        localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
+      }
     }
   }
 }

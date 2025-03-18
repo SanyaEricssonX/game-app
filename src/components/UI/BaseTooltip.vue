@@ -3,7 +3,7 @@
     <p class="desc" v-for="paragraph in tooltip.text" :key="paragraph.id">
       {{ paragraph }}
     </p>
-    <base-button class="btn" :class="{ active: btnColor('red') }" @click="hideTooltip">{{
+    <base-button class="btn" :class="{ active: btnColor('red') }" @click="useItem">{{
       tooltip.btnText
     }}</base-button>
   </div>
@@ -29,8 +29,8 @@ export default {
     btnColor(color) {
       return this.tooltip.btnColor == color;
     },
-    hideTooltip() {
-      this.$emit("hide");
+    useItem() {
+      this.$emit("use");
     },
   },
   beforeCreate() {},

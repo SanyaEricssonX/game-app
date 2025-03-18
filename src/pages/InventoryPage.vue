@@ -5,27 +5,63 @@
       <ul class="equipment-list">
         <li class="equipment__item">
           <h4 class="equipment__item__header">Оружие</h4>
-          <span class="equipment__item__icon"></span>
+          <span class="equipment__item__icon">
+            <span
+              class="equipment__item__text"
+              v-show="playerEquipment.weapon > 999"
+              >{{ playerEquipment.weapon }}</span
+            >
+          </span>
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Шлем</h4>
-          <span class="equipment__item__icon"></span>
+          <span class="equipment__item__icon"
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.helmet > 999"
+              >{{ playerEquipment.helmet }}</span
+            ></span
+          >
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Верхний доспех</h4>
-          <span class="equipment__item__icon"></span>
+          <span class="equipment__item__icon"
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.upper > 999"
+              >{{ playerEquipment.upper }}</span
+            ></span
+          >
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Нижний доспех</h4>
-          <span class="equipment__item__icon"></span>
+          <span class="equipment__item__icon"
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.lower > 999"
+              >{{ playerEquipment.lower }}</span
+            ></span
+          >
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Перчатки</h4>
-          <span class="equipment__item__icon"></span>
+          <span class="equipment__item__icon"
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.gloves > 999"
+              >{{ playerEquipment.gloves }}</span
+            ></span
+          >
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Сапоги</h4>
-          <span class="equipment__item__icon"></span>
+          <span class="equipment__item__icon"
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.boots > 999"
+              >{{ playerEquipment.boots }}</span
+            ></span
+          >
         </li>
       </ul>
     </div>
@@ -64,7 +100,7 @@
             v-show="
               tooltip.visible && selectedItem == item.cellId && item.id > 999
             "
-            @hide="hideTooltip"
+            @use="useItem(item)"
           ></base-tooltip>
         </li>
       </ul>
@@ -75,6 +111,7 @@
 
 <script type="text/javascript">
 import items from "@/services/items";
+import player from "@/services/player";
 
 export default {
   name: "InventoryPage",
@@ -83,8 +120,16 @@ export default {
   data() {
     return {
       selectedTab: 1,
-      inventoryCells: [],
-      playerInventory: [],
+      inventoryCells: [], // Основная переменная ячеек инвентаря
+      playerInventory: [], // Вспомогательная переменная инвентаря
+      playerEquipment: {
+        weapon: 0,
+        helmet: 0,
+        upper: 0,
+        lower: 0,
+        gloves: 0,
+        boots: 0,
+      },
       allItems: [],
       tooltip: {
         visible: false,
@@ -104,13 +149,13 @@ export default {
   watch: {
     triggerUpdateInventory(newValue) {
       if (newValue) {
-        this.inventoryCells = [];
         this.createInventory();
       }
     },
   },
   methods: {
     createInventory() {
+      this.inventoryCells = [];
       this.allItems = items.list();
       this.playerInventory = this.$store.state.playerInventory;
 
@@ -137,11 +182,17 @@ export default {
         }
       }
     },
+    createEquipment() {
+      this.playerEquipment = this.$store.state.playerEquipment;
+    },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
     },
     isActiveBtn(tabNumber) {
       return this.selectedTab == tabNumber;
+    },
+    itemCategory(itemId) {
+      return itemId.toString().slice(0, 3);
     },
     showTooltip(item) {
       if (item.id > 999) {
@@ -162,7 +213,6 @@ export default {
 
     tooltipContent(item) {
       let contentForTooltip = [];
-      const category = item.id.toString().slice(0, 3);
 
       // Цвет кнопки
       if (this.$store.state.playerLevel < item.requiredLevel) {
@@ -170,7 +220,7 @@ export default {
       }
 
       // Текст для кнопки
-      if (category == "102") {
+      if (this.itemCategory(item.id) == "102") {
         this.tooltip.btnText = "Использовать";
       } else {
         this.tooltip.btnText = "Надеть";
@@ -195,7 +245,7 @@ export default {
             contentForTooltip.push(item[key]);
             break;
           case "durability":
-            if (category == "102") {
+            if (this.itemCategory(item.id) == "102") {
               break;
             } else {
               contentForTooltip.push(`Прочность: ${item[key]}`);
@@ -232,10 +282,54 @@ export default {
         }
       }
     },
+    useItem(item) {
+      const category = this.itemCategory(item.id);
+
+      if (this.$store.state.playerLevel >= item.requiredLevel) {
+        if (category == "100") {
+          // Код, если предмет оружие
+          // Закидываем предмет в ячейку экипировки
+          this.playerEquipment.weapon = item.id;
+
+          // Сохраняем экипировку в localStorage
+          this.$store.state.playerEquipment.weapon = item.id;
+          localStorage.setItem(
+            "playerEquipment",
+            JSON.stringify(this.playerEquipment)
+          );
+
+          // Удаляем надетый предмет из инвентаря и сохраняем изменения в LocalStorage
+          this.playerInventory.splice(item.cellId, 1);
+          this.$store.state.playerInventory = this.playerInventory;
+          localStorage.setItem(
+            "playerInventory",
+            JSON.stringify(this.playerInventory)
+          );
+
+          // Обновляем отображение инвентаря
+          this.createInventory();
+        } else if (category == "101") {
+          // Код, если предмет броня
+        } else {
+          // Код, если предмет расходник
+          console.log("Использовать предмет");
+        }
+      } else {
+        console.log("Вы не можете пользоваться этим предметом");
+      }
+      // Вычмсляем характеристики в зависимости от надетых предметов
+      player.equipmentCharacteristics();
+
+      // Увеличиваем характеристики от надетых предметов
+      player.increaseCharacteristics();
+
+      this.hideTooltip();
+    },
   },
   beforeCreate() {},
   created() {
     this.createInventory();
+    this.createEquipment();
   },
   mounted() {
     document.addEventListener("click", this.handleClickOutside);
@@ -268,6 +362,9 @@ export default {
   font-size: 16px;
 }
 .equipment__item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 60px;
   height: 60px;
   border: 2px solid var(--color-light);
