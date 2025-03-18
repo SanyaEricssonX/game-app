@@ -59,16 +59,16 @@
             {{ item.id }}
           </span>
           <base-tooltip
+            class="tooltip"
             :tooltip="tooltip"
             v-show="
               tooltip.visible && selectedItem == item.cellId && item.id > 999
             "
+            @hide="hideTooltip"
           ></base-tooltip>
         </li>
       </ul>
-      <div class="inventory-list" v-if="selectedTab == 2">
-        Доступные рецепты
-      </div>
+      <div class="craft-list" v-if="selectedTab == 2">Доступные рецепты</div>
     </div>
   </div>
 </template>
@@ -117,8 +117,8 @@ export default {
           }
         }
 
-        this.tooltip.visible = true;
         this.tooltip.text = this.tooltipContent(newItem);
+        this.tooltip.visible = true;
       }
     },
 
@@ -172,6 +172,28 @@ export default {
       }
       return contentForTooltip;
     },
+    hideTooltip() {
+      setTimeout(() => {
+        this.tooltip.visible = false;
+      }, 1);
+    },
+    handleClickOutside(event) {
+      if (this.tooltip.visible) {
+        const tooltip = this.$el.querySelector(".tooltip");
+        const inventory = this.$el.querySelector(".inventory-list");
+        console.log("nfg");
+        // Проверяем, кликнули ли мы вне инвентаря и тултипа
+        if (
+          this.tooltip.visible &&
+          tooltip &&
+          inventory &&
+          !tooltip.contains(event.target) &&
+          !inventory.contains(event.target)
+        ) {
+          this.hideTooltip();
+        }
+      }
+    },
   },
   beforeCreate() {},
   created() {
@@ -201,7 +223,12 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleClickOutside);
+  },
 };
 </script>
 

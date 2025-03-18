@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <transition name="fade">
-      <div class="tooltip">
-        <p class="desc" v-for="paragraph in tooltip.text" :key="paragraph.id">
-          {{ paragraph }}
-        </p>
-        <base-button class="btn" :class="{ active: btnColor('red') }">{{
-          tooltip.btnText
-        }}</base-button>
-      </div>
-    </transition>
+  <div class="tooltip">
+    <p class="desc" v-for="paragraph in tooltip.text" :key="paragraph.id">
+      {{ paragraph }}
+    </p>
+    <base-button class="btn" :class="{ active: btnColor('red') }" @click="hideTooltip">{{
+      tooltip.btnText
+    }}</base-button>
   </div>
 </template>
 
@@ -32,6 +28,9 @@ export default {
   methods: {
     btnColor(color) {
       return this.tooltip.btnColor == color;
+    },
+    hideTooltip() {
+      this.$emit("hide");
     },
   },
   beforeCreate() {},
@@ -58,17 +57,6 @@ export default {
   top: 100%;
   border: 9px solid transparent;
   border-top: 9px solid var(--color-light);
-}
-.fade-enter {
-  opacity: 0;
-}
-.fade-enter-active {
-  transition: all 0.3s ease;
-  opacity: 1;
-}
-.fade-leave-active {
-  transition: all 0.3s ease;
-  opacity: 0;
 }
 .desc {
   width: 250px;
