@@ -95,10 +95,48 @@ export default {
       selectedItem: null,
     };
   },
-  computed: {},
+  computed: {
+    triggerUpdateInventory() {
+      return this.$store.state.triggerUpdateInventory;
+    },
+  },
   components: {},
-  watch: {},
+  watch: {
+    triggerUpdateInventory(newValue) {
+      if (newValue) {
+        this.inventoryCells = [];
+        this.createInventory();
+      }
+    },
+  },
   methods: {
+    createInventory() {
+      this.allItems = items.list();
+      this.playerInventory = this.$store.state.playerInventory;
+
+      // Заполняем ячейки инвентаря купленными предметами
+      for (let i = 0; i < 50; i++) {
+        let item = {};
+        let newValue;
+        const newKey = "cellId";
+
+        // Если есть купленный предмет, то записываем в ячейку полный объект из списка всех предметов
+        if (this.playerInventory[i]) {
+          for (let index = 0; index < this.allItems.length; index++) {
+            if (this.allItems[index].id == this.playerInventory[i]) {
+              item = this.allItems[index];
+            }
+          }
+          this.inventoryCells.push(item);
+          newValue = i;
+          let newInventoryCells = this.inventoryCells[i];
+          // Дописываем в объект id ячейки, чтобы при нажатии на ячейку открывался тултип только у этой ячейки
+          this.inventoryCells[i] = { [newKey]: newValue, ...newInventoryCells };
+        } else {
+          this.inventoryCells.push({ [newKey]: i });
+        }
+      }
+    },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
     },
@@ -181,7 +219,7 @@ export default {
       if (this.tooltip.visible) {
         const tooltip = this.$el.querySelector(".tooltip");
         const inventory = this.$el.querySelector(".inventory-list");
-        console.log("nfg");
+
         // Проверяем, кликнули ли мы вне инвентаря и тултипа
         if (
           this.tooltip.visible &&
@@ -197,31 +235,7 @@ export default {
   },
   beforeCreate() {},
   created() {
-    this.allItems = items.list();
-    this.playerInventory = this.$store.state.playerInventory;
-
-    // Заполняем ячейки инвентаря купленными предметами
-    for (let i = 0; i < 50; i++) {
-      let item = {};
-      let newValue;
-      const newKey = "cellId";
-
-      // Если есть купленный предмет, то записываем в ячейку полный объект из списка всех предметов
-      if (this.playerInventory[i]) {
-        for (let index = 0; index < this.allItems.length; index++) {
-          if (this.allItems[index].id == this.playerInventory[i]) {
-            item = this.allItems[index];
-          }
-        }
-        this.inventoryCells.push(item);
-        newValue = i;
-        let newInventoryCells = this.inventoryCells[i];
-        // Дописываем в объект id ячейки, чтобы при нажатии на ячейку открывался тултип только у этой ячейки
-        this.inventoryCells[i] = { [newKey]: newValue, ...newInventoryCells };
-      } else {
-        this.inventoryCells.push({ [newKey]: i });
-      }
-    }
+    this.createInventory();
   },
   mounted() {
     document.addEventListener("click", this.handleClickOutside);

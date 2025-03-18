@@ -66,6 +66,7 @@ export default {
       localStorage.clear();
       downloadData();
       this.$store.dispatch("triggerSortEnemies");
+      this.$store.dispatch("triggerUpdateInventory");
     },
   },
   updated() {},

@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     triggerSortEnemies: false,
+    triggerUpdateInventory: false,
     playerExperience: 0,
     playerLevel: 1,
     playerMaxHp: 100,
@@ -22,10 +23,15 @@ export default createStore({
   mutations: {
     setTriggerMethod(state, value) {
       state.triggerSortEnemies = value;
+      state.triggerUpdateInventory = value;
     }
   },
   actions: {
     triggerSortEnemies({ commit }) {
+      commit("setTriggerMethod", true);
+      setTimeout(() => commit("setTriggerMethod", false), 1000);
+    },
+    triggerUpdateInventory({ commit }) {
       commit("setTriggerMethod", true);
       setTimeout(() => commit("setTriggerMethod", false), 1000);
     }
