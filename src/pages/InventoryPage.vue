@@ -110,6 +110,7 @@
 </template>
 
 <script type="text/javascript">
+import { downloadData } from "@/services/downloadData";
 import items from "@/services/items";
 import player from "@/services/player";
 
@@ -320,8 +321,7 @@ export default {
       // Вычмсляем характеристики в зависимости от надетых предметов
       player.equipmentCharacteristics();
 
-      // Увеличиваем характеристики от надетых предметов
-      player.increaseCharacteristics();
+      downloadData();
 
       this.hideTooltip();
     },

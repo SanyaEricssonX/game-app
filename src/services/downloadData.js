@@ -61,9 +61,19 @@ export function downloadData() {
   } else {
     store.state.playerEquipment = { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0 };
   }
-  if (localStorage.getItem("playerBonusCharacteristics") != null) {
-    store.state.playerBonusCharacteristics = JSON.parse(localStorage.getItem("playerBonusCharacteristics"));
+  if (localStorage.getItem("playerEquipmentCharacteristics") != null) {
+    store.state.playerEquipmentCharacteristics = JSON.parse(localStorage.getItem("playerEquipmentCharacteristics"));
   } else {
-    store.state.playerBonusCharacteristics = { damage: 0, armor: 0, hp: 0 };
+    store.state.playerEquipmentCharacteristics = { damage: 0, armor: 0, hp: 0 };
   }
+  if (localStorage.getItem("playerLevelCharacteristics") != null) {
+    store.state.playerLevelCharacteristics = JSON.parse(localStorage.getItem("playerLevelCharacteristics"));
+  } else {
+    store.state.playerLevelCharacteristics = { damage: 0, armor: 0, hp: 0 };
+  }
+
+  // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов
+  store.state.playerDamage = store.state.playerDamage + store.state.playerLevelCharacteristics.damage + store.state.playerEquipmentCharacteristics.damage;
+  store.state.playerArmor = store.state.playerArmor + store.state.playerLevelCharacteristics.armor + store.state.playerEquipmentCharacteristics.armor;
+  store.state.playerMaxHp = store.state.playerMaxHp + store.state.playerLevelCharacteristics.hp + store.state.playerEquipmentCharacteristics.hp;
 }

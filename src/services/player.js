@@ -2,6 +2,7 @@
 
 import store from "../store";
 import items from "../services/items";
+import { downloadData } from "./downloadData";
 
 class player {
   constructor() {
@@ -24,6 +25,9 @@ class player {
     this.maxHpUp();
     this.armorUp();
 
+    // Подгружаем изменения характеристик
+    downloadData();
+
     // Восстанавливаем хп, если был повышен уровень
     if (this.isLevelIncreased == true) {
       store.state.playerCurrentHp = store.state.playerMaxHp;
@@ -33,6 +37,10 @@ class player {
   }
 
   levelUp() {
+    if (store.state.playerLevel == 1) {
+      localStorage.setItem("playerLevel", 1);
+    }
+
     for (let i = 0; i < this.experienceForLevel.length - 1; i++) {
       if (store.state.playerExperience >= this.experienceForLevel[i] && store.state.playerExperience < this.experienceForLevel[i + 1]) {
         store.state.playerLevel = i + 2;
@@ -52,8 +60,8 @@ class player {
   damageUp() {
     for (let i = 0; i < this.increaseDamagePerLevel.length; i++) {
       if (store.state.playerLevel == i + 2) {
-        store.state.playerDamage = store.state.defaultPlayerDamage + this.increaseDamagePerLevel[i];
-        localStorage.setItem("playerDamage", store.state.playerDamage);
+        store.state.playerLevelCharacteristics.damage = this.increaseDamagePerLevel[i];
+        localStorage.setItem("playerLevelCharacteristics", JSON.stringify(store.state.playerLevelCharacteristics));
       }
     }
   }
@@ -61,8 +69,8 @@ class player {
   maxHpUp() {
     for (let i = 0; i < this.increaseMaxHpPerLevel.length; i++) {
       if (store.state.playerLevel == i + 2) {
-        store.state.playerMaxHp = store.state.defaultPlayerMaxHp + this.increaseMaxHpPerLevel[i];
-        localStorage.setItem("playerMaxHp", store.state.playerMaxHp);
+        store.state.playerLevelCharacteristics.hp = this.increaseMaxHpPerLevel[i];
+        localStorage.setItem("playerLevelCharacteristics", JSON.stringify(store.state.playerLevelCharacteristics));
       }
     }
   }
@@ -70,8 +78,8 @@ class player {
   armorUp() {
     for (let i = 0; i < this.increaseArmorPerLevel.length; i++) {
       if (store.state.playerLevel == i + 2) {
-        store.state.playerArmor = store.state.defaultPlayerArmor + this.increaseArmorPerLevel[i];
-        localStorage.setItem("playerArmor", store.state.playerArmor);
+        store.state.playerLevelCharacteristics.armor = this.increaseArmorPerLevel[i];
+        localStorage.setItem("playerLevelCharacteristics", JSON.stringify(store.state.playerLevelCharacteristics));
       }
     }
   }
@@ -84,6 +92,7 @@ class player {
       localStorage.removeItem("playerCurrentHp");
       localStorage.removeItem("playerDamage");
       localStorage.removeItem("playerArmor");
+      localStorage.removeItem("playerLevelCharacteristics");
     }
   }
 
@@ -128,29 +137,30 @@ class player {
         }
       }
     }
-    // Созраняем бонусные характеристики в LocalStorage
-    store.state.playerBonusCharacteristics = bonusCharacteristics;
-    localStorage.setItem("playerBonusCharacteristics", bonusCharacteristics);
+    // Сохраняем бонусные характеристики в LocalStorage
+    store.state.playerEquipmentCharacteristics = bonusCharacteristics;
+    localStorage.setItem("playerEquipmentCharacteristics", JSON.stringify(bonusCharacteristics));
   }
-  increaseCharacteristics() {
-    const bonuses = store.state.playerBonusCharacteristics;
+  // increaseCharacteristics() {
 
-    for (let key in bonuses) {
-      if (key == "damage") {
-        store.state.playerDamage += bonuses[key];
-        localStorage.setItem("playerDamage", store.state.playerDamage);
-      } else if (key == "armor") {
-        store.state.playerDamage += bonuses[key];
-        localStorage.setItem("playerArmor", store.state.playerArmor);
-      } else if (key == "hp") {
-        store.state.playerMaxHp += bonuses[key];
-        localStorage.setItem("playerMaxHp", store.state.playerMaxHp);
+  // for (let key in bonuses) {
+  //   if (key == "damage") {
+  //     store.state.playerDamage += bonuses[key];
+  //     localStorage.setItem("playerDamage", store.state.playerDamage);
+  //   } else if (key == "armor") {
+  //     store.state.playerDamage += bonuses[key];
+  //     localStorage.setItem("playerArmor", store.state.playerArmor);
+  //   } else if (key == "hp") {
+  //     store.state.playerMaxHp += bonuses[key];
+  //     localStorage.setItem("playerMaxHp", store.state.playerMaxHp);
 
-        store.state.playerCurrentHp += bonuses[key];
-        localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
-      }
-    }
-  }
+  //     store.state.playerCurrentHp += bonuses[key];
+  //     localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
+  //   }
+  // }
+
+  // store.state.playerDamage += store.state
+  // }
 }
 
 export default new player();
