@@ -3,65 +3,126 @@
     <div class="equipment-block">
       <h2 class="equipment__header">Экипировка</h2>
       <ul class="equipment-list">
-        <li class="equipment__item">
+        <li
+          class="equipment__item"
+          @click="showTooltip(playerEquipment.weapon, 'weapon')"
+        >
           <h4 class="equipment__item__header">Оружие</h4>
-          <span class="equipment__item__icon">
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.weapon > 999 }"
+          >
             <span
               class="equipment__item__text"
               v-show="playerEquipment.weapon > 999"
               >{{ playerEquipment.weapon }}</span
             >
           </span>
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == 'weapon'"
+          ></base-tooltip>
         </li>
-        <li class="equipment__item">
+        <li
+          class="equipment__item"
+          @click="showTooltip(playerEquipment.helmet, 'helmet')"
+        >
           <h4 class="equipment__item__header">Шлем</h4>
-          <span class="equipment__item__icon"
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.helmet > 999 }"
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.helmet > 999"
               >{{ playerEquipment.helmet }}</span
             ></span
           >
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == 'helmet'"
+          ></base-tooltip>
         </li>
-        <li class="equipment__item">
+        <li
+          class="equipment__item"
+          @click="showTooltip(playerEquipment.upper, 'upper')"
+        >
           <h4 class="equipment__item__header">Верхний доспех</h4>
-          <span class="equipment__item__icon"
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.upper > 999 }"
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.upper > 999"
               >{{ playerEquipment.upper }}</span
             ></span
           >
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == 'upper'"
+          ></base-tooltip>
         </li>
-        <li class="equipment__item">
+        <li
+          class="equipment__item"
+          @click="showTooltip(playerEquipment.lower, 'lower')"
+        >
           <h4 class="equipment__item__header">Нижний доспех</h4>
-          <span class="equipment__item__icon"
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.lower > 999 }"
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.lower > 999"
               >{{ playerEquipment.lower }}</span
             ></span
           >
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == 'lower'"
+          ></base-tooltip>
         </li>
-        <li class="equipment__item">
+        <li
+          class="equipment__item"
+          @click="showTooltip(playerEquipment.gloves, 'gloves')"
+        >
           <h4 class="equipment__item__header">Перчатки</h4>
-          <span class="equipment__item__icon"
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.gloves > 999 }"
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.gloves > 999"
               >{{ playerEquipment.gloves }}</span
             ></span
           >
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == 'gloves'"
+          ></base-tooltip>
         </li>
-        <li class="equipment__item">
+        <li
+          class="equipment__item"
+          @click="showTooltip(playerEquipment.boots, 'boots')"
+        >
           <h4 class="equipment__item__header">Сапоги</h4>
-          <span class="equipment__item__icon"
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.boots > 999 }"
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.boots > 999"
               >{{ playerEquipment.boots }}</span
             ></span
           >
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-show="tooltip.visible && selectedItem == 'boots'"
+          ></base-tooltip>
         </li>
       </ul>
     </div>
@@ -88,8 +149,8 @@
         <li
           class="inventory__item"
           v-for="item in inventoryCells"
-          :key="item.id"
-          @click="showTooltip(item)"
+          :key="item.cellId"
+          @click="showTooltip(item, item.cellId)"
         >
           <span class="inventory__item__id" v-show="item.id > 999">
             {{ item.id }}
@@ -137,6 +198,7 @@ export default {
         text: "Предмет",
         btnText: "",
         btnColor: "green",
+        position: "bottom"
       },
       selectedItem: null,
     };
@@ -161,7 +223,7 @@ export default {
       this.playerInventory = this.$store.state.playerInventory;
 
       // Заполняем ячейки инвентаря купленными предметами
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < this.$store.state.playerInventorySize; i++) {
         let item = {};
         let newValue;
         const newKey = "cellId";
@@ -195,20 +257,40 @@ export default {
     itemCategory(itemId) {
       return itemId.toString().slice(0, 3);
     },
-    showTooltip(item) {
-      if (item.id > 999) {
-        let newItem;
+    showTooltip(item, target) {
+      // Проверяем где вызывается тултип: в инвентаре или в экипировке
+      if (typeof item == "object") {
+        if (item.id > 999) {
+          let newItem;
 
-        this.selectedItem = item.cellId;
+          this.selectedItem = target;
 
-        for (let i = 0; i < this.allItems.length; i++) {
-          if (this.allItems[i].id == item.id) {
-            newItem = this.allItems[i];
+          for (let i = 0; i < this.allItems.length; i++) {
+            if (this.allItems[i].id == item.id) {
+              newItem = this.allItems[i];
+            }
           }
-        }
 
-        this.tooltip.text = this.tooltipContent(newItem);
-        this.tooltip.visible = true;
+          this.tooltip.text = this.tooltipContent(newItem);
+          this.tooltip.position = "bottom"
+          this.tooltip.visible = true;
+        }
+      } else {
+        if (item > 999) {
+          let newItem;
+
+          this.selectedItem = target;
+
+          for (let i = 0; i < this.allItems.length; i++) {
+            if (this.allItems[i].id == item) {
+              newItem = this.allItems[i];
+            }
+          }
+
+          this.tooltip.text = this.tooltipContent(newItem);
+          this.tooltip.position = "top"
+          this.tooltip.visible = true;
+        }
       }
     },
 
@@ -270,14 +352,17 @@ export default {
       if (this.tooltip.visible) {
         const tooltip = this.$el.querySelector(".tooltip");
         const inventory = this.$el.querySelector(".inventory-list");
+        const equipment = this.$el.querySelector(".equipment__item");
 
         // Проверяем, кликнули ли мы вне инвентаря и тултипа
         if (
           this.tooltip.visible &&
           tooltip &&
           inventory &&
+          equipment &&
           !tooltip.contains(event.target) &&
-          !inventory.contains(event.target)
+          !inventory.contains(event.target) &&
+          !equipment.contains(event.target)
         ) {
           this.hideTooltip();
         }
@@ -306,9 +391,6 @@ export default {
             "playerInventory",
             JSON.stringify(this.playerInventory)
           );
-
-          // Обновляем отображение инвентаря
-          this.createInventory();
         } else if (category == "101") {
           // Код, если предмет броня
         } else {
@@ -318,6 +400,10 @@ export default {
       } else {
         console.log("Вы не можете пользоваться этим предметом");
       }
+
+      // Обновляем отображение инвентаря
+      this.createInventory();
+
       // Вычмсляем характеристики в зависимости от надетых предметов
       player.equipmentCharacteristics();
 
@@ -353,6 +439,7 @@ export default {
   justify-content: space-between;
 }
 .equipment__item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -395,6 +482,10 @@ export default {
   border: 1px solid var(--color-light);
 }
 .active {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
+.equipped {
   background-color: var(--color-light);
   color: var(--color-dark);
 }

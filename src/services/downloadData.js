@@ -56,6 +56,11 @@ export function downloadData() {
   } else {
     store.state.playerInventory = [];
   }
+  if (localStorage.getItem("playerInventorySize") != null) {
+    store.state.playerInventorySize = Number(localStorage.getItem("playerInventorySize"));
+  } else {
+    store.state.playerInventorySize = 50;
+  }
   if (localStorage.getItem("playerEquipment") != null) {
     store.state.playerEquipment = JSON.parse(localStorage.getItem("playerEquipment"));
   } else {

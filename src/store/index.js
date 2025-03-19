@@ -10,6 +10,7 @@ export default createStore({
     playerCurrentHp: 100,
     playerDamage: 10,
     playerArmor: 5,
+    playerInventorySize: 50,
     playerGold: 0,
     playerResources: { wood: 0, stone: 0, iron: 0 },
     defaultPlayerCharacteristics: { damage: 10, armor: 5, hp: 100 },

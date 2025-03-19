@@ -1,11 +1,14 @@
 <template>
-  <div class="tooltip">
+  <div class="tooltip" :class="{ position: positionTooltip('top') }">
     <p class="desc" v-for="paragraph in tooltip.text" :key="paragraph.id">
       {{ paragraph }}
     </p>
-    <base-button class="btn" :class="{ active: btnColor('red') }" @click="useItem">{{
-      tooltip.btnText
-    }}</base-button>
+    <base-button
+      class="btn"
+      :class="{ active: btnColor('red') }"
+      @click="useItem"
+      >{{ tooltip.btnText }}</base-button
+    >
   </div>
 </template>
 
@@ -28,6 +31,9 @@ export default {
   methods: {
     btnColor(color) {
       return this.tooltip.btnColor == color;
+    },
+    positionTooltip(position) {
+      return this.tooltip.position == position;
     },
     useItem() {
       this.$emit("use");
@@ -77,6 +83,18 @@ export default {
 }
 .btn:hover {
   background-color: var(--color-green);
+}
+.position {
+  transform: translateY(+60%);
+}
+.position::after {
+  content: "";
+  position: absolute;
+  right: 8%;
+  top: unset;
+  bottom: 99%;
+  border: 9px solid transparent;
+  border-bottom: 9px solid var(--color-light);
 }
 .active:hover {
   background-color: var(--color-red);
