@@ -289,6 +289,8 @@ export default {
       // Цвет кнопки
       if (this.$store.state.playerLevel < item.requiredLevel) {
         this.tooltip.btnColor = "red";
+      } else {
+        this.tooltip.btnColor = "green";
       }
 
       // Текст для кнопки

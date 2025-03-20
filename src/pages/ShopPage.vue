@@ -47,7 +47,15 @@
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
               <div class="desc-box">
-                <span class="item__desc">Урон: {{ item.damage }}</span>
+                <span class="item__desc" v-show="item.damage && item.damage > 0"
+                  >Атака: {{ item.damage }}</span
+                >
+                <span class="item__desc" v-show="item.armor && item.armor > 0"
+                  >Защита: {{ item.armor }}</span
+                >
+                <span class="item__desc" v-show="item.hp && item.hp > 0"
+                  >HP: {{ item.hp }}</span
+                >
                 <span class="item__desc">Прочность: {{ item.durability }}</span>
                 <span class="item__desc"
                   >Уровень: {{ item.requiredLevel }}</span
@@ -57,7 +65,15 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{ item.price }}</span>
-              <base-button class="btn" @click="buyItem(item.id)"
+              <base-button
+                class="btn btn__buy"
+                :style="{
+                  'background-color': checkBtnColor(
+                    item.requiredLevel,
+                    item.price
+                  ),
+                }"
+                @click="buyItem(item.id)"
                 >Купить</base-button
               >
             </div>
@@ -72,8 +88,15 @@
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
               <div class="desc-box">
-                <span class="item__desc">Защита: {{ item.armor }}</span>
-                <span class="item__desc">HP: {{ item.hp }}</span>
+                <span class="item__desc" v-show="item.damage && item.damage > 0"
+                  >Атака: {{ item.damage }}</span
+                >
+                <span class="item__desc" v-show="item.armor && item.armor > 0"
+                  >Защита: {{ item.armor }}</span
+                >
+                <span class="item__desc" v-show="item.hp && item.hp > 0"
+                  >HP: {{ item.hp }}</span
+                >
                 <span class="item__desc">Прочность: {{ item.durability }}</span>
                 <span class="item__desc"
                   >Уровень: {{ item.requiredLevel }}</span
@@ -83,7 +106,15 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{ item.price }}</span>
-              <base-button class="btn" @click="buyItem(item.id)"
+              <base-button
+                class="btn btn__buy"
+                :style="{
+                  'background-color': checkBtnColor(
+                    item.requiredLevel,
+                    item.price
+                  ),
+                }"
+                @click="buyItem(item.id)"
                 >Купить</base-button
               >
             </div>
@@ -107,7 +138,15 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{ item.price }}</span>
-              <base-button class="btn" @click="buyItem(item.id)"
+              <base-button
+                class="btn btn__buy"
+                :style="{
+                  'background-color': checkBtnColor(
+                    item.requiredLevel,
+                    item.price
+                  ),
+                }"
+                @click="buyItem(item.id)"
                 >Купить</base-button
               >
             </div>
@@ -120,7 +159,6 @@
 
 <script type="text/javascript">
 import items from "@/services/items";
-import BaseButton from "../components/UI/BaseButton.vue";
 
 export default {
   name: "ShopPage",
@@ -136,7 +174,7 @@ export default {
     };
   },
   computed: {},
-  components: { BaseButton },
+  components: {},
   watch: {},
   methods: {
     activeContent(tabNumber) {
@@ -145,28 +183,47 @@ export default {
     isActiveBtn(tabNumber) {
       return this.selectedTab == tabNumber;
     },
+    checkBtnColor(itemLevel, itemPrice) {
+      if (
+        this.$store.state.playerLevel >= itemLevel &&
+        this.$store.state.playerGold >= itemPrice
+      ) {
+        return "var(--color-green)";
+      } else {
+        return "var(--color-red)";
+      }
+    },
     buyItem(itemId) {
       let inventory = this.$store.state.playerInventory;
       let item;
 
-      // Находим предмет в общем списке предметов
-      for (let i = 0; i < this.allItems.length; i++) {
-        if (this.allItems[i].id == itemId) {
-          item = this.allItems[i];
-          break;
+      if (this.$store.state.playerInventory.length < 50) {
+        // Находим предмет в общем списке предметов
+        for (let i = 0; i < this.allItems.length; i++) {
+          if (this.allItems[i].id == itemId) {
+            item = this.allItems[i];
+            break;
+          }
         }
-      }
 
-      // Проверяем хватает ли золота на покупку
-      if (item.price <= this.$store.state.playerGold) {
-        this.$store.state.playerGold -= item.price;
-        localStorage.setItem("playerGold", this.$store.state.playerGold);
+        // Проверяем хватает ли золота на покупку
+        if (item.price <= this.$store.state.playerGold) {
+          this.$store.state.playerGold -= item.price;
+          localStorage.setItem("playerGold", this.$store.state.playerGold);
 
-        inventory.push(itemId);
-        this.$store.state.playerInventory = inventory;
-        localStorage.setItem("playerInventory", JSON.stringify(inventory));
+          inventory.push(itemId);
+          this.$store.state.playerInventory = inventory;
+          localStorage.setItem("playerInventory", JSON.stringify(inventory));
+        } else {
+          this.$store.state.modalNotification.text =
+            "Невозможно совершить покупку. Не хватает золота.";
+          this.$store.state.modalNotification.visible = true;
+          this.showModal();
+        }
       } else {
-        this.$store.state.purchaseFailed = true;
+        this.$store.state.modalNotification.text =
+          "Невозможно совершить покупку. Инвентарь полон.";
+        this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
     },
@@ -252,6 +309,11 @@ export default {
 .btn {
   margin-top: 15px;
   padding: 5px 10px;
+  font-size: 17px;
+}
+.btn__buy:hover {
+  font-weight: 900;
+  color: var(--color-light);
 }
 .active {
   background-color: var(--color-light);

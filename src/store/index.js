@@ -20,7 +20,7 @@ export default createStore({
     playerInventory: [],
     playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0 },
     levelIsUp: false,
-    purchaseFailed: false,
+    modalNotification: { visible: false, text: "Ошибка" },
   },
   getters: {},
   mutations: {

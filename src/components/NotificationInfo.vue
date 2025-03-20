@@ -8,8 +8,9 @@
         {{ info }}
       </p>
     </div>
-    <div class="purchase-block" v-else-if="$store.state.purchaseFailed">
-      <h4 class="modal__header">Не хватает золота</h4>
+
+    <div class="purchase-block" v-else-if="$store.state.modalNotification.visible">
+      <h4 class="modal__header">{{ $store.state.modalNotification.text }}</h4>
     </div>
   </div>
 </template>

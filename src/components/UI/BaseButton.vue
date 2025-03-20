@@ -25,9 +25,10 @@ export default {
 .btn {
   padding: 10px 20px;
   border-radius: 5px;
-  line-height: 1;
   color: var(--color-dark);
   background-color: var(--color-light);
+  font-family: Bahnschrift;
+  line-height: 1;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.2s linear;
 }

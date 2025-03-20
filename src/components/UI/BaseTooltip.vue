@@ -127,8 +127,12 @@ export default {
   border: 1px solid var(--color-dark);
   font-size: 16px;
 }
-.btn:hover {
+.btn {
   background-color: var(--color-green);
+}
+.btn:hover {
+  font-weight: 900;
+  color: var(--color-light);
 }
 .position {
   transform: translateY(+5%);
@@ -141,9 +145,10 @@ export default {
   border: 9px solid transparent;
   border-bottom: 9px solid var(--color-light);
 }
-.active:hover {
+.active {
   background-color: var(--color-red);
-  color: var(--color-light);
+}
+.active:hover {
   font-weight: 900;
 }
 </style>
