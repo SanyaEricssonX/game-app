@@ -18,7 +18,7 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
-              v-show="tooltip.visible && selectedItem == 'weapon'"
+              v-if="tooltip.visible && selectedItem == 'weapon'"
             ></base-tooltip>
           </span>
         </li>
@@ -37,7 +37,7 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
-              v-show="tooltip.visible && selectedItem == 'helmet'"
+              v-if="tooltip.visible && selectedItem == 'helmet'"
             ></base-tooltip>
           </span>
         </li>
@@ -55,7 +55,7 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
-              v-show="tooltip.visible && selectedItem == 'upper'"
+              v-if="tooltip.visible && selectedItem == 'upper'"
             ></base-tooltip>
           </span>
         </li>
@@ -73,7 +73,7 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
-              v-show="tooltip.visible && selectedItem == 'lower'"
+              v-if="tooltip.visible && selectedItem == 'lower'"
             ></base-tooltip
           ></span>
         </li>
@@ -91,7 +91,7 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
-              v-show="tooltip.visible && selectedItem == 'gloves'"
+              v-if="tooltip.visible && selectedItem == 'gloves'"
             ></base-tooltip
           ></span>
         </li>
@@ -108,7 +108,7 @@
             ><base-tooltip
               class="tooltip"
               :tooltip="tooltip"
-              v-show="tooltip.visible && selectedItem == 'boots'"
+              v-if="tooltip.visible && selectedItem == 'boots'"
             ></base-tooltip
           ></span>
         </li>
@@ -146,7 +146,7 @@
           <base-tooltip
             class="tooltip"
             :tooltip="tooltip"
-            v-show="
+            v-if="
               tooltip.visible && selectedItem == item.cellId && item.id > 999
             "
             @use="useItem(item)"
@@ -355,6 +355,14 @@ export default {
           inventory &&
           !tooltip.contains(event.target) &&
           !inventory.contains(event.target) &&
+          isOutsideEquipment
+        ) {
+          this.hideTooltip();
+        } else if (
+          this.tooltip.visible &&
+          this.selectedTab == 2 &&
+          tooltip &&
+          !tooltip.contains(event.target) &&
           isOutsideEquipment
         ) {
           this.hideTooltip();
