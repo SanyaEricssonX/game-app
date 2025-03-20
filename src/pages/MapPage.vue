@@ -122,6 +122,22 @@ export default {
           this.$store.state.playerResources.iron
         );
 
+        // Проверяем время действия бафов
+        if (
+          this.$store.state.playerBuffCharacteristics.damageBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.damageBuffDuration -= 1;
+          player.buffDuration("damage");
+        }
+        if (this.$store.state.playerBuffCharacteristics.armorBuffDuration > 0) {
+          this.$store.state.playerBuffCharacteristics.armorBuffDuration -= 1;
+          player.buffDuration("armor");
+        }
+        if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
+          this.$store.state.playerBuffCharacteristics.dropBuffDuration -= 1;
+          player.buffDuration("drop");
+        }
+
         downloadData();
         this.sortEnemies();
         this.isBattleEnd = true;

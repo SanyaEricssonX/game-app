@@ -16,6 +16,7 @@ export default createStore({
     defaultPlayerCharacteristics: { damage: 10, armor: 5, hp: 100 },
     playerEquipmentCharacteristics: { damage: 0, armor: 0, hp: 0 },
     playerLevelCharacteristics: { damage: 0, armor: 0, hp: 0 },
+    playerBuffCharacteristics: { damage: 0, armor: 0, hp: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, dropBuffDuration: 0 },
     playerInventory: [],
     playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0 },
     levelIsUp: false,

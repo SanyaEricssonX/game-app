@@ -47,14 +47,16 @@ export default {
 <style scoped>
 .tooltip {
   position: absolute;
-  top: 0;
+  top: 100%;
   right: 0;
   padding: 10px 15px;
   font-size: 18px;
   color: var(--color-dark);
-  border-radius: 2px;
+  border: 2px solid var(--color-dark);
+  border-radius: 5px;
   background-color: var(--color-light);
-  transform: translateY(-100%);
+  transform: translateY(-150%);
+  z-index: 1000;
 }
 .tooltip::after {
   content: "";
@@ -85,12 +87,11 @@ export default {
   background-color: var(--color-green);
 }
 .position {
-  transform: translateY(+60%);
+  transform: translateY(+5%);
 }
 .position::after {
   content: "";
-  position: absolute;
-  right: 8%;
+  right: 6%;
   top: unset;
   bottom: 99%;
   border: 9px solid transparent;

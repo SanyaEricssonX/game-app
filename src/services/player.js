@@ -93,6 +93,7 @@ class player {
       localStorage.removeItem("playerDamage");
       localStorage.removeItem("playerArmor");
       localStorage.removeItem("playerLevelCharacteristics");
+      localStorage.removeItem("playerBuffCharacteristics");
     }
   }
 
@@ -141,26 +142,39 @@ class player {
     store.state.playerEquipmentCharacteristics = bonusCharacteristics;
     localStorage.setItem("playerEquipmentCharacteristics", JSON.stringify(bonusCharacteristics));
   }
-  // increaseCharacteristics() {
+  buffDuration(characteristic) {
+    console.log(store.state.playerBuffCharacteristics.damage);
+    console.log(store.state.playerBuffCharacteristics.damageBuffDuration);
+    console.log(store.state.playerBuffCharacteristics.armor);
+    console.log(store.state.playerBuffCharacteristics.armorBuffDuration);
+    console.log(store.state.playerBuffCharacteristics.drop);
+    console.log(store.state.playerBuffCharacteristics.dropBuffDuration);
+    const damageBuffDuration = store.state.playerBuffCharacteristics.damageBuffDuration;
+    const armorBuffDuration = store.state.playerBuffCharacteristics.damageBuffDuration;
+    const dropBuffDuration = store.state.playerBuffCharacteristics.damageBuffDuration;
 
-  // for (let key in bonuses) {
-  //   if (key == "damage") {
-  //     store.state.playerDamage += bonuses[key];
-  //     localStorage.setItem("playerDamage", store.state.playerDamage);
-  //   } else if (key == "armor") {
-  //     store.state.playerDamage += bonuses[key];
-  //     localStorage.setItem("playerArmor", store.state.playerArmor);
-  //   } else if (key == "hp") {
-  //     store.state.playerMaxHp += bonuses[key];
-  //     localStorage.setItem("playerMaxHp", store.state.playerMaxHp);
+    switch (characteristic) {
+      case "damage":
+        if (damageBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.damage = 0;
+        }
+        break;
+      case "armor":
+        if (armorBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.armor = 0;
+        }
+        break;
+      case "drop":
+        if (dropBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.drop = 0;
+        }
+        break;
+      default:
+        break;
+    }
 
-  //     store.state.playerCurrentHp += bonuses[key];
-  //     localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
-  //   }
-  // }
-
-  // store.state.playerDamage += store.state
-  // }
+    localStorage.setItem("playerBuffCharacteristics", JSON.stringify(store.state.playerBuffCharacteristics));
+  }
 }
 
 export default new player();
