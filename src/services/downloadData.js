@@ -64,7 +64,7 @@ export function downloadData() {
   if (localStorage.getItem("playerEquipment") != null) {
     store.state.playerEquipment = JSON.parse(localStorage.getItem("playerEquipment"));
   } else {
-    store.state.playerEquipment = { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0 };
+    store.state.playerEquipment = { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 };
   }
   if (localStorage.getItem("playerLevelCharacteristics") != null) {
     store.state.playerLevelCharacteristics = JSON.parse(localStorage.getItem("playerLevelCharacteristics"));

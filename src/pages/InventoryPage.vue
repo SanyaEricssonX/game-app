@@ -8,7 +8,13 @@
           <span
             class="equipment__item__icon"
             :class="{ equipped: playerEquipment.weapon > 999 }"
-            @click="showTooltip(playerEquipment.weapon, 'weapon')"
+            @click="
+              showTooltip(
+                playerEquipment.weapon,
+                playerEquipment.weaponDurability,
+                'weapon'
+              )
+            "
           >
             <span
               class="equipment__item__text"
@@ -27,7 +33,13 @@
           <span
             class="equipment__item__icon"
             :class="{ equipped: playerEquipment.helmet > 999 }"
-            @click="showTooltip(playerEquipment.helmet, 'helmet')"
+            @click="
+              showTooltip(
+                playerEquipment.helmet,
+                playerEquipment.helmetDurability,
+                'helmet'
+              )
+            "
           >
             <span
               class="equipment__item__text"
@@ -46,7 +58,13 @@
           <span
             class="equipment__item__icon"
             :class="{ equipped: playerEquipment.upper > 999 }"
-            @click="showTooltip(playerEquipment.upper, 'upper')"
+            @click="
+              showTooltip(
+                playerEquipment.upper,
+                playerEquipment.upperDurability,
+                'upper'
+              )
+            "
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.upper > 999"
@@ -64,7 +82,13 @@
           <span
             class="equipment__item__icon"
             :class="{ equipped: playerEquipment.lower > 999 }"
-            @click="showTooltip(playerEquipment.lower, 'lower')"
+            @click="
+              showTooltip(
+                playerEquipment.lower,
+                playerEquipment.lowerDurability,
+                'lower'
+              )
+            "
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.lower > 999"
@@ -82,7 +106,13 @@
           <span
             class="equipment__item__icon"
             :class="{ equipped: playerEquipment.gloves > 999 }"
-            @click="showTooltip(playerEquipment.gloves, 'gloves')"
+            @click="
+              showTooltip(
+                playerEquipment.gloves,
+                playerEquipment.glovesDurability,
+                'gloves'
+              )
+            "
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.gloves > 999"
@@ -100,7 +130,13 @@
           <span
             class="equipment__item__icon"
             :class="{ equipped: playerEquipment.boots > 999 }"
-            @click="showTooltip(playerEquipment.boots, 'boots')"
+            @click="
+              showTooltip(
+                playerEquipment.boots,
+                playerEquipment.bootsDurability,
+                'boots'
+              )
+            "
             ><span
               class="equipment__item__text"
               v-show="playerEquipment.boots > 999"
@@ -138,7 +174,7 @@
           class="inventory__item"
           v-for="item in inventoryCells"
           :key="item.cellId"
-          @click="showTooltip(item, item.cellId)"
+          @click="showTooltip(item.id, item.durability, item.cellId)"
         >
           <span class="inventory__item__id" v-show="item.id > 999">
             {{ item.id }}
@@ -160,8 +196,8 @@
 
 <script type="text/javascript">
 import { downloadData } from "@/services/downloadData";
-import items from "@/services/items";
 import player from "@/services/player";
+import items from "@/services/items";
 
 export default {
   name: "InventoryPage",
@@ -171,16 +207,8 @@ export default {
     return {
       selectedTab: 1,
       inventoryCells: [], // Основная переменная ячеек инвентаря
-      playerInventory: [], // Вспомогательная переменная инвентаря
-      playerEquipment: {
-        weapon: 0,
-        helmet: 0,
-        upper: 0,
-        lower: 0,
-        gloves: 0,
-        boots: 0,
-      },
-      allItems: [],
+      playerEquipment: {},
+      playerInventory: [],
       tooltip: {
         visible: false,
         text: "Предмет",
@@ -200,42 +228,22 @@ export default {
   watch: {
     triggerUpdateInventory(newValue) {
       if (newValue) {
-        this.createInventory();
-        this.createEquipment();
+        this.updateInventory();
+        this.updateEquipment();
       }
     },
   },
   methods: {
-    createInventory() {
-      this.inventoryCells = [];
-      this.allItems = items.list();
-      this.playerInventory = this.$store.state.playerInventory;
-
-      // Заполняем ячейки инвентаря купленными предметами
-      for (let i = 0; i < this.$store.state.playerInventorySize; i++) {
-        let item = {};
-        let newValue;
-        const newKey = "cellId";
-
-        // Если есть купленный предмет, то записываем в ячейку полный объект из списка всех предметов
-        if (this.playerInventory[i]) {
-          for (let index = 0; index < this.allItems.length; index++) {
-            if (this.allItems[index].id == this.playerInventory[i]) {
-              item = this.allItems[index];
-            }
-          }
-          this.inventoryCells.push(item);
-          newValue = i;
-          let newInventoryCells = this.inventoryCells[i];
-          // Дописываем в объект id ячейки, чтобы при нажатии на ячейку открывался тултип только у этой ячейки
-          this.inventoryCells[i] = { [newKey]: newValue, ...newInventoryCells };
-        } else {
-          this.inventoryCells.push({ [newKey]: i });
-        }
-      }
+    updateInventory() {
+      this.inventoryCells = player.createInventory();
+      this.playerInventory = JSON.parse(
+        JSON.stringify(this.$store.state.playerInventory)
+      );
     },
-    createEquipment() {
-      this.playerEquipment = this.$store.state.playerEquipment;
+    updateEquipment() {
+      this.playerEquipment = JSON.parse(
+        JSON.stringify(this.$store.state.playerEquipment)
+      );
     },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
@@ -246,44 +254,37 @@ export default {
     itemCategory(itemId) {
       return itemId.toString().slice(0, 3);
     },
-    showTooltip(item, target) {
-      // Проверяем где вызывается тултип: в инвентаре или в экипировке
-      if (typeof item == "object") {
-        if (item.id > 999) {
-          let newItem;
+    allItemsList(itemId) {
+      const allItems = JSON.parse(JSON.stringify(items.list()));
+      let newItem;
 
-          this.selectedItem = target;
-
-          for (let i = 0; i < this.allItems.length; i++) {
-            if (this.allItems[i].id == item.id) {
-              newItem = this.allItems[i];
-            }
-          }
-
-          this.tooltip.text = this.tooltipContent(newItem);
-          this.tooltip.position = "bottom";
-          this.tooltip.visible = true;
-        }
-      } else {
-        if (item > 999) {
-          let newItem;
-
-          this.selectedItem = target;
-
-          for (let i = 0; i < this.allItems.length; i++) {
-            if (this.allItems[i].id == item) {
-              newItem = this.allItems[i];
-            }
-          }
-
-          this.tooltip.text = this.tooltipContent(newItem);
-          this.tooltip.position = "top";
-          this.tooltip.visible = true;
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == itemId) {
+          newItem = allItems[i];
         }
       }
+      return newItem;
+    },
+    showTooltip(itemId, durability, target) {
+      const newItem = this.allItemsList(itemId);
+
+      // Проверяем где вызывается тултип: в инвентаре или в экипировке
+      if (typeof target == "number") {
+        if (itemId > 999) {
+          this.tooltip.position = "bottom";
+          this.tooltip.text = this.tooltipContent(newItem, durability);
+        }
+      } else {
+        if (itemId > 999) {
+          this.tooltip.position = "top";
+          this.tooltip.text = this.tooltipContent(newItem, durability);
+        }
+      }
+      this.selectedItem = target;
+      this.tooltip.visible = true;
     },
 
-    tooltipContent(item) {
+    tooltipContent(item, durability) {
       let contentForTooltip = [];
 
       // Цвет кнопки
@@ -294,10 +295,14 @@ export default {
       }
 
       // Текст для кнопки
-      if (this.itemCategory(item.id) == "102") {
-        this.tooltip.btnText = "Использовать";
+      if (this.tooltip.position == "bottom") {
+        if (this.itemCategory(item.id) == "102") {
+          this.tooltip.btnText = "Использовать";
+        } else {
+          this.tooltip.btnText = "Надеть";
+        }
       } else {
-        this.tooltip.btnText = "Надеть";
+        this.tooltip.btnText = "Снять";
       }
 
       // Текст в описание предмета
@@ -322,7 +327,7 @@ export default {
             if (this.itemCategory(item.id) == "102") {
               break;
             } else {
-              contentForTooltip.push(`Прочность: ${item[key]}`);
+              contentForTooltip.push(`Прочность: ${durability}/${item[key]}`);
             }
             break;
           case "requiredLevel":
@@ -381,13 +386,20 @@ export default {
           if (this.playerEquipment.weapon == 0) {
             // Экипируем предмет и сохраняем в стор
             this.playerEquipment.weapon = item.id;
-            this.$store.state.playerEquipment.weapon = item.id;
+            this.playerEquipment.weaponDurability = item.durability;
+            this.$store.state.playerEquipment = this.playerEquipment;
           } else {
             // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
-            const equippedItem = this.playerEquipment.weapon;
-            this.playerInventory.push(equippedItem);
+            let newItem = JSON.parse(
+              JSON.stringify(this.allItemsList(this.playerEquipment.weapon))
+            );
+            newItem.durability = JSON.parse(
+              JSON.stringify(this.playerEquipment.weaponDurability)
+            );
+            this.playerInventory.push(newItem);
             this.playerEquipment.weapon = item.id;
-            this.$store.state.playerEquipment.weapon = item.id;
+            this.playerEquipment.weaponDurability = item.durability;
+            this.$store.state.playerEquipment = this.playerEquipment;
           }
         } else if (category == "101") {
           // Код, если предмет броня
@@ -397,65 +409,100 @@ export default {
               if (this.playerEquipment.helmet == 0) {
                 // Экипируем предмет и сохраняем в стор
                 this.playerEquipment.helmet = item.id;
-                this.$store.state.playerEquipment.helmet = item.id;
+                this.playerEquipment.helmetDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               } else {
                 // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
-                const equippedItem = this.playerEquipment.helmet;
-                this.playerInventory.push(equippedItem);
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.helmet))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.helmetDurability)
+                );
+                this.playerInventory.push(newItem);
                 this.playerEquipment.helmet = item.id;
-                this.$store.state.playerEquipment.helmet = item.id;
+                this.playerEquipment.helmetDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               }
               break;
             case "upper":
               if (this.playerEquipment.upper == 0) {
                 // Экипируем предмет и сохраняем в стор
                 this.playerEquipment.upper = item.id;
-                this.$store.state.playerEquipment.upper = item.id;
+                this.playerEquipment.upperDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               } else {
                 // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
-                const equippedItem = this.playerEquipment.upper;
-                this.playerInventory.push(equippedItem);
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.upper))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.upperDurability)
+                );
+                this.playerInventory.push(newItem);
                 this.playerEquipment.upper = item.id;
-                this.$store.state.playerEquipment.upper = item.id;
+                this.playerEquipment.upperDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               }
               break;
             case "lower":
               if (this.playerEquipment.lower == 0) {
                 // Экипируем предмет и сохраняем в стор
                 this.playerEquipment.lower = item.id;
-                this.$store.state.playerEquipment.lower = item.id;
+                this.playerEquipment.lowerDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               } else {
                 // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
-                const equippedItem = this.playerEquipment.lower;
-                this.playerInventory.push(equippedItem);
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.lower))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.lowerDurability)
+                );
+                this.playerInventory.push(newItem);
                 this.playerEquipment.lower = item.id;
-                this.$store.state.playerEquipment.lower = item.id;
+                this.playerEquipment.lowerDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               }
               break;
             case "gloves":
               if (this.playerEquipment.gloves == 0) {
                 // Экипируем предмет и сохраняем в стор
                 this.playerEquipment.gloves = item.id;
-                this.$store.state.playerEquipment.gloves = item.id;
+                this.playerEquipment.glovesDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               } else {
                 // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
-                const equippedItem = this.playerEquipment.gloves;
-                this.playerInventory.push(equippedItem);
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.gloves))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.glovesDurability)
+                );
+                this.playerInventory.push(newItem);
                 this.playerEquipment.gloves = item.id;
-                this.$store.state.playerEquipment.gloves = item.id;
+                this.playerEquipment.glovesDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               }
               break;
             case "boots":
               if (this.playerEquipment.boots == 0) {
                 // Экипируем предмет и сохраняем в стор
                 this.playerEquipment.boots = item.id;
-                this.$store.state.playerEquipment.boots = item.id;
+                this.playerEquipment.bootsDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               } else {
                 // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
-                const equippedItem = this.playerEquipment.boots;
-                this.playerInventory.push(equippedItem);
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.boots))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.bootsDurability)
+                );
+                this.playerInventory.push(newItem);
                 this.playerEquipment.boots = item.id;
-                this.$store.state.playerEquipment.boots = item.id;
+                this.playerEquipment.bootsDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
               }
               break;
             default:
@@ -513,11 +560,11 @@ export default {
         this.$store.state.playerInventory = this.playerInventory;
         localStorage.setItem(
           "playerInventory",
-          JSON.stringify(this.playerInventory)
+          JSON.stringify(this.$store.state.playerInventory)
         );
-
         // Обновляем отображение инвентаря
-        this.createInventory();
+        this.updateInventory();
+        this.updateEquipment();
 
         // Вычисляем характеристики в зависимости от надетых предметов
         player.equipmentCharacteristics();
@@ -531,8 +578,8 @@ export default {
   },
   beforeCreate() {},
   created() {
-    this.createInventory();
-    this.createEquipment();
+    this.updateInventory();
+    this.updateEquipment();
   },
   mounted() {
     document.addEventListener("click", this.handleClickOutside);

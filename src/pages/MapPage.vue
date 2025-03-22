@@ -138,6 +138,14 @@ export default {
           player.buffDuration("drop");
         }
 
+        // Проверяем прочность экипировки
+        if (this.$store.state.playerEquipment.weaponDurability > 0) {
+          this.$store.state.playerEquipment.weaponDurability -= 1;
+        }
+        localStorage.setItem("playerEquipment", JSON.stringify(this.$store.state.playerEquipment));
+
+        player.equipmentCharacteristics();
+
         downloadData();
         this.sortEnemies();
         this.isBattleEnd = true;

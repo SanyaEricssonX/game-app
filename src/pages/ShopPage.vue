@@ -197,7 +197,7 @@ export default {
       let inventory = this.$store.state.playerInventory;
       let item;
 
-      if (this.$store.state.playerInventory.length < 50) {
+      if (inventory.length < this.$store.state.playerInventorySize) {
         // Находим предмет в общем списке предметов
         for (let i = 0; i < this.allItems.length; i++) {
           if (this.allItems[i].id == itemId) {
@@ -211,7 +211,7 @@ export default {
           this.$store.state.playerGold -= item.price;
           localStorage.setItem("playerGold", this.$store.state.playerGold);
 
-          inventory.push(itemId);
+          inventory.push(item);
           this.$store.state.playerInventory = inventory;
           localStorage.setItem("playerInventory", JSON.stringify(inventory));
         } else {
