@@ -2,8 +2,8 @@ class items {
   constructor() {
     this.weaponList = [
       { id: 1000, name: "Тренировочный меч", category: "sword", damage: 10, durability: 5, requiredLevel: 1, price: 20 },
-      { id: 1001, name: "Железный меч", category: "sword", damage: 20, durability: 15, requiredLevel: 3, price: 80 },
-      { id: 1002, name: "Стальной зазубренный резак", category: "sword", damage: 35, durability: 40, requiredLevel: 5, price: 250 },
+      { id: 1001, name: "Железный меч", category: "sword", damage: 20, durability: 15, requiredLevel: 3, price: 90 },
+      { id: 1002, name: "Стальной зазубренный резак", category: "sword", damage: 35, durability: 40, requiredLevel: 5, price: 240 },
       { id: 1003, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", damage: 5000, durability: 1000, requiredLevel: 3, price: 1000000 },
     ];
     this.armorList = [
@@ -34,7 +34,19 @@ class items {
   list() {
     const itemList = this.weaponList.concat(this.armorList, this.consumablesList);
 
-    return  itemList;
+    return itemList;
+  }
+
+  findItem(itemId) {
+    const allItems = JSON.parse(JSON.stringify(this.list()));
+    let newItem;
+
+    for (let i = 0; i < allItems.length; i++) {
+      if (allItems[i].id == itemId) {
+        newItem = allItems[i];
+      }
+    }
+    return newItem;
   }
 }
 

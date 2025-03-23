@@ -24,6 +24,13 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.weapon,
+                  playerEquipment.weaponDurability,
+                  'weapon'
+                )
+              "
               v-if="tooltip.visible && selectedItem == 'weapon'"
             ></base-tooltip>
           </span>
@@ -49,6 +56,13 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.helmet,
+                  playerEquipment.helmetDurability,
+                  'helmet'
+                )
+              "
               v-if="tooltip.visible && selectedItem == 'helmet'"
             ></base-tooltip>
           </span>
@@ -73,6 +87,13 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.upper,
+                  playerEquipment.upperDurability,
+                  'upper'
+                )
+              "
               v-if="tooltip.visible && selectedItem == 'upper'"
             ></base-tooltip>
           </span>
@@ -97,6 +118,13 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.lower,
+                  playerEquipment.lowerDurability,
+                  'lower'
+                )
+              "
               v-if="tooltip.visible && selectedItem == 'lower'"
             ></base-tooltip
           ></span>
@@ -121,6 +149,13 @@
             <base-tooltip
               class="tooltip"
               :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.gloves,
+                  playerEquipment.glovesDurability,
+                  'gloves'
+                )
+              "
               v-if="tooltip.visible && selectedItem == 'gloves'"
             ></base-tooltip
           ></span>
@@ -144,6 +179,13 @@
             ><base-tooltip
               class="tooltip"
               :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.boots,
+                  playerEquipment.bootsDurability,
+                  'boots'
+                )
+              "
               v-if="tooltip.visible && selectedItem == 'boots'"
             ></base-tooltip
           ></span>
@@ -572,6 +614,67 @@ export default {
         downloadData();
       } else {
         console.log("Вы не можете пользоваться этим предметом");
+      }
+      this.hideTooltip();
+    },
+
+    removeItem(itemId, itemDurability, target) {
+      if (this.$store.state.playerInventory.length < 50) {
+        let item = this.allItemsList(itemId);
+
+        item.durability = itemDurability;
+        this.playerInventory = JSON.parse(
+          JSON.stringify(this.$store.state.playerInventory)
+        );
+        this.playerInventory.push(item);
+        this.$store.state.playerInventory = this.playerInventory;
+        localStorage.setItem(
+          "playerInventory",
+          JSON.stringify(this.playerInventory)
+        );
+
+        switch (target) {
+          case "weapon":
+            this.playerEquipment.weapon = 0;
+            this.playerEquipment.weaponDurability = 0;
+            break;
+          case "helmet":
+            this.playerEquipment.helmet = 0;
+            this.playerEquipment.helmetDurability = 0;
+            break;
+          case "upper":
+            this.playerEquipment.upper = 0;
+            this.playerEquipment.upperDurability = 0;
+            break;
+          case "lower":
+            this.playerEquipment.lower = 0;
+            this.playerEquipment.lowerDurability = 0;
+            break;
+          case "gloves":
+            this.playerEquipment.gloves = 0;
+            this.playerEquipment.glovesDurability = 0;
+            break;
+          case "boots":
+            this.playerEquipment.boots = 0;
+            this.playerEquipment.bootsDurability = 0;
+            break;
+          default:
+            break;
+        }
+
+        this.$store.state.playerEquipment = this.playerEquipment;
+        localStorage.setItem(
+          "playerEquipment",
+          JSON.stringify(this.playerEquipment)
+        );
+
+        this.updateInventory();
+        this.updateEquipment();
+
+        // Вычисляем характеристики в зависимости от надетых предметов
+        player.equipmentCharacteristics();
+
+        downloadData();
       }
       this.hideTooltip();
     },

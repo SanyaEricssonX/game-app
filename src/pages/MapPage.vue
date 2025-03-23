@@ -73,6 +73,12 @@ export default {
           player.isDead(battleResult.currentHp);
           downloadData();
           this.isBattleEnd = true;
+          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
+          localStorage.setItem(
+            "playerCurrentHp",
+            this.$store.state.playerCurrentHp
+          );
+
           return;
         }
 
@@ -86,6 +92,12 @@ export default {
         // Если уровень повысился, то открываем модальное окно
         if (this.$store.state.levelIsUp) {
           this.showModal();
+
+          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
+          localStorage.setItem(
+            "playerCurrentHp",
+            this.$store.state.playerCurrentHp
+          );
         }
 
         // Дроп
@@ -142,11 +154,30 @@ export default {
         if (this.$store.state.playerEquipment.weaponDurability > 0) {
           this.$store.state.playerEquipment.weaponDurability -= 1;
         }
-        localStorage.setItem("playerEquipment", JSON.stringify(this.$store.state.playerEquipment));
+        if (this.$store.state.playerEquipment.helmetDurability > 0) {
+          this.$store.state.playerEquipment.helmetDurability -= 1;
+        }
+        if (this.$store.state.playerEquipment.upperDurability > 0) {
+          this.$store.state.playerEquipment.upperDurability -= 1;
+        }
+        if (this.$store.state.playerEquipment.lowerDurability > 0) {
+          this.$store.state.playerEquipment.lowerDurability -= 1;
+        }
+        if (this.$store.state.playerEquipment.glovesDurability > 0) {
+          this.$store.state.playerEquipment.glovesDurability -= 1;
+        }
+        if (this.$store.state.playerEquipment.bootsDurability > 0) {
+          this.$store.state.playerEquipment.bootsDurability -= 1;
+        }
+        localStorage.setItem(
+          "playerEquipment",
+          JSON.stringify(this.$store.state.playerEquipment)
+        );
 
         player.equipmentCharacteristics();
 
         downloadData();
+
         this.sortEnemies();
         this.isBattleEnd = true;
       }, enemy.time);

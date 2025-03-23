@@ -86,4 +86,9 @@ export function downloadData() {
   store.state.playerDamage = store.state.playerDamage + store.state.playerLevelCharacteristics.damage + store.state.playerEquipmentCharacteristics.damage + store.state.playerBuffCharacteristics.damage;
   store.state.playerArmor = store.state.playerArmor + store.state.playerLevelCharacteristics.armor + store.state.playerEquipmentCharacteristics.armor + store.state.playerBuffCharacteristics.armor;
   store.state.playerMaxHp = store.state.playerMaxHp + store.state.playerLevelCharacteristics.hp + store.state.playerEquipmentCharacteristics.hp;
+
+  if (store.state.playerCurrentHp > store.state.playerMaxHp) {
+    store.state.playerCurrentHp = store.state.playerMaxHp;
+    localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
+  }
 }

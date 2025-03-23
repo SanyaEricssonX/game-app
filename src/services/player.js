@@ -94,6 +94,16 @@ class player {
       localStorage.removeItem("playerArmor");
       localStorage.removeItem("playerLevelCharacteristics");
       localStorage.removeItem("playerBuffCharacteristics");
+
+      store.state.playerEquipment.weaponDurability = 0;
+      store.state.playerEquipment.helmetDurability = 0;
+      store.state.playerEquipment.upperDurability = 0;
+      store.state.playerEquipment.lowerDurability = 0;
+      store.state.playerEquipment.glovesDurability = 0;
+      store.state.playerEquipment.bootsDurability = 0;
+
+      this.equipmentCharacteristics()
+      downloadData();
     }
   }
 

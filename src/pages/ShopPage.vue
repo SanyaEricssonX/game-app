@@ -153,12 +153,60 @@
           </li>
         </ul>
       </div>
+
+      <div class="shop-box" v-if="selectedTab == 4">
+        <div class="repair-box" v-show="repairCost > 0">
+          <span class="repair__header">Починить все ({{ repairCost }})</span>
+          <base-button
+            class="btn btn__buy btn__repair"
+            :style="{
+              'background-color': checkBtnRepairColor(repairCost),
+            }"
+            @click="repairAllItems"
+            >Починить</base-button
+          >
+        </div>
+        <ul class="item-list">
+          <li
+            class="list__item"
+            v-for="item in playerEquipment"
+            :key="item.id"
+            v-show="item.durability != item.currentDurability"
+          >
+            <span class="item__logo"></span>
+            <div class="item-box">
+              <h6 class="item__header">{{ item.name }}</h6>
+              <div class="desc-box">
+                <span class="item__desc desc"
+                  >Прочность: {{ item.currentDurability }} /
+                  {{ item.durability }}</span
+                >
+              </div>
+            </div>
+            <div class="price-box">
+              <span>Цена: </span>
+              <span class="item__desc price">{{
+                Math.floor(item.price / 3)
+              }}</span>
+              <base-button
+                class="btn btn__buy"
+                :style="{
+                  'background-color': checkBtnRepairColor(repairCost),
+                }"
+                @click="repairItem(item)"
+                >Починить</base-button
+              >
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
 import items from "@/services/items";
+import { downloadData } from "@/services/downloadData";
 
 export default {
   name: "ShopPage",
@@ -170,6 +218,9 @@ export default {
       armorList: [],
       consumablesList: [],
       allItems: [],
+      playerEquipment: [],
+      playerInventory: [],
+      repairCost: 0,
       selectedTab: 1,
     };
   },
@@ -177,6 +228,111 @@ export default {
   components: {},
   watch: {},
   methods: {
+    createEquipment() {
+      this.playerEquipment = [];
+      this.repairCost = 0;
+
+      this.weaponList = JSON.parse(JSON.stringify(items.weaponList));
+      this.armorList = JSON.parse(JSON.stringify(items.armorList));
+      this.consumablesList = JSON.parse(JSON.stringify(items.consumablesList));
+      this.allItems = JSON.parse(JSON.stringify(items.list()));
+      this.playerInventory = JSON.parse(
+        JSON.stringify(this.$store.state.playerInventory)
+      );
+
+      let weaponId = Number(this.$store.state.playerEquipment.weapon);
+      let helmetId = Number(this.$store.state.playerEquipment.helmet);
+      let upperId = Number(this.$store.state.playerEquipment.upper);
+      let lowerId = Number(this.$store.state.playerEquipment.lower);
+      let glovesId = Number(this.$store.state.playerEquipment.gloves);
+      let bootsId = Number(this.$store.state.playerEquipment.boots);
+
+      if (weaponId != 0 && weaponId == items.findItem(weaponId).id) {
+        let item = items.findItem(weaponId);
+
+        Object.assign(item, {
+          currentDurability: Number(
+            this.$store.state.playerEquipment.weaponDurability
+          ),
+        });
+        this.playerEquipment.push(item);
+
+        if (item.currentDurability < item.durability) {
+          this.repairCost += Math.floor(item.price / 3);
+        }
+      }
+      if (helmetId != 0 && helmetId == items.findItem(helmetId).id) {
+        let item = items.findItem(helmetId);
+
+        Object.assign(item, {
+          currentDurability: Number(
+            this.$store.state.playerEquipment.helmetDurability
+          ),
+        });
+        this.playerEquipment.push(item);
+
+        if (item.currentDurability < item.durability) {
+          this.repairCost += Math.floor(item.price / 3);
+        }
+      }
+      if (upperId != 0 && upperId == items.findItem(upperId).id) {
+        let item = items.findItem(upperId);
+
+        Object.assign(item, {
+          currentDurability: Number(
+            this.$store.state.playerEquipment.upperDurability
+          ),
+        });
+        this.playerEquipment.push(item);
+
+        if (item.currentDurability < item.durability) {
+          this.repairCost += Math.floor(item.price / 3);
+        }
+      }
+      if (lowerId != 0 && lowerId == items.findItem(lowerId).id) {
+        let item = items.findItem(lowerId);
+
+        Object.assign(item, {
+          currentDurability: Number(
+            this.$store.state.playerEquipment.lowerDurability
+          ),
+        });
+        this.playerEquipment.push(item);
+
+        if (item.currentDurability < item.durability) {
+          this.repairCost += Math.floor(item.price / 3);
+        }
+      }
+      if (glovesId != 0 && glovesId == items.findItem(glovesId).id) {
+        let item = items.findItem(glovesId);
+
+        Object.assign(item, {
+          currentDurability: Number(
+            this.$store.state.playerEquipment.glovesDurability
+          ),
+        });
+        this.playerEquipment.push(item);
+
+        if (item.currentDurability < item.durability) {
+          this.repairCost += Math.floor(item.price / 3);
+        }
+      }
+      if (bootsId != 0 && bootsId == items.findItem(bootsId).id) {
+        let item = items.findItem(bootsId);
+
+        Object.assign(item, {
+          currentDurability: Number(
+            this.$store.state.playerEquipment.bootsDurability
+          ),
+        });
+        this.playerEquipment.push(item);
+
+        if (item.currentDurability < item.durability) {
+          this.repairCost += Math.floor(item.price / 3);
+        }
+      }
+    },
+
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
     },
@@ -188,6 +344,13 @@ export default {
         this.$store.state.playerLevel >= itemLevel &&
         this.$store.state.playerGold >= itemPrice
       ) {
+        return "var(--color-green)";
+      } else {
+        return "var(--color-red)";
+      }
+    },
+    checkBtnRepairColor(itemPrice) {
+      if (this.$store.state.playerGold >= itemPrice) {
         return "var(--color-green)";
       } else {
         return "var(--color-red)";
@@ -226,17 +389,117 @@ export default {
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
+
+      downloadData();
     },
+
+    repairItem(item) {
+      if (this.$store.state.playerGold >= Math.floor(item.price / 3)) {
+        this.$store.state.playerGold -= Math.floor(item.price / 3);
+
+        switch (item.id.toString().slice(0, 3)) {
+          case "100":
+            this.$store.state.playerEquipment.weaponDurability =
+              item.durability;
+            break;
+          case "101":
+            if (item.category == "helmet") {
+              this.$store.state.playerEquipment.helmetDurability =
+                item.durability;
+            } else if (item.category == "upper") {
+              this.$store.state.playerEquipment.upperDurability =
+                item.durability;
+            } else if (item.category == "lower") {
+              this.$store.state.playerEquipment.lowerDurability =
+                item.durability;
+            } else if (item.category == "gloves") {
+              this.$store.state.playerEquipment.glovesDurability =
+                item.durability;
+            } else if (item.category == "boots") {
+              this.$store.state.playerEquipment.bootsDurability =
+                item.durability;
+            }
+            break;
+          default:
+            break;
+        }
+
+        localStorage.setItem(
+          "playerEquipment",
+          JSON.stringify(this.$store.state.playerEquipment)
+        );
+        localStorage.setItem("playerGold", this.$store.state.playerGold);
+
+        downloadData();
+
+        this.createEquipment();
+      } else {
+        this.$store.state.modalNotification.text =
+          "Невозможно совершить покупку. Не зватает золота.";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
+      }
+    },
+
+    repairAllItems() {
+      if (this.$store.state.playerGold >= this.repairCost) {
+        this.$store.state.playerGold -= this.repairCost;
+
+        for (let i = 0; i < this.playerEquipment.length; i++) {
+          let item = this.playerEquipment[i];
+
+          switch (item.id.toString().slice(0, 3)) {
+            case "100":
+              this.$store.state.playerEquipment.weaponDurability =
+                item.durability;
+              break;
+            case "101":
+              if (item.category == "helmet") {
+                this.$store.state.playerEquipment.helmetDurability =
+                  item.durability;
+              } else if (item.category == "upper") {
+                this.$store.state.playerEquipment.upperDurability =
+                  item.durability;
+              } else if (item.category == "lower") {
+                this.$store.state.playerEquipment.lowerDurability =
+                  item.durability;
+              } else if (item.category == "gloves") {
+                this.$store.state.playerEquipment.glovesDurability =
+                  item.durability;
+              } else if (item.category == "boots") {
+                this.$store.state.playerEquipment.bootsDurability =
+                  item.durability;
+              }
+              break;
+            default:
+              break;
+          }
+        }
+
+        localStorage.setItem(
+          "playerEquipment",
+          JSON.stringify(this.$store.state.playerEquipment)
+        );
+        localStorage.setItem("playerGold", this.$store.state.playerGold);
+
+        downloadData();
+
+        this.createEquipment();
+      } else {
+        this.$store.state.modalNotification.text =
+          "Невозможно совершить покупку. Не зватает золота.";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
+      }
+    },
+
     showModal() {
       this.$emit("show-modal");
     },
   },
   beforeCreate() {},
   created() {
-    this.weaponList = items.weaponList;
-    this.armorList = items.armorList;
-    this.consumablesList = items.consumablesList;
-    this.allItems = items.list();
+    this.createEquipment();
   },
   mounted() {},
 };
@@ -314,6 +577,18 @@ export default {
 .btn__buy:hover {
   font-weight: 900;
   color: var(--color-light);
+}
+.repair-box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.repair__header {
+  font-size: 18px;
+  margin-right: 15px;
+}
+.btn__repair {
+  margin-top: 0;
 }
 .active {
   background-color: var(--color-light);

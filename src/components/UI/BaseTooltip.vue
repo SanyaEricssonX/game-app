@@ -45,7 +45,11 @@ export default {
       return this.tooltip.position == position;
     },
     useItem() {
-      this.$emit("use");
+      if (this.tooltip.position == "top") {
+        this.$emit("remove");
+      } else {
+        this.$emit("use");
+      }
     },
     updateTooltipStyle() {
       const tooltipElement = this.$refs.tooltip;
