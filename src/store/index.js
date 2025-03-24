@@ -4,6 +4,7 @@ export default createStore({
   state: {
     triggerSortEnemies: false,
     triggerUpdateInventory: false,
+    triggerUpdateShop: false,
     playerExperience: 0,
     playerLevel: 1,
     playerMaxHp: 100,
@@ -27,6 +28,7 @@ export default createStore({
     setTriggerMethod(state, value) {
       state.triggerSortEnemies = value;
       state.triggerUpdateInventory = value;
+      state.triggerUpdateShop = value;
     }
   },
   actions: {
@@ -35,6 +37,10 @@ export default createStore({
       setTimeout(() => commit("setTriggerMethod", false), 1000);
     },
     triggerUpdateInventory({ commit }) {
+      commit("setTriggerMethod", true);
+      setTimeout(() => commit("setTriggerMethod", false), 1000);
+    },
+    triggerUpdateShop({ commit }) {
       commit("setTriggerMethod", true);
       setTimeout(() => commit("setTriggerMethod", false), 1000);
     }

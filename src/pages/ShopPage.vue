@@ -338,9 +338,19 @@ export default {
       selectedTab: 1,
     };
   },
-  computed: {},
+  computed: {
+    triggerUpdateShop() {
+      return this.$store.state.triggerUpdateShop;
+    },
+  },
   components: {},
-  watch: {},
+  watch: {
+    triggerUpdateShop(newValue) {
+      if (newValue) {
+        this.createEquipment();
+      }
+    },
+  },
   methods: {
     createEquipment() {
       this.playerEquipment = [];

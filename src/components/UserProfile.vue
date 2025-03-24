@@ -67,6 +67,7 @@ export default {
       downloadData();
       this.$store.dispatch("triggerSortEnemies");
       this.$store.dispatch("triggerUpdateInventory");
+      this.$store.dispatch("triggerUpdateShop");
     },
   },
   updated() {},
