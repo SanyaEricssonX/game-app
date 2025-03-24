@@ -266,6 +266,52 @@
       >
         Ваши предметы не неуждаются в починке
       </div>
+      <div class="shop-box" v-if="selectedTab == 5">
+        <ul class="item-list">
+          <li class="list__item" v-for="item in playerInventory" :key="item.id">
+            <span class="item__logo"></span>
+            <div class="item-box">
+              <h6 class="item__header">{{ item.name }}</h6>
+              <div class="desc-box">
+                <span class="item__desc" v-show="item.damage && item.damage > 0"
+                  >Атака: {{ item.damage }}</span
+                >
+                <span class="item__desc" v-show="item.armor && item.armor > 0"
+                  >Защита: {{ item.armor }}</span
+                >
+                <span class="item__desc" v-show="item.hp && item.hp > 0"
+                  >HP: {{ item.hp }}</span
+                >
+                <div class="desc-box" v-show="item.desc">
+                  <span class="item__desc desc">{{ item.desc }}</span>
+                </div>
+                <span class="item__desc" v-show="!item.amount"
+                  >Прочность: {{ item.durability }} /
+                  {{ findItemDurability(item.id) }}</span
+                >
+                <span class="item__desc"
+                  >Уровень: {{ item.requiredLevel }}</span
+                >
+              </div>
+            </div>
+            <div class="price-box">
+              <span>Цена: </span>
+              <span class="item__desc price">{{
+                Math.floor(item.price / 3)
+              }}</span>
+              <base-button class="btn btn__sell" @click="sellItem(item)"
+                >Продать</base-button
+              >
+            </div>
+          </li>
+        </ul>
+        <div
+          class="fix-desc"
+          v-show="selectedTab == 5 && playerInventoryCount == 0"
+        >
+          Нет предметов в инвентаре
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -288,6 +334,7 @@ export default {
       playerInventory: [],
       repairCost: 0,
       inventoryRepairCost: 0,
+      playerInventoryCount: 0,
       selectedTab: 1,
     };
   },
@@ -300,6 +347,7 @@ export default {
       this.playerInventory = [];
       this.repairCost = 0;
       this.inventoryRepairCost = 0;
+      this.playerInventoryCount = 0;
 
       this.weaponList = JSON.parse(JSON.stringify(items.weaponList));
       this.armorList = JSON.parse(JSON.stringify(items.armorList));
@@ -311,6 +359,10 @@ export default {
       );
 
       for (let index = 0; index < this.playerInventory.length; index++) {
+        if (this.playerInventory[index].name) {
+          this.playerInventoryCount += 1;
+        }
+
         Object.assign(this.playerInventory[index], { cellId: index });
 
         if (
@@ -472,6 +524,8 @@ export default {
       }
 
       downloadData();
+
+      this.createEquipment();
     },
 
     repairItem(item) {
@@ -590,6 +644,7 @@ export default {
             JSON.stringify(this.$store.state.playerEquipment)
           );
         } else {
+          // Условия для предметов в инвентаре
           for (let index = 0; index < this.playerInventory.length; index++) {
             if (
               this.playerInventory[index].durability <
@@ -616,6 +671,22 @@ export default {
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
+    },
+
+    sellItem(item) {
+      this.$store.state.playerGold += Math.floor(item.price / 3);
+      localStorage.setItem("playerGold", this.$store.state.playerGold);
+
+      this.playerInventory.splice(item.cellId, 1);
+      this.$store.state.playerInventory = this.playerInventory;
+      localStorage.setItem(
+        "playerInventory",
+        JSON.stringify(this.$store.state.playerInventory)
+      );
+
+      downloadData();
+
+      this.createEquipment();
     },
 
     showModal() {
@@ -703,6 +774,11 @@ export default {
   font-weight: 900;
   color: var(--color-light);
 }
+.btn__sell:hover {
+  font-weight: 900;
+  background-color: var(--color-green);
+  color: var(--color-light);
+}
 .repair-box {
   display: flex;
   align-items: center;
@@ -723,7 +799,7 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 30px;
-  overflow:hidden;
+  overflow: hidden;
 }
 .active {
   background-color: var(--color-light);
