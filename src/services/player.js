@@ -366,7 +366,6 @@ class player {
   }
   createInventory() {
     let inventory = JSON.parse(JSON.stringify(store.state.playerInventory));
-
     for (let i = 0; i < store.state.playerInventorySize; i++) {
       while (inventory.length < store.state.playerInventorySize) {
         inventory.push({});
