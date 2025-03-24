@@ -22,7 +22,7 @@ class items {
       { id: 1020, name: "Малый эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 30 HP", amount: 30, requiredLevel: 1, price: 15 },
       { id: 1021, name: "Малый эликсир атаки", category: "buffDamage", desc: "При использовании на 1 бой увеличивает урон на 10", amount: 10, duration: 1, requiredLevel: 2, price: 15 },
       { id: 1022, name: "Малый эликсир брони", category: "buffArmor", desc: "При использовании на 1 бой увеличивает защиту на 5", amount: 5, duration: 1, requiredLevel: 2, price: 15 },
-      { id: 1023, name: "Малый эликсир богатства", category: "buffDrop", desc: "При использовании на 1 бой увеличивает дроп в 2 раза", amount: 2, duration: 1, requiredLevel: 2, price: 20 },
+      { id: 1023, name: "Малый эликсир богатства", category: "buffDrop", desc: "При использовании на 1 бой увеличивает дроп в 2 раза", amount: 2, duration: 1, requiredLevel: 2, price: 60 },
       { id: 1024, name: "Эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 70 HP", amount: 70, requiredLevel: 3, price: 30 },
       { id: 1025, name: "Средний эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 150 HP", amount: 150, requiredLevel: 5, price: 50 },
       { id: 1026, name: "Средний эликсир атаки", category: "buffDamage", desc: "При использовании на 1 бой увеличивает урон на 25", amount: 25, duration: 1, requiredLevel: 5, price: 50 },

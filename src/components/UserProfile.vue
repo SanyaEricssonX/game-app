@@ -21,6 +21,61 @@
         </li>
       </ul>
     </div>
+
+    <div
+      class="profile-block"
+      v-if="
+        $store.state.playerBuffCharacteristics.hp > 0 ||
+        $store.state.playerBuffCharacteristics.damage > 0 ||
+        $store.state.playerBuffCharacteristics.armor > 0 ||
+        $store.state.playerBuffCharacteristics.drop > 0
+      "
+    >
+      <h2 class="profile__header">Бафы</h2>
+      <ul class="list buff-list">
+        <li
+          class="item buff__item"
+          v-show="$store.state.playerBuffCharacteristics.hp > 0"
+        >
+          <h4 class="item__title">HP :</h4>
+          {{ $store.state.playerBuffCharacteristics.hp }} ({{
+            $store.state.playerBuffCharacteristics.hpBuffDuration
+          }}
+          бой)
+        </li>
+        <li
+          class="item buff__item"
+          v-show="$store.state.playerBuffCharacteristics.damage > 0"
+        >
+          <h4 class="item__title">Урон :</h4>
+          {{ $store.state.playerBuffCharacteristics.damage }} ({{
+            $store.state.playerBuffCharacteristics.damageBuffDuration
+          }}
+          бой)
+        </li>
+        <li
+          class="item buff__item"
+          v-show="$store.state.playerBuffCharacteristics.armor > 0"
+        >
+          <h4 class="item__title">Защита :</h4>
+          {{ $store.state.playerBuffCharacteristics.armor }} ({{
+            $store.state.playerBuffCharacteristics.armorBuffDuration
+          }}
+          бой)
+        </li>
+        <li
+          class="item buff__item"
+          v-show="$store.state.playerBuffCharacteristics.drop > 0"
+        >
+          <h4 class="item__title">Дроп :</h4>
+          x{{ $store.state.playerBuffCharacteristics.drop }} ({{
+            $store.state.playerBuffCharacteristics.dropBuffDuration
+          }}
+          бой)
+        </li>
+      </ul>
+    </div>
+
     <div class="profile-block">
       <h2 class="profile__header">Ресурсы</h2>
       <ul class="list resources-list">

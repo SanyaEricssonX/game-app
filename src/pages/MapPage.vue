@@ -102,24 +102,50 @@ export default {
 
         // Дроп
         const drop = enemies.randomDrop(enemy.id);
-        this.$store.state.playerGold += Math.floor(
-          Math.random() * drop.gold + 1
-        );
-        if (drop.wood != 0) {
-          this.$store.state.playerResources.wood += Math.floor(
-            Math.random() * (drop.wood - 1 + 1) + 1
+        const minDropGold = Math.floor(drop.gold / 1.4);
+
+        if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
+          this.$store.state.playerGold +=
+            Math.floor(
+              Math.random() * (drop.gold - minDropGold) + minDropGold
+            ) * this.$store.state.playerBuffCharacteristics.drop;
+
+          if (drop.wood != 0) {
+            this.$store.state.playerResources.wood +=
+              Math.floor(Math.random() * (drop.wood - 1 + 1) + 1) *
+              this.$store.state.playerBuffCharacteristics.drop;
+          }
+          if (drop.stone != 0) {
+            this.$store.state.playerResources.stone +=
+              Math.floor(Math.random() * (drop.stone - 1 + 1) + 1) *
+              this.$store.state.playerBuffCharacteristics.drop;
+          }
+          if (drop.iron != 0) {
+            this.$store.state.playerResources.iron +=
+              Math.floor(Math.random() * (drop.iron - 1 + 1) + 1) *
+              this.$store.state.playerBuffCharacteristics.drop;
+          }
+        } else {
+          this.$store.state.playerGold += Math.floor(
+            Math.random() * (drop.gold - minDropGold) + minDropGold
           );
+          if (drop.wood != 0) {
+            this.$store.state.playerResources.wood += Math.floor(
+              Math.random() * (drop.wood - 1 + 1) + 1
+            );
+          }
+          if (drop.stone != 0) {
+            this.$store.state.playerResources.stone += Math.floor(
+              Math.random() * (drop.stone - 1 + 1) + 1
+            );
+          }
+          if (drop.iron != 0) {
+            this.$store.state.playerResources.iron += Math.floor(
+              Math.random() * (drop.iron - 1 + 1) + 1
+            );
+          }
         }
-        if (drop.stone != 0) {
-          this.$store.state.playerResources.stone += Math.floor(
-            Math.random() * (drop.stone - 1 + 1) + 1
-          );
-        }
-        if (drop.iron != 0) {
-          this.$store.state.playerResources.iron += Math.floor(
-            Math.random() * (drop.iron - 1 + 1) + 1
-          );
-        }
+
         localStorage.setItem("playerGold", this.$store.state.playerGold);
         localStorage.setItem(
           "resourcesWood",
