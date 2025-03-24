@@ -362,6 +362,15 @@ export default {
           case "hp":
             contentForTooltip.push(`HP: ${item[key]}`);
             break;
+          case "evasion":
+            contentForTooltip.push(`Уклонение: ${item[key]}`);
+            break;
+          case "critChance":
+            contentForTooltip.push(`Крит шанс: ${item[key]}`);
+            break;
+          case "critPower":
+            contentForTooltip.push(`Крит сила: ${item[key]}`);
+            break;
           case "desc":
             contentForTooltip.push(item[key]);
             break;
@@ -574,6 +583,28 @@ export default {
             case "buffArmor":
               this.$store.state.playerBuffCharacteristics.armor = item.amount;
               this.$store.state.playerBuffCharacteristics.armorBuffDuration =
+                item.duration;
+              break;
+            case "buffHp":
+              this.$store.state.playerBuffCharacteristics.hp = item.amount;
+              this.$store.state.playerBuffCharacteristics.hpBuffDuration =
+                item.duration;
+              break;
+            case "buffEvasion":
+              this.$store.state.playerBuffCharacteristics.evasion = item.amount;
+              this.$store.state.playerBuffCharacteristics.evasionBuffDuration =
+                item.duration;
+              break;
+            case "buffCritChance":
+              this.$store.state.playerBuffCharacteristics.critChance =
+                item.amount;
+              this.$store.state.playerBuffCharacteristics.critChanceBuffDuration =
+                item.duration;
+              break;
+            case "buffCritPower":
+              this.$store.state.playerBuffCharacteristics.critPower =
+                item.amount;
+              this.$store.state.playerBuffCharacteristics.critPowerBuffDuration =
                 item.duration;
               break;
             case "buffDrop":

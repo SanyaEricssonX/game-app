@@ -1,6 +1,6 @@
 import player from "../services/player";
 
-export function startBattle(playerCurrentHp, playerDamage, playerArmor, enemy) {
+export function startBattle(playerCurrentHp, playerDamage, playerArmor, playerEvasion, playerCritChance, playerCritPower, enemy) {
   let enemyCurrentHp = enemy.hp;
   let battleLog = [];
 

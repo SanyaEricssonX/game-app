@@ -60,6 +60,9 @@ export default {
         this.$store.state.playerCurrentHp,
         this.$store.state.playerDamage,
         this.$store.state.playerArmor,
+        this.$store.state.playerEvasion,
+        this.$store.state.playerCritChance,
+        this.$store.state.playerCritPower,
         enemy
       );
 
@@ -171,6 +174,28 @@ export default {
           this.$store.state.playerBuffCharacteristics.armorBuffDuration -= 1;
           player.buffDuration("armor");
         }
+        if (this.$store.state.playerBuffCharacteristics.hpBuffDuration > 0) {
+          this.$store.state.playerBuffCharacteristics.hpBuffDuration -= 1;
+          player.buffDuration("hp");
+        }
+        if (
+          this.$store.state.playerBuffCharacteristics.evasionBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.evasionBuffDuration -= 1;
+          player.buffDuration("evasion");
+        }
+        if (
+          this.$store.state.playerBuffCharacteristics.critChanceBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.critChanceBuffDuration -= 1;
+          player.buffDuration("critChance");
+        }
+        if (
+          this.$store.state.playerBuffCharacteristics.critPowerBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.critPowerBuffDuration -= 1;
+          player.buffDuration("critPower");
+        }
         if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
           this.$store.state.playerBuffCharacteristics.dropBuffDuration -= 1;
           player.buffDuration("drop");
@@ -195,6 +220,7 @@ export default {
         if (this.$store.state.playerEquipment.bootsDurability > 0) {
           this.$store.state.playerEquipment.bootsDurability -= 1;
         }
+
         localStorage.setItem(
           "playerEquipment",
           JSON.stringify(this.$store.state.playerEquipment)
