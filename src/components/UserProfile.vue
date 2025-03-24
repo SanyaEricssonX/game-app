@@ -66,6 +66,7 @@ export default {
       localStorage.clear();
       downloadData();
       this.$store.dispatch("triggerSortEnemies");
+      this.$store.dispatch("triggerUpdateInventory");
     },
   },
   updated() {},
@@ -111,5 +112,6 @@ export default {
 .profile__btn:hover {
   background-color: var(--color-red);
   color: var(--color-light);
+  font-weight: 900;
 }
 </style>

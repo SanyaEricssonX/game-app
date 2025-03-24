@@ -56,4 +56,39 @@ export function downloadData() {
   } else {
     store.state.playerInventory = [];
   }
+  if (localStorage.getItem("playerInventorySize") != null) {
+    store.state.playerInventorySize = Number(localStorage.getItem("playerInventorySize"));
+  } else {
+    store.state.playerInventorySize = 50;
+  }
+  if (localStorage.getItem("playerEquipment") != null) {
+    store.state.playerEquipment = JSON.parse(localStorage.getItem("playerEquipment"));
+  } else {
+    store.state.playerEquipment = { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 };
+  }
+  if (localStorage.getItem("playerLevelCharacteristics") != null) {
+    store.state.playerLevelCharacteristics = JSON.parse(localStorage.getItem("playerLevelCharacteristics"));
+  } else {
+    store.state.playerLevelCharacteristics = { damage: 0, armor: 0, hp: 0 };
+  }
+  if (localStorage.getItem("playerEquipmentCharacteristics") != null) {
+    store.state.playerEquipmentCharacteristics = JSON.parse(localStorage.getItem("playerEquipmentCharacteristics"));
+  } else {
+    store.state.playerEquipmentCharacteristics = { damage: 0, armor: 0, hp: 0 };
+  }
+  if (localStorage.getItem("playerBuffCharacteristics") != null) {
+    store.state.playerBuffCharacteristics = JSON.parse(localStorage.getItem("playerBuffCharacteristics"));
+  } else {
+    store.state.playerBuffCharacteristics = { damage: 0, armor: 0, hp: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, dropBuffDuration: 0 };
+  }
+
+  // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов
+  store.state.playerDamage = store.state.playerDamage + store.state.playerLevelCharacteristics.damage + store.state.playerEquipmentCharacteristics.damage + store.state.playerBuffCharacteristics.damage;
+  store.state.playerArmor = store.state.playerArmor + store.state.playerLevelCharacteristics.armor + store.state.playerEquipmentCharacteristics.armor + store.state.playerBuffCharacteristics.armor;
+  store.state.playerMaxHp = store.state.playerMaxHp + store.state.playerLevelCharacteristics.hp + store.state.playerEquipmentCharacteristics.hp;
+
+  if (store.state.playerCurrentHp > store.state.playerMaxHp) {
+    store.state.playerCurrentHp = store.state.playerMaxHp;
+    localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
+  }
 }

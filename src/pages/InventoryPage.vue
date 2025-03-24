@@ -5,27 +5,190 @@
       <ul class="equipment-list">
         <li class="equipment__item">
           <h4 class="equipment__item__header">Оружие</h4>
-          <span class="equipment__item__icon"></span>
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.weapon > 999 }"
+            @click="
+              showTooltip(
+                playerEquipment.weapon,
+                playerEquipment.weaponDurability,
+                'weapon'
+              )
+            "
+          >
+            <span
+              class="equipment__item__text"
+              v-show="playerEquipment.weapon > 999"
+              >{{ playerEquipment.weapon }}</span
+            >
+            <base-tooltip
+              class="tooltip"
+              :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.weapon,
+                  playerEquipment.weaponDurability,
+                  'weapon'
+                )
+              "
+              v-if="tooltip.visible && selectedItem == 'weapon'"
+            ></base-tooltip>
+          </span>
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Шлем</h4>
-          <span class="equipment__item__icon"></span>
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.helmet > 999 }"
+            @click="
+              showTooltip(
+                playerEquipment.helmet,
+                playerEquipment.helmetDurability,
+                'helmet'
+              )
+            "
+          >
+            <span
+              class="equipment__item__text"
+              v-show="playerEquipment.helmet > 999"
+              >{{ playerEquipment.helmet }}</span
+            >
+            <base-tooltip
+              class="tooltip"
+              :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.helmet,
+                  playerEquipment.helmetDurability,
+                  'helmet'
+                )
+              "
+              v-if="tooltip.visible && selectedItem == 'helmet'"
+            ></base-tooltip>
+          </span>
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Верхний доспех</h4>
-          <span class="equipment__item__icon"></span>
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.upper > 999 }"
+            @click="
+              showTooltip(
+                playerEquipment.upper,
+                playerEquipment.upperDurability,
+                'upper'
+              )
+            "
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.upper > 999"
+              >{{ playerEquipment.upper }}</span
+            >
+            <base-tooltip
+              class="tooltip"
+              :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.upper,
+                  playerEquipment.upperDurability,
+                  'upper'
+                )
+              "
+              v-if="tooltip.visible && selectedItem == 'upper'"
+            ></base-tooltip>
+          </span>
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Нижний доспех</h4>
-          <span class="equipment__item__icon"></span>
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.lower > 999 }"
+            @click="
+              showTooltip(
+                playerEquipment.lower,
+                playerEquipment.lowerDurability,
+                'lower'
+              )
+            "
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.lower > 999"
+              >{{ playerEquipment.lower }}</span
+            >
+            <base-tooltip
+              class="tooltip"
+              :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.lower,
+                  playerEquipment.lowerDurability,
+                  'lower'
+                )
+              "
+              v-if="tooltip.visible && selectedItem == 'lower'"
+            ></base-tooltip
+          ></span>
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Перчатки</h4>
-          <span class="equipment__item__icon"></span>
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.gloves > 999 }"
+            @click="
+              showTooltip(
+                playerEquipment.gloves,
+                playerEquipment.glovesDurability,
+                'gloves'
+              )
+            "
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.gloves > 999"
+              >{{ playerEquipment.gloves }}</span
+            >
+            <base-tooltip
+              class="tooltip"
+              :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.gloves,
+                  playerEquipment.glovesDurability,
+                  'gloves'
+                )
+              "
+              v-if="tooltip.visible && selectedItem == 'gloves'"
+            ></base-tooltip
+          ></span>
         </li>
         <li class="equipment__item">
           <h4 class="equipment__item__header">Сапоги</h4>
-          <span class="equipment__item__icon"></span>
+          <span
+            class="equipment__item__icon"
+            :class="{ equipped: playerEquipment.boots > 999 }"
+            @click="
+              showTooltip(
+                playerEquipment.boots,
+                playerEquipment.bootsDurability,
+                'boots'
+              )
+            "
+            ><span
+              class="equipment__item__text"
+              v-show="playerEquipment.boots > 999"
+              >{{ playerEquipment.boots }}</span
+            ><base-tooltip
+              class="tooltip"
+              :tooltip="tooltip"
+              @remove="
+                removeItem(
+                  playerEquipment.boots,
+                  playerEquipment.bootsDurability,
+                  'boots'
+                )
+              "
+              v-if="tooltip.visible && selectedItem == 'boots'"
+            ></base-tooltip
+          ></span>
         </li>
       </ul>
     </div>
@@ -52,22 +215,31 @@
         <li
           class="inventory__item"
           v-for="item in inventoryCells"
-          :key="item.id"
+          :key="item.cellId"
+          @click="showTooltip(item.id, item.durability, item.cellId)"
         >
-          <span class="inventory__item__id" v-show="item > 999">
-            {{ item }}
+          <span class="inventory__item__id" v-show="item.id > 999">
+            {{ item.id }}
           </span>
+          <base-tooltip
+            class="tooltip"
+            :tooltip="tooltip"
+            v-if="
+              tooltip.visible && selectedItem == item.cellId && item.id > 999
+            "
+            @use="useItem(item)"
+          ></base-tooltip>
         </li>
       </ul>
-      <div class="inventory-list" v-if="selectedTab == 2">
-        Доступные рецепты
-      </div>
+      <div class="craft-list" v-if="selectedTab == 2">Доступные рецепты</div>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
-import items from "@/services/items"
+import { downloadData } from "@/services/downloadData";
+import player from "@/services/player";
+import items from "@/services/items";
 
 export default {
   name: "InventoryPage",
@@ -76,36 +248,448 @@ export default {
   data() {
     return {
       selectedTab: 1,
-      inventoryCells: [],
+      inventoryCells: [], // Основная переменная ячеек инвентаря
+      playerEquipment: {},
       playerInventory: [],
-      allItems: [],
+      tooltip: {
+        visible: false,
+        text: "Предмет",
+        btnText: "",
+        btnColor: "green",
+        position: "bottom",
+      },
+      selectedItem: null,
     };
   },
-  computed: {},
+  computed: {
+    triggerUpdateInventory() {
+      return this.$store.state.triggerUpdateInventory;
+    },
+  },
   components: {},
-  watch: {},
+  watch: {
+    triggerUpdateInventory(newValue) {
+      if (newValue) {
+        this.updateInventory();
+        this.updateEquipment();
+      }
+    },
+  },
   methods: {
+    updateInventory() {
+      this.inventoryCells = player.createInventory();
+      this.playerInventory = JSON.parse(
+        JSON.stringify(this.$store.state.playerInventory)
+      );
+    },
+    updateEquipment() {
+      this.playerEquipment = JSON.parse(
+        JSON.stringify(this.$store.state.playerEquipment)
+      );
+    },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
     },
     isActiveBtn(tabNumber) {
       return this.selectedTab == tabNumber;
     },
+    itemCategory(itemId) {
+      return itemId.toString().slice(0, 3);
+    },
+    allItemsList(itemId) {
+      const allItems = JSON.parse(JSON.stringify(items.list()));
+      let newItem;
+
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == itemId) {
+          newItem = allItems[i];
+        }
+      }
+      return newItem;
+    },
+    showTooltip(itemId, durability, target) {
+      const newItem = this.allItemsList(itemId);
+
+      // Проверяем где вызывается тултип: в инвентаре или в экипировке
+      if (typeof target == "number") {
+        if (itemId > 999) {
+          this.tooltip.position = "bottom";
+          this.tooltip.text = this.tooltipContent(newItem, durability);
+        }
+      } else {
+        if (itemId > 999) {
+          this.tooltip.position = "top";
+          this.tooltip.text = this.tooltipContent(newItem, durability);
+        }
+      }
+      this.selectedItem = target;
+      this.tooltip.visible = true;
+    },
+
+    tooltipContent(item, durability) {
+      let contentForTooltip = [];
+
+      // Цвет кнопки
+      if (this.$store.state.playerLevel < item.requiredLevel) {
+        this.tooltip.btnColor = "red";
+      } else {
+        this.tooltip.btnColor = "green";
+      }
+
+      // Текст для кнопки
+      if (this.tooltip.position == "bottom") {
+        if (this.itemCategory(item.id) == "102") {
+          this.tooltip.btnText = "Использовать";
+        } else {
+          this.tooltip.btnText = "Надеть";
+        }
+      } else {
+        this.tooltip.btnText = "Снять";
+      }
+
+      // Текст в описание предмета
+      for (let key in item) {
+        switch (key) {
+          case "name":
+            contentForTooltip.push(item[key]);
+            break;
+          case "damage":
+            contentForTooltip.push(`Урон: ${item[key]}`);
+            break;
+          case "armor":
+            contentForTooltip.push(`Защита: ${item[key]}`);
+            break;
+          case "hp":
+            contentForTooltip.push(`HP: ${item[key]}`);
+            break;
+          case "desc":
+            contentForTooltip.push(item[key]);
+            break;
+          case "durability":
+            if (this.itemCategory(item.id) == "102") {
+              break;
+            } else {
+              contentForTooltip.push(`Прочность: ${durability}/${item[key]}`);
+            }
+            break;
+          case "requiredLevel":
+            contentForTooltip.push(`Уровень: ${item[key]}`);
+            break;
+          default:
+            break;
+        }
+      }
+      return contentForTooltip;
+    },
+    hideTooltip() {
+      setTimeout(() => {
+        this.tooltip.visible = false;
+      }, 1);
+    },
+    handleClickOutside(event) {
+      if (this.tooltip.visible) {
+        const tooltip = this.$el.querySelector(".tooltip");
+        const inventory = this.$el.querySelector(".inventory-list");
+        const equipmentItems = this.$el.querySelectorAll(
+          ".equipment__item__icon"
+        );
+        const isOutsideEquipment = Array.from(equipmentItems).every(
+          (item) => !item.contains(event.target)
+        );
+
+        // Проверяем, кликнули ли мы вне инвентаря и тултипа
+        if (
+          this.tooltip.visible &&
+          tooltip &&
+          inventory &&
+          !tooltip.contains(event.target) &&
+          !inventory.contains(event.target) &&
+          isOutsideEquipment
+        ) {
+          this.hideTooltip();
+        } else if (
+          this.tooltip.visible &&
+          this.selectedTab == 2 &&
+          tooltip &&
+          !tooltip.contains(event.target) &&
+          isOutsideEquipment
+        ) {
+          this.hideTooltip();
+        }
+      }
+    },
+    useItem(item) {
+      const category = this.itemCategory(item.id);
+
+      if (this.$store.state.playerLevel >= item.requiredLevel) {
+        if (category == "100") {
+          // Код, если предмет оружие
+          // Закидываем предмет в ячейку экипировки если в ней пусто
+          if (this.playerEquipment.weapon == 0) {
+            // Экипируем предмет и сохраняем в стор
+            this.playerEquipment.weapon = item.id;
+            this.playerEquipment.weaponDurability = item.durability;
+            this.$store.state.playerEquipment = this.playerEquipment;
+          } else {
+            // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
+            let newItem = JSON.parse(
+              JSON.stringify(this.allItemsList(this.playerEquipment.weapon))
+            );
+            newItem.durability = JSON.parse(
+              JSON.stringify(this.playerEquipment.weaponDurability)
+            );
+            this.playerInventory.push(newItem);
+            this.playerEquipment.weapon = item.id;
+            this.playerEquipment.weaponDurability = item.durability;
+            this.$store.state.playerEquipment = this.playerEquipment;
+          }
+        } else if (category == "101") {
+          // Код, если предмет броня
+          // Закидываем предмет в соответствующую ячейку
+          switch (item.category) {
+            case "helmet":
+              if (this.playerEquipment.helmet == 0) {
+                // Экипируем предмет и сохраняем в стор
+                this.playerEquipment.helmet = item.id;
+                this.playerEquipment.helmetDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              } else {
+                // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.helmet))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.helmetDurability)
+                );
+                this.playerInventory.push(newItem);
+                this.playerEquipment.helmet = item.id;
+                this.playerEquipment.helmetDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              }
+              break;
+            case "upper":
+              if (this.playerEquipment.upper == 0) {
+                // Экипируем предмет и сохраняем в стор
+                this.playerEquipment.upper = item.id;
+                this.playerEquipment.upperDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              } else {
+                // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.upper))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.upperDurability)
+                );
+                this.playerInventory.push(newItem);
+                this.playerEquipment.upper = item.id;
+                this.playerEquipment.upperDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              }
+              break;
+            case "lower":
+              if (this.playerEquipment.lower == 0) {
+                // Экипируем предмет и сохраняем в стор
+                this.playerEquipment.lower = item.id;
+                this.playerEquipment.lowerDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              } else {
+                // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.lower))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.lowerDurability)
+                );
+                this.playerInventory.push(newItem);
+                this.playerEquipment.lower = item.id;
+                this.playerEquipment.lowerDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              }
+              break;
+            case "gloves":
+              if (this.playerEquipment.gloves == 0) {
+                // Экипируем предмет и сохраняем в стор
+                this.playerEquipment.gloves = item.id;
+                this.playerEquipment.glovesDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              } else {
+                // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.gloves))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.glovesDurability)
+                );
+                this.playerInventory.push(newItem);
+                this.playerEquipment.gloves = item.id;
+                this.playerEquipment.glovesDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              }
+              break;
+            case "boots":
+              if (this.playerEquipment.boots == 0) {
+                // Экипируем предмет и сохраняем в стор
+                this.playerEquipment.boots = item.id;
+                this.playerEquipment.bootsDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              } else {
+                // Закидываем новый предмет в экипировку, а ранее экипированный предмет записываем в инвентарь
+                let newItem = JSON.parse(
+                  JSON.stringify(this.allItemsList(this.playerEquipment.boots))
+                );
+                newItem.durability = JSON.parse(
+                  JSON.stringify(this.playerEquipment.bootsDurability)
+                );
+                this.playerInventory.push(newItem);
+                this.playerEquipment.boots = item.id;
+                this.playerEquipment.bootsDurability = item.durability;
+                this.$store.state.playerEquipment = this.playerEquipment;
+              }
+              break;
+            default:
+              break;
+          }
+        } else if (category == "102") {
+          // Код, если предмет расходник
+          let currentHp = this.$store.state.playerCurrentHp;
+
+          switch (item.category) {
+            case "restoreHp":
+              currentHp += item.amount;
+              if (currentHp > this.$store.state.playerMaxHp) {
+                currentHp = this.$store.state.playerMaxHp;
+                this.$store.state.playerCurrentHp = currentHp;
+                localStorage.setItem("playerCurrentHp", currentHp);
+              } else {
+                this.$store.state.playerCurrentHp = currentHp;
+                localStorage.setItem("playerCurrentHp", currentHp);
+              }
+              break;
+            case "buffDamage":
+              this.$store.state.playerBuffCharacteristics.damage = item.amount;
+              this.$store.state.playerBuffCharacteristics.damageBuffDuration =
+                item.duration;
+              break;
+            case "buffArmor":
+              this.$store.state.playerBuffCharacteristics.armor = item.amount;
+              this.$store.state.playerBuffCharacteristics.armorBuffDuration =
+                item.duration;
+              break;
+            case "buffDrop":
+              this.$store.state.playerBuffCharacteristics.drop = item.amount;
+              this.$store.state.playerBuffCharacteristics.dropBuffDuration =
+                item.duration;
+              break;
+            default:
+              break;
+          }
+          // Сохраняем баф с расходника в LocalStarage
+          localStorage.setItem(
+            "playerBuffCharacteristics",
+            JSON.stringify(this.$store.state.playerBuffCharacteristics)
+          );
+        }
+
+        // Сохраняем экипировку в LocalStarage
+        localStorage.setItem(
+          "playerEquipment",
+          JSON.stringify(this.playerEquipment)
+        );
+
+        // Удаляем надетый предмет из инвентаря и сохраняем в LocalStorage
+        this.playerInventory.splice(item.cellId, 1);
+        this.$store.state.playerInventory = this.playerInventory;
+        localStorage.setItem(
+          "playerInventory",
+          JSON.stringify(this.$store.state.playerInventory)
+        );
+        // Обновляем отображение инвентаря
+        this.updateInventory();
+        this.updateEquipment();
+
+        // Вычисляем характеристики в зависимости от надетых предметов
+        player.equipmentCharacteristics();
+
+        downloadData();
+      } else {
+        console.log("Вы не можете пользоваться этим предметом");
+      }
+      this.hideTooltip();
+    },
+
+    removeItem(itemId, itemDurability, target) {
+      if (this.$store.state.playerInventory.length < 50) {
+        let item = this.allItemsList(itemId);
+
+        item.durability = itemDurability;
+        this.playerInventory = JSON.parse(
+          JSON.stringify(this.$store.state.playerInventory)
+        );
+        this.playerInventory.push(item);
+        this.$store.state.playerInventory = this.playerInventory;
+        localStorage.setItem(
+          "playerInventory",
+          JSON.stringify(this.playerInventory)
+        );
+
+        switch (target) {
+          case "weapon":
+            this.playerEquipment.weapon = 0;
+            this.playerEquipment.weaponDurability = 0;
+            break;
+          case "helmet":
+            this.playerEquipment.helmet = 0;
+            this.playerEquipment.helmetDurability = 0;
+            break;
+          case "upper":
+            this.playerEquipment.upper = 0;
+            this.playerEquipment.upperDurability = 0;
+            break;
+          case "lower":
+            this.playerEquipment.lower = 0;
+            this.playerEquipment.lowerDurability = 0;
+            break;
+          case "gloves":
+            this.playerEquipment.gloves = 0;
+            this.playerEquipment.glovesDurability = 0;
+            break;
+          case "boots":
+            this.playerEquipment.boots = 0;
+            this.playerEquipment.bootsDurability = 0;
+            break;
+          default:
+            break;
+        }
+
+        this.$store.state.playerEquipment = this.playerEquipment;
+        localStorage.setItem(
+          "playerEquipment",
+          JSON.stringify(this.playerEquipment)
+        );
+
+        this.updateInventory();
+        this.updateEquipment();
+
+        // Вычисляем характеристики в зависимости от надетых предметов
+        player.equipmentCharacteristics();
+
+        downloadData();
+      }
+      this.hideTooltip();
+    },
   },
   beforeCreate() {},
   created() {
-    this.allItems = items.list();
-    this.playerInventory = this.$store.state.playerInventory;
-
-    for (let i = 0; i < 50; i++) {
-      if (this.playerInventory[i]) {
-        this.inventoryCells.push(this.playerInventory[i]);
-      } else {
-        this.inventoryCells.push(i);
-      }
-    }
+    this.updateInventory();
+    this.updateEquipment();
   },
-  mounted() {},
+  mounted() {
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.handleClickOutside);
+  },
 };
 </script>
 
@@ -131,6 +715,10 @@ export default {
   font-size: 16px;
 }
 .equipment__item__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 60px;
   height: 60px;
   border: 2px solid var(--color-light);
@@ -152,6 +740,7 @@ export default {
   border: 2px solid var(--color-light);
 }
 .inventory__item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,6 +749,10 @@ export default {
   border: 1px solid var(--color-light);
 }
 .active {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
+.equipped {
   background-color: var(--color-light);
   color: var(--color-dark);
 }

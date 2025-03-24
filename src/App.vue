@@ -55,7 +55,7 @@ export default {
       this.isModalOpen = false;
 
       this.$store.state.levelIsUp = false;
-      this.$store.state.purchaseFailed = false;
+      this.$store.state.modalNotification.visible = false;
 
       document.querySelector("body").classList.remove("scroll-lock");
     },

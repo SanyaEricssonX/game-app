@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 import store from "../store";
+import items from "../services/items";
+import { downloadData } from "./downloadData";
 
 class player {
   constructor() {
@@ -23,6 +25,9 @@ class player {
     this.maxHpUp();
     this.armorUp();
 
+    // Подгружаем изменения характеристик
+    downloadData();
+
     // Восстанавливаем хп, если был повышен уровень
     if (this.isLevelIncreased == true) {
       store.state.playerCurrentHp = store.state.playerMaxHp;
@@ -32,6 +37,10 @@ class player {
   }
 
   levelUp() {
+    if (store.state.playerLevel == 1) {
+      localStorage.setItem("playerLevel", 1);
+    }
+
     for (let i = 0; i < this.experienceForLevel.length - 1; i++) {
       if (store.state.playerExperience >= this.experienceForLevel[i] && store.state.playerExperience < this.experienceForLevel[i + 1]) {
         store.state.playerLevel = i + 2;
@@ -51,8 +60,8 @@ class player {
   damageUp() {
     for (let i = 0; i < this.increaseDamagePerLevel.length; i++) {
       if (store.state.playerLevel == i + 2) {
-        store.state.playerDamage = store.state.defaultPlayerDamage + this.increaseDamagePerLevel[i];
-        localStorage.setItem("playerDamage", store.state.playerDamage);
+        store.state.playerLevelCharacteristics.damage = this.increaseDamagePerLevel[i];
+        localStorage.setItem("playerLevelCharacteristics", JSON.stringify(store.state.playerLevelCharacteristics));
       }
     }
   }
@@ -60,8 +69,8 @@ class player {
   maxHpUp() {
     for (let i = 0; i < this.increaseMaxHpPerLevel.length; i++) {
       if (store.state.playerLevel == i + 2) {
-        store.state.playerMaxHp = store.state.defaultPlayerMaxHp + this.increaseMaxHpPerLevel[i];
-        localStorage.setItem("playerMaxHp", store.state.playerMaxHp);
+        store.state.playerLevelCharacteristics.hp = this.increaseMaxHpPerLevel[i];
+        localStorage.setItem("playerLevelCharacteristics", JSON.stringify(store.state.playerLevelCharacteristics));
       }
     }
   }
@@ -69,8 +78,8 @@ class player {
   armorUp() {
     for (let i = 0; i < this.increaseArmorPerLevel.length; i++) {
       if (store.state.playerLevel == i + 2) {
-        store.state.playerArmor = store.state.defaultPlayerArmor + this.increaseArmorPerLevel[i];
-        localStorage.setItem("playerArmor", store.state.playerArmor);
+        store.state.playerLevelCharacteristics.armor = this.increaseArmorPerLevel[i];
+        localStorage.setItem("playerLevelCharacteristics", JSON.stringify(store.state.playerLevelCharacteristics));
       }
     }
   }
@@ -83,6 +92,18 @@ class player {
       localStorage.removeItem("playerCurrentHp");
       localStorage.removeItem("playerDamage");
       localStorage.removeItem("playerArmor");
+      localStorage.removeItem("playerLevelCharacteristics");
+      localStorage.removeItem("playerBuffCharacteristics");
+
+      store.state.playerEquipment.weaponDurability = 0;
+      store.state.playerEquipment.helmetDurability = 0;
+      store.state.playerEquipment.upperDurability = 0;
+      store.state.playerEquipment.lowerDurability = 0;
+      store.state.playerEquipment.glovesDurability = 0;
+      store.state.playerEquipment.bootsDurability = 0;
+
+      this.equipmentCharacteristics()
+      downloadData();
     }
   }
 
@@ -102,6 +123,256 @@ class player {
       const level = store.state.playerLevel;
       return this.infoByLevel[level];
     }
+  }
+  equipmentCharacteristics() {
+    let allItems = JSON.parse(JSON.stringify(items.list()));
+    let equipment = JSON.parse(JSON.stringify(store.state.playerEquipment));
+    let item = {};
+    let bonusCharacteristics = { damage: 0, armor: 0, hp: 0 };
+
+    // Оружие
+    if (equipment.weapon > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipment.weapon) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipment.weaponDurability > 0) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipment.weaponDurability > 0) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipment.weaponDurability > 0) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Шлем
+    if (equipment.helmet > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipment.helmet) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipment.helmetDurability > 0) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipment.helmetDurability > 0) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipment.helmetDurability > 0) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Верхний доспех
+    if (equipment.upper > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipment.upper) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipment.upperDurability > 0) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipment.upperDurability > 0) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipment.upperDurability > 0) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Нижний доспех
+    if (equipment.lower > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipment.lower) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipment.lowerDurability > 0) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipment.lowerDurability > 0) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipment.lowerDurability > 0) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Перчатки
+    if (equipment.gloves > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipment.gloves) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipment.glovesDurability > 0) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipment.glovesDurability > 0) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipment.glovesDurability > 0) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Сапоги
+    if (equipment.boots > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipment.boots) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipment.bootsDurability > 0) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipment.bootsDurability > 0) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipment.bootsDurability > 0) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+          }
+        }
+      }
+    }
+    // Сохраняем бонусные характеристики в LocalStorage
+    store.state.playerEquipmentCharacteristics = bonusCharacteristics;
+    localStorage.setItem("playerEquipmentCharacteristics", JSON.stringify(bonusCharacteristics));
+  }
+  buffDuration(characteristic) {
+    const damageBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.damageBuffDuration));
+    const armorBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.armorBuffDuration));
+    const dropBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.dropBuffDuration));
+
+    switch (characteristic) {
+      case "damage":
+        if (damageBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.damage = 0;
+        }
+        break;
+      case "armor":
+        if (armorBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.armor = 0;
+        }
+        break;
+      case "drop":
+        if (dropBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.drop = 0;
+        }
+        break;
+      default:
+        break;
+    }
+
+    localStorage.setItem("playerBuffCharacteristics", JSON.stringify(store.state.playerBuffCharacteristics));
+  }
+  createInventory() {
+    let inventory = JSON.parse(JSON.stringify(store.state.playerInventory));
+    for (let i = 0; i < store.state.playerInventorySize; i++) {
+      while (inventory.length < store.state.playerInventorySize) {
+        inventory.push({});
+      }
+      Object.assign(inventory[i], { "cellId": i });
+    }
+    return inventory;
   }
 }
 
