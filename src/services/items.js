@@ -4,7 +4,7 @@ class items {
       { id: 1000, name: "Тренировочный меч", category: "sword", damage: 10, durability: 5, requiredLevel: 1, price: 20 },
       { id: 1001, name: "Железный меч", category: "sword", damage: 20, durability: 15, requiredLevel: 3, price: 90 },
       { id: 1002, name: "Стальной зазубренный резак", category: "sword", damage: 35, durability: 40, requiredLevel: 5, price: 240 },
-      { id: 1003, name: "Тестовый обезоруживатель", category: "sword", damage: 100, armor: 100, hp: 1000, evasion: 50, critChance: 100, critPower: 200, durability: 100, requiredLevel: 1, price: 1 },
+      { id: 1003, name: "Тестовый обезоруживатель", category: "sword", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200, durability: 100, requiredLevel: 1, price: 1 },
       { id: 1004, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", damage: 5000, durability: 1000, requiredLevel: 3, price: 1000000 },
     ];
     this.armorList = [
@@ -32,6 +32,7 @@ class items {
       { id: 1028, name: "НЕВЕРОЯТНЫЙ эликсир брони", category: "buffArmor", desc: "При использовании на 1 бой увеличивает защиту, урон, дроп в 10 раз. Битву проиграть становится невозможно. А если вы и проиграете, то все равно получите весь дроп и уровень станет максимальным перманентно.", amount: 15, duration: 1, requiredLevel: 5, price: 1 },
       { id: 1029, name: "Средний эликсир живучести", category: "buffHp", desc: "При использовании на 3 боя увеличивает максимальное HP на 100", amount: 100, duration: 3, requiredLevel: 1, price: 1 },
       { id: 10210, name: "НЕВЕРОЯТНЫЙ эликсир безумия", category: "buffDamage", desc: "При использовании на 21 бой увеличивает урон на 150", amount: 150, duration: 21, requiredLevel: 1, price: 1 },
+      { id: 10211, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 3000 HP", amount: 3000, requiredLevel: 1, price: 1 },
     ];
   }
 

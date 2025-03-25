@@ -105,6 +105,7 @@ export function downloadData() {
   store.state.playerCritChance = store.state.playerCritChance + store.state.playerEquipmentCharacteristics.critChance + store.state.playerBuffCharacteristics.critChance;
   store.state.playerCritPower = store.state.playerCritPower + store.state.playerEquipmentCharacteristics.critPower + store.state.playerBuffCharacteristics.critPower;
 
+  // добавить условие, что максимум уклонения 60% у определенного класса
   if (store.state.playerEvasion > store.state.playerMaxEvasion) {
     store.state.playerEvasion = store.state.playerMaxEvasion;
   }

@@ -277,6 +277,10 @@ export default {
 .result__item {
   margin-bottom: 15px;
 }
+.result-block {
+  max-height: 60vh;
+  overflow: auto;
+}
 .enemy__level {
   margin-left: 3px;
   padding: 10px 10px;
