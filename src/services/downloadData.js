@@ -31,6 +31,21 @@ export function downloadData() {
   } else {
     store.state.playerArmor = 5;
   }
+  if (localStorage.getItem("playerEvasion") != null) {
+    store.state.playerEvasion = Number(localStorage.getItem("playerEvasion"));
+  } else {
+    store.state.playerEvasion = 10;
+  }
+  if (localStorage.getItem("playerCritChance") != null) {
+    store.state.playerCritChance = Number(localStorage.getItem("playerCritChance"));
+  } else {
+    store.state.playerCritChance = 10;
+  }
+  if (localStorage.getItem("playerCritPower") != null) {
+    store.state.playerCritPower = Number(localStorage.getItem("playerCritPower"));
+  } else {
+    store.state.playerCritPower = 30;
+  }
   if (localStorage.getItem("playerGold") != null) {
     store.state.playerGold = Number(localStorage.getItem("playerGold"));
   } else {
@@ -74,18 +89,32 @@ export function downloadData() {
   if (localStorage.getItem("playerEquipmentCharacteristics") != null) {
     store.state.playerEquipmentCharacteristics = JSON.parse(localStorage.getItem("playerEquipmentCharacteristics"));
   } else {
-    store.state.playerEquipmentCharacteristics = { damage: 0, armor: 0, hp: 0 };
+    store.state.playerEquipmentCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
   }
   if (localStorage.getItem("playerBuffCharacteristics") != null) {
     store.state.playerBuffCharacteristics = JSON.parse(localStorage.getItem("playerBuffCharacteristics"));
   } else {
-    store.state.playerBuffCharacteristics = { damage: 0, armor: 0, hp: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, dropBuffDuration: 0 };
+    store.state.playerBuffCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, evasionBuffDuration: 0, critChanceBuffDuration: 0, critPowerBuffDuration: 0, dropBuffDuration: 0 };
   }
 
   // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов
   store.state.playerDamage = store.state.playerDamage + store.state.playerLevelCharacteristics.damage + store.state.playerEquipmentCharacteristics.damage + store.state.playerBuffCharacteristics.damage;
   store.state.playerArmor = store.state.playerArmor + store.state.playerLevelCharacteristics.armor + store.state.playerEquipmentCharacteristics.armor + store.state.playerBuffCharacteristics.armor;
-  store.state.playerMaxHp = store.state.playerMaxHp + store.state.playerLevelCharacteristics.hp + store.state.playerEquipmentCharacteristics.hp;
+  store.state.playerMaxHp = store.state.playerMaxHp + store.state.playerLevelCharacteristics.hp + store.state.playerEquipmentCharacteristics.hp + store.state.playerBuffCharacteristics.hp;
+  store.state.playerEvasion = store.state.playerEvasion + store.state.playerEquipmentCharacteristics.evasion + store.state.playerBuffCharacteristics.evasion;
+  store.state.playerCritChance = store.state.playerCritChance + store.state.playerEquipmentCharacteristics.critChance + store.state.playerBuffCharacteristics.critChance;
+  store.state.playerCritPower = store.state.playerCritPower + store.state.playerEquipmentCharacteristics.critPower + store.state.playerBuffCharacteristics.critPower;
+
+  // добавить условие, что максимум уклонения 60% у определенного класса
+  if (store.state.playerEvasion > store.state.playerMaxEvasion) {
+    store.state.playerEvasion = store.state.playerMaxEvasion;
+  }
+  if (store.state.playerCritChance > 100) {
+    store.state.playerCritChance = 100;
+  }
+  if (store.state.playerCritPower > store.state.playerMaxCritPower) {
+    store.state.playerCritPower = store.state.playerMaxCritPower;
+  }
 
   if (store.state.playerCurrentHp > store.state.playerMaxHp) {
     store.state.playerCurrentHp = store.state.playerMaxHp;

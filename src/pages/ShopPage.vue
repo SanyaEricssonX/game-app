@@ -56,6 +56,21 @@
                 <span class="item__desc" v-show="item.hp && item.hp > 0"
                   >HP: {{ item.hp }}</span
                 >
+                <span
+                  class="item__desc"
+                  v-show="item.evasion && item.evasion > 0"
+                  >Уклонение: {{ item.evasion }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.critChance && item.critChance > 0"
+                  >Крит шанс: {{ item.critChance }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.critPower && item.critPower > 0"
+                  >Крит сила: {{ item.critPower }}</span
+                >
                 <span class="item__desc">Прочность: {{ item.durability }}</span>
                 <span class="item__desc"
                   >Уровень: {{ item.requiredLevel }}</span
@@ -96,6 +111,21 @@
                 >
                 <span class="item__desc" v-show="item.hp && item.hp > 0"
                   >HP: {{ item.hp }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.evasion && item.evasion > 0"
+                  >Уклонение: {{ item.evasion }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.critChance && item.critChance > 0"
+                  >Крит шанс: {{ item.critChance }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.critPower && item.critPower > 0"
+                  >Крит сила: {{ item.critPower }}</span
                 >
                 <span class="item__desc">Прочность: {{ item.durability }}</span>
                 <span class="item__desc"
@@ -266,6 +296,7 @@
       >
         Ваши предметы не неуждаются в починке
       </div>
+
       <div class="shop-box" v-if="selectedTab == 5">
         <ul class="item-list">
           <li class="list__item" v-for="item in playerInventory" :key="item.id">
@@ -281,6 +312,21 @@
                 >
                 <span class="item__desc" v-show="item.hp && item.hp > 0"
                   >HP: {{ item.hp }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.evasion && item.evasion > 0"
+                  >Уклонение: {{ item.evasion }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.critChance && item.critChance > 0"
+                  >Крит шанс: {{ item.critChance }}</span
+                >
+                <span
+                  class="item__desc"
+                  v-show="item.critPower && item.critPower > 0"
+                  >Крит сила: {{ item.critPower }}</span
                 >
                 <div class="desc-box" v-show="item.desc">
                   <span class="item__desc desc">{{ item.desc }}</span>
@@ -338,9 +384,19 @@ export default {
       selectedTab: 1,
     };
   },
-  computed: {},
+  computed: {
+    triggerUpdateShop() {
+      return this.$store.state.triggerUpdateShop;
+    },
+  },
   components: {},
-  watch: {},
+  watch: {
+    triggerUpdateShop(newValue) {
+      if (newValue) {
+        this.createEquipment();
+      }
+    },
+  },
   methods: {
     createEquipment() {
       this.playerEquipment = [];

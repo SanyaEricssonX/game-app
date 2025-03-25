@@ -92,6 +92,9 @@ class player {
       localStorage.removeItem("playerCurrentHp");
       localStorage.removeItem("playerDamage");
       localStorage.removeItem("playerArmor");
+      localStorage.removeItem("playerEvasion");
+      localStorage.removeItem("playerCritChance");
+      localStorage.removeItem("playerCritPower");
       localStorage.removeItem("playerLevelCharacteristics");
       localStorage.removeItem("playerBuffCharacteristics");
 
@@ -127,8 +130,7 @@ class player {
   equipmentCharacteristics() {
     let allItems = JSON.parse(JSON.stringify(items.list()));
     let equipment = JSON.parse(JSON.stringify(store.state.playerEquipment));
-    let item = {};
-    let bonusCharacteristics = { damage: 0, armor: 0, hp: 0 };
+    let bonusCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
 
     // Оружие
     if (equipment.weapon > 0) {
@@ -157,6 +159,30 @@ class player {
                 bonusCharacteristics.hp += item[characteristic];
               } else {
                 bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipment.weaponDurability > 0) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipment.weaponDurability > 0) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipment.weaponDurability > 0) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
               }
             }
           }
@@ -193,6 +219,30 @@ class player {
                 bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
               }
             }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipment.helmetDurability > 0) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipment.helmetDurability > 0) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipment.helmetDurability > 0) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
+              }
+            }
           }
         }
       }
@@ -225,6 +275,30 @@ class player {
                 bonusCharacteristics.hp += item[characteristic];
               } else {
                 bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipment.upperDurability > 0) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipment.upperDurability > 0) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipment.upperDurability > 0) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
               }
             }
           }
@@ -261,6 +335,30 @@ class player {
                 bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
               }
             }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipment.lowerDurability > 0) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipment.lowerDurability > 0) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipment.lowerDurability > 0) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
+              }
+            }
           }
         }
       }
@@ -293,6 +391,30 @@ class player {
                 bonusCharacteristics.hp += item[characteristic];
               } else {
                 bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipment.glovesDurability > 0) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipment.glovesDurability > 0) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipment.glovesDurability > 0) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
               }
             }
           }
@@ -329,6 +451,30 @@ class player {
                 bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
               }
             }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipment.bootsDurability > 0) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipment.bootsDurability > 0) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipment.bootsDurability > 0) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
+              }
+            }
           }
         }
       }
@@ -340,6 +486,10 @@ class player {
   buffDuration(characteristic) {
     const damageBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.damageBuffDuration));
     const armorBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.armorBuffDuration));
+    const hpBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.hpBuffDuration));
+    const evasionBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.evasionBuffDuration));
+    const critChanceBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.critChanceBuffDuration));
+    const critPowerBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.critPowerBuffDuration));
     const dropBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.dropBuffDuration));
 
     switch (characteristic) {
@@ -351,6 +501,26 @@ class player {
       case "armor":
         if (armorBuffDuration == 0) {
           store.state.playerBuffCharacteristics.armor = 0;
+        }
+        break;
+      case "hp":
+        if (hpBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.hp = 0;
+        }
+        break;
+      case "evasion":
+        if (evasionBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.evasion = 0;
+        }
+        break;
+      case "critChance":
+        if (critChanceBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.critChance = 0;
+        }
+        break;
+      case "critPower":
+        if (critPowerBuffDuration == 0) {
+          store.state.playerBuffCharacteristics.critPower = 0;
         }
         break;
       case "drop":

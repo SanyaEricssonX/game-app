@@ -60,6 +60,9 @@ export default {
         this.$store.state.playerCurrentHp,
         this.$store.state.playerDamage,
         this.$store.state.playerArmor,
+        this.$store.state.playerEvasion,
+        this.$store.state.playerCritChance,
+        this.$store.state.playerCritPower,
         enemy
       );
 
@@ -102,24 +105,50 @@ export default {
 
         // Дроп
         const drop = enemies.randomDrop(enemy.id);
-        this.$store.state.playerGold += Math.floor(
-          Math.random() * drop.gold + 1
-        );
-        if (drop.wood != 0) {
-          this.$store.state.playerResources.wood += Math.floor(
-            Math.random() * (drop.wood - 1 + 1) + 1
+        const minDropGold = Math.floor(drop.gold / 1.4);
+
+        if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
+          this.$store.state.playerGold +=
+            Math.floor(
+              Math.random() * (drop.gold - minDropGold) + minDropGold
+            ) * this.$store.state.playerBuffCharacteristics.drop;
+
+          if (drop.wood != 0) {
+            this.$store.state.playerResources.wood +=
+              Math.floor(Math.random() * (drop.wood - 1 + 1) + 1) *
+              this.$store.state.playerBuffCharacteristics.drop;
+          }
+          if (drop.stone != 0) {
+            this.$store.state.playerResources.stone +=
+              Math.floor(Math.random() * (drop.stone - 1 + 1) + 1) *
+              this.$store.state.playerBuffCharacteristics.drop;
+          }
+          if (drop.iron != 0) {
+            this.$store.state.playerResources.iron +=
+              Math.floor(Math.random() * (drop.iron - 1 + 1) + 1) *
+              this.$store.state.playerBuffCharacteristics.drop;
+          }
+        } else {
+          this.$store.state.playerGold += Math.floor(
+            Math.random() * (drop.gold - minDropGold) + minDropGold
           );
+          if (drop.wood != 0) {
+            this.$store.state.playerResources.wood += Math.floor(
+              Math.random() * (drop.wood - 1 + 1) + 1
+            );
+          }
+          if (drop.stone != 0) {
+            this.$store.state.playerResources.stone += Math.floor(
+              Math.random() * (drop.stone - 1 + 1) + 1
+            );
+          }
+          if (drop.iron != 0) {
+            this.$store.state.playerResources.iron += Math.floor(
+              Math.random() * (drop.iron - 1 + 1) + 1
+            );
+          }
         }
-        if (drop.stone != 0) {
-          this.$store.state.playerResources.stone += Math.floor(
-            Math.random() * (drop.stone - 1 + 1) + 1
-          );
-        }
-        if (drop.iron != 0) {
-          this.$store.state.playerResources.iron += Math.floor(
-            Math.random() * (drop.iron - 1 + 1) + 1
-          );
-        }
+
         localStorage.setItem("playerGold", this.$store.state.playerGold);
         localStorage.setItem(
           "resourcesWood",
@@ -145,6 +174,28 @@ export default {
           this.$store.state.playerBuffCharacteristics.armorBuffDuration -= 1;
           player.buffDuration("armor");
         }
+        if (this.$store.state.playerBuffCharacteristics.hpBuffDuration > 0) {
+          this.$store.state.playerBuffCharacteristics.hpBuffDuration -= 1;
+          player.buffDuration("hp");
+        }
+        if (
+          this.$store.state.playerBuffCharacteristics.evasionBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.evasionBuffDuration -= 1;
+          player.buffDuration("evasion");
+        }
+        if (
+          this.$store.state.playerBuffCharacteristics.critChanceBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.critChanceBuffDuration -= 1;
+          player.buffDuration("critChance");
+        }
+        if (
+          this.$store.state.playerBuffCharacteristics.critPowerBuffDuration > 0
+        ) {
+          this.$store.state.playerBuffCharacteristics.critPowerBuffDuration -= 1;
+          player.buffDuration("critPower");
+        }
         if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
           this.$store.state.playerBuffCharacteristics.dropBuffDuration -= 1;
           player.buffDuration("drop");
@@ -169,6 +220,7 @@ export default {
         if (this.$store.state.playerEquipment.bootsDurability > 0) {
           this.$store.state.playerEquipment.bootsDurability -= 1;
         }
+
         localStorage.setItem(
           "playerEquipment",
           JSON.stringify(this.$store.state.playerEquipment)
@@ -224,6 +276,10 @@ export default {
 }
 .result__item {
   margin-bottom: 15px;
+}
+.result-block {
+  max-height: 60vh;
+  overflow: auto;
 }
 .enemy__level {
   margin-left: 3px;
