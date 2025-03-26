@@ -13,7 +13,7 @@ class enemies {
       { id: 8, name: "Арахнид", level: 3, hp: 90, damage: 25, armor: 3, evasion: 10, critChance: 10, critPower: 50, experience: 80, time: 1000 },
       { id: 9, name: "Ассассин", level: 4, hp: 120, damage: 50, armor: 4, evasion: 30, critChance: 30, critPower: 70, experience: 150, time: 1000 },
       { id: 10, name: "Тролль", level: 5, hp: 200, damage: 60, armor: 10, evasion: 10, critChance: 20, critPower: 50, experience: 260, time: 1000 },
-      { id: -1, name: "Тестовый", level: -5, hp: 10000, damage: 50, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 500, time: 1000 },
+      { id: -1, name: "Тестовый", level: -5, hp: 10000, damage: 500, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 500, time: 1000 },
       { id: -2, name: "Тестовый", level: -10, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3000, time: 1000 },
       { id: -3, name: "Тестовый", level: -13, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 5700, time: 1000 },
       { id: -4, name: "Тестовый", level: -17, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 10700, time: 1000 },

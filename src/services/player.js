@@ -105,6 +105,9 @@ class player {
       store.state.playerEquipment.glovesDurability = 0;
       store.state.playerEquipment.bootsDurability = 0;
 
+      localStorage.setItem("playerEquipment", JSON.stringify(store.state.playerEquipment));
+
+      downloadData();
       this.equipmentCharacteristics()
       downloadData();
     }
@@ -119,6 +122,8 @@ class player {
     // 50 - 50%
     // 70 - 58%
     // 100 - 66%
+    // 300 - 86%
+    // 1000 - 96%
   }
 
   levelUpInfo() {
@@ -127,358 +132,101 @@ class player {
       return this.infoByLevel[level];
     }
   }
-  equipmentCharacteristics() {
+
+  findBonusCharacteristics(equipmentCategory, equipmentDurability) {
     let allItems = JSON.parse(JSON.stringify(items.list()));
+    let bonusCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
+
+    if (equipmentCategory > 0) {
+      for (let i = 0; i < allItems.length; i++) {
+        if (allItems[i].id == equipmentCategory) {
+          for (let characteristic in allItems[i]) {
+            if (characteristic == "damage") {
+              let item = allItems[i];
+              if (equipmentDurability > 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.damage += item[characteristic];
+              } else if (equipmentDurability == 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
+              } else if (equipmentDurability >= 0 && item.requiredLevel > store.state.playerLevel) {
+                bonusCharacteristics.damage += 0;
+              }
+            }
+            if (characteristic == "armor") {
+              let item = allItems[i];
+              if (equipmentDurability > 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.armor += item[characteristic];
+              } else if (equipmentDurability == 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
+              } else if (equipmentDurability >= 0 && item.requiredLevel > store.state.playerLevel) {
+                bonusCharacteristics.armor += 0;
+              }
+            }
+            if (characteristic == "hp") {
+              let item = allItems[i];
+              if (equipmentDurability > 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.hp += item[characteristic];
+              } else if (equipmentDurability == 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
+              } else if (equipmentDurability >= 0 && item.requiredLevel > store.state.playerLevel) {
+                bonusCharacteristics.hp += 0;
+              }
+            }
+            if (characteristic == "evasion") {
+              let item = allItems[i];
+              if (equipmentDurability > 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.evasion += item[characteristic];
+              } else if (equipmentDurability == 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
+              } else if (equipmentDurability >= 0 && item.requiredLevel > store.state.playerLevel) {
+                bonusCharacteristics.evasion += 0;
+              }
+            }
+            if (characteristic == "critChance") {
+              let item = allItems[i];
+              if (equipmentDurability > 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.critChance += item[characteristic];
+              } else if (equipmentDurability == 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
+              } else if (equipmentDurability >= 0 && item.requiredLevel > store.state.playerLevel) {
+                bonusCharacteristics.critChance += 0;
+              }
+            }
+            if (characteristic == "critPower") {
+              let item = allItems[i];
+              if (equipmentDurability > 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.critPower += item[characteristic];
+              } else if (equipmentDurability == 0 && item.requiredLevel <= store.state.playerLevel) {
+                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
+              } else if (equipmentDurability >= 0 && item.requiredLevel > store.state.playerLevel) {
+                bonusCharacteristics.critPower += 0;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return bonusCharacteristics;
+  }
+
+  equipmentCharacteristics() {
     let equipment = JSON.parse(JSON.stringify(store.state.playerEquipment));
     let bonusCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
 
-    // Оружие
-    if (equipment.weapon > 0) {
-      for (let i = 0; i < allItems.length; i++) {
-        if (allItems[i].id == equipment.weapon) {
-          for (let characteristic in allItems[i]) {
-            if (characteristic == "damage") {
-              let item = allItems[i];
-              if (equipment.weaponDurability > 0) {
-                bonusCharacteristics.damage += item[characteristic];
-              } else {
-                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "armor") {
-              let item = allItems[i];
-              if (equipment.weaponDurability > 0) {
-                bonusCharacteristics.armor += item[characteristic];
-              } else {
-                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "hp") {
-              let item = allItems[i];
-              if (equipment.weaponDurability > 0) {
-                bonusCharacteristics.hp += item[characteristic];
-              } else {
-                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "evasion") {
-              let item = allItems[i];
-              if (equipment.weaponDurability > 0) {
-                bonusCharacteristics.evasion += item[characteristic];
-              } else {
-                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critChance") {
-              let item = allItems[i];
-              if (equipment.weaponDurability > 0) {
-                bonusCharacteristics.critChance += item[characteristic];
-              } else {
-                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critPower") {
-              let item = allItems[i];
-              if (equipment.weaponDurability > 0) {
-                bonusCharacteristics.critPower += item[characteristic];
-              } else {
-                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
-              }
-            }
-          }
-        }
-      }
-    }
+    const sum = {};
 
-    // Шлем
-    if (equipment.helmet > 0) {
-      for (let i = 0; i < allItems.length; i++) {
-        if (allItems[i].id == equipment.helmet) {
-          for (let characteristic in allItems[i]) {
-            if (characteristic == "damage") {
-              let item = allItems[i];
-              if (equipment.helmetDurability > 0) {
-                bonusCharacteristics.damage += item[characteristic];
-              } else {
-                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "armor") {
-              let item = allItems[i];
-              if (equipment.helmetDurability > 0) {
-                bonusCharacteristics.armor += item[characteristic];
-              } else {
-                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "hp") {
-              let item = allItems[i];
-              if (equipment.helmetDurability > 0) {
-                bonusCharacteristics.hp += item[characteristic];
-              } else {
-                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "evasion") {
-              let item = allItems[i];
-              if (equipment.helmetDurability > 0) {
-                bonusCharacteristics.evasion += item[characteristic];
-              } else {
-                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critChance") {
-              let item = allItems[i];
-              if (equipment.helmetDurability > 0) {
-                bonusCharacteristics.critChance += item[characteristic];
-              } else {
-                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critPower") {
-              let item = allItems[i];
-              if (equipment.helmetDurability > 0) {
-                bonusCharacteristics.critPower += item[characteristic];
-              } else {
-                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
-              }
-            }
-          }
-        }
-      }
+    // Собираем все характеристики со всей экипировки
+    for (const key in bonusCharacteristics) {
+      sum[key] = bonusCharacteristics[key] +
+        ((this.findBonusCharacteristics(equipment.weapon, equipment.weaponDurability)[key] || 0)) +
+        ((this.findBonusCharacteristics(equipment.helmet, equipment.helmetDurability)[key] || 0)) +
+        ((this.findBonusCharacteristics(equipment.upper, equipment.upperDurability)[key] || 0)) +
+        ((this.findBonusCharacteristics(equipment.lower, equipment.lowerDurability)[key] || 0)) +
+        ((this.findBonusCharacteristics(equipment.gloves, equipment.glovesDurability)[key] || 0)) +
+        ((this.findBonusCharacteristics(equipment.boots, equipment.bootsDurability)[key] || 0))
     }
+    bonusCharacteristics = sum;
 
-    // Верхний доспех
-    if (equipment.upper > 0) {
-      for (let i = 0; i < allItems.length; i++) {
-        if (allItems[i].id == equipment.upper) {
-          for (let characteristic in allItems[i]) {
-            if (characteristic == "damage") {
-              let item = allItems[i];
-              if (equipment.upperDurability > 0) {
-                bonusCharacteristics.damage += item[characteristic];
-              } else {
-                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "armor") {
-              let item = allItems[i];
-              if (equipment.upperDurability > 0) {
-                bonusCharacteristics.armor += item[characteristic];
-              } else {
-                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "hp") {
-              let item = allItems[i];
-              if (equipment.upperDurability > 0) {
-                bonusCharacteristics.hp += item[characteristic];
-              } else {
-                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "evasion") {
-              let item = allItems[i];
-              if (equipment.upperDurability > 0) {
-                bonusCharacteristics.evasion += item[characteristic];
-              } else {
-                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critChance") {
-              let item = allItems[i];
-              if (equipment.upperDurability > 0) {
-                bonusCharacteristics.critChance += item[characteristic];
-              } else {
-                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critPower") {
-              let item = allItems[i];
-              if (equipment.upperDurability > 0) {
-                bonusCharacteristics.critPower += item[characteristic];
-              } else {
-                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // Нижний доспех
-    if (equipment.lower > 0) {
-      for (let i = 0; i < allItems.length; i++) {
-        if (allItems[i].id == equipment.lower) {
-          for (let characteristic in allItems[i]) {
-            if (characteristic == "damage") {
-              let item = allItems[i];
-              if (equipment.lowerDurability > 0) {
-                bonusCharacteristics.damage += item[characteristic];
-              } else {
-                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "armor") {
-              let item = allItems[i];
-              if (equipment.lowerDurability > 0) {
-                bonusCharacteristics.armor += item[characteristic];
-              } else {
-                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "hp") {
-              let item = allItems[i];
-              if (equipment.lowerDurability > 0) {
-                bonusCharacteristics.hp += item[characteristic];
-              } else {
-                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "evasion") {
-              let item = allItems[i];
-              if (equipment.lowerDurability > 0) {
-                bonusCharacteristics.evasion += item[characteristic];
-              } else {
-                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critChance") {
-              let item = allItems[i];
-              if (equipment.lowerDurability > 0) {
-                bonusCharacteristics.critChance += item[characteristic];
-              } else {
-                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critPower") {
-              let item = allItems[i];
-              if (equipment.lowerDurability > 0) {
-                bonusCharacteristics.critPower += item[characteristic];
-              } else {
-                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // Перчатки
-    if (equipment.gloves > 0) {
-      for (let i = 0; i < allItems.length; i++) {
-        if (allItems[i].id == equipment.gloves) {
-          for (let characteristic in allItems[i]) {
-            if (characteristic == "damage") {
-              let item = allItems[i];
-              if (equipment.glovesDurability > 0) {
-                bonusCharacteristics.damage += item[characteristic];
-              } else {
-                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "armor") {
-              let item = allItems[i];
-              if (equipment.glovesDurability > 0) {
-                bonusCharacteristics.armor += item[characteristic];
-              } else {
-                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "hp") {
-              let item = allItems[i];
-              if (equipment.glovesDurability > 0) {
-                bonusCharacteristics.hp += item[characteristic];
-              } else {
-                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "evasion") {
-              let item = allItems[i];
-              if (equipment.glovesDurability > 0) {
-                bonusCharacteristics.evasion += item[characteristic];
-              } else {
-                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critChance") {
-              let item = allItems[i];
-              if (equipment.glovesDurability > 0) {
-                bonusCharacteristics.critChance += item[characteristic];
-              } else {
-                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critPower") {
-              let item = allItems[i];
-              if (equipment.glovesDurability > 0) {
-                bonusCharacteristics.critPower += item[characteristic];
-              } else {
-                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // Сапоги
-    if (equipment.boots > 0) {
-      for (let i = 0; i < allItems.length; i++) {
-        if (allItems[i].id == equipment.boots) {
-          for (let characteristic in allItems[i]) {
-            if (characteristic == "damage") {
-              let item = allItems[i];
-              if (equipment.bootsDurability > 0) {
-                bonusCharacteristics.damage += item[characteristic];
-              } else {
-                bonusCharacteristics.damage += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "armor") {
-              let item = allItems[i];
-              if (equipment.bootsDurability > 0) {
-                bonusCharacteristics.armor += item[characteristic];
-              } else {
-                bonusCharacteristics.armor += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "hp") {
-              let item = allItems[i];
-              if (equipment.bootsDurability > 0) {
-                bonusCharacteristics.hp += item[characteristic];
-              } else {
-                bonusCharacteristics.hp += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "evasion") {
-              let item = allItems[i];
-              if (equipment.bootsDurability > 0) {
-                bonusCharacteristics.evasion += item[characteristic];
-              } else {
-                bonusCharacteristics.evasion += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critChance") {
-              let item = allItems[i];
-              if (equipment.bootsDurability > 0) {
-                bonusCharacteristics.critChance += item[characteristic];
-              } else {
-                bonusCharacteristics.critChance += Math.floor((item[characteristic]) / 2);
-              }
-            }
-            if (characteristic == "critPower") {
-              let item = allItems[i];
-              if (equipment.bootsDurability > 0) {
-                bonusCharacteristics.critPower += item[characteristic];
-              } else {
-                bonusCharacteristics.critPower += Math.floor((item[characteristic]) / 2);
-              }
-            }
-          }
-        }
-      }
-    }
     // Сохраняем бонусные характеристики в LocalStorage
     store.state.playerEquipmentCharacteristics = bonusCharacteristics;
     localStorage.setItem("playerEquipmentCharacteristics", JSON.stringify(bonusCharacteristics));
