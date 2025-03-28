@@ -10,11 +10,15 @@ class player {
     this.increaseDamagePerLevel = [2, 5, 9, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85];
     this.increaseMaxHpPerLevel = [10, 21, 33, 46, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270];
     this.increaseArmorPerLevel = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28];
-    this.warriorProfessionCharacteristics = { damage: 20, critChance: 15, critPower: 20 };
-    this.knightProfessionCharacteristics = { hp: 25, armor: 30, evasion: -50 };
-    this.assassinProfessionCharacteristics = { damage: -10, armor: -20, hp: -10, evasion: 10, critChance: 25, critPower: 70 };
-    this.berserkProfessionCharacteristics = { damage: 100, hp: -20, armor: -50, evasion: 10, critChance: 15, critPower: 20 };
-    this.gladiatorProfessionCharacteristics = { damage: 30, hp: 10, evasion: 20, critChance: 35, critPower: 70 };
+    this.warriorProfessionCharacteristics = { damage: 30, critChance: 15, critPower: 20 };
+    this.knightProfessionCharacteristics = { armor: 30, hp: 25, evasion: -50 };
+    this.assassinProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 25, critPower: 70 };
+    this.berserkProfessionCharacteristics = { damage: 100, armor: -20, hp: -20, evasion: 10, critChance: 15, critPower: 20 };
+    this.gladiatorProfessionCharacteristics = { damage: 30, hp: 10, evasion: 20, critChance: 25, critPower: 70 };
+    this.templarProfessionCharacteristics = { armor: 50, hp: 50, evasion: -50 };
+    this.titanProfessionCharacteristics = { damage: 15, armor: 30, hp: 25, evasion: -50, critChance: 15, critPower: 20 };
+    this.reaperProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 35, critPower: 120 };
+    this.pathfinderProfessionCharacteristics = { damage: 15, armor: 10, hp: 10, evasion: 30, critChance: 25, critPower: 70 };
     this.isLevelIncreased = false;
     this.infoByLevel = {
       2: ["Получен доступ к крафту предметов", "Доступны новые товары в магазине"],
@@ -248,6 +252,18 @@ class player {
       store.state.playerProfessionCharacteristics = this.knightProfessionCharacteristics;
     } else if (store.state.playerProfession == "assassin") {
       store.state.playerProfessionCharacteristics = this.assassinProfessionCharacteristics;
+    } else if (store.state.playerProfession == "berserk") {
+      store.state.playerProfessionCharacteristics = this.berserkProfessionCharacteristics;
+    } else if (store.state.playerProfession == "gladiator") {
+      store.state.playerProfessionCharacteristics = this.gladiatorProfessionCharacteristics;
+    } else if (store.state.playerProfession == "templar") {
+      store.state.playerProfessionCharacteristics = this.templarProfessionCharacteristics;
+    } else if (store.state.playerProfession == "titan") {
+      store.state.playerProfessionCharacteristics = this.titanProfessionCharacteristics;
+    } else if (store.state.playerProfession == "reaper") {
+      store.state.playerProfessionCharacteristics = this.reaperProfessionCharacteristics;
+    } else if (store.state.playerProfession == "pathfinder") {
+      store.state.playerProfessionCharacteristics = this.pathfinderProfessionCharacteristics;
     }
 
     localStorage.setItem("playerProfessionCharacteristics", JSON.stringify(store.state.playerProfessionCharacteristics));

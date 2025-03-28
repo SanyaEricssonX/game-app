@@ -180,7 +180,7 @@ export function downloadData() {
       store.state.playerBuffCharacteristics.critPower;
   }
 
-  if (store.state.playerProfession == "assassin") {
+  if (store.state.playerProfession == "assassin" || store.state.playerProfession == "reaper" || store.state.playerProfession == "pathfinder") {
     store.state.playerMaxEvasion = 60;
     localStorage.setItem("playerMaxEvasion", 60);
   }

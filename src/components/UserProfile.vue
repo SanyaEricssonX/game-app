@@ -34,9 +34,7 @@
         </base-button>
       </div>
 
-      <span class="profession__title" v-else>{{
-        $store.state.playerProfession
-      }}</span>
+      <span class="profession__title" v-else>{{ profession() }}</span>
     </div>
 
     <div class="profile-block">
@@ -223,7 +221,9 @@ export default {
   extends: {},
   props: {},
   data() {
-    return {};
+    return {
+      playerProfession: "",
+    };
   },
   computed: {},
   components: {},
@@ -260,6 +260,31 @@ export default {
         return "боев";
       }
     },
+
+    profession() {
+      switch (this.$store.state.playerProfession) {
+        case "warrior":
+          return "Воин";
+        case "knight":
+          return "Рыцарь";
+        case "assassin":
+          return "Ассассин";
+        case "berserk":
+          return "Берсерк";
+        case "gladiator":
+          return "Гладиатор";
+        case "templar":
+          return "Храмовник";
+        case "titan":
+          return "Титан";
+        case "reaper":
+          return "Жнец";
+        case "pathfinder":
+          return "Следопыт";
+        default:
+          break;
+      }
+    },
   },
   updated() {},
   beforeCreate() {},
@@ -291,6 +316,10 @@ export default {
 .profession__btn:hover {
   background-color: var(--color-light);
   color: var(--color-dark);
+}
+.profession__title {
+  width: 100%;
+  font-family: Bahnschrift;
 }
 .profile__header {
   margin-bottom: 20px;
