@@ -10,12 +10,18 @@ class player {
     this.increaseDamagePerLevel = [2, 5, 9, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85];
     this.increaseMaxHpPerLevel = [10, 21, 33, 46, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270];
     this.increaseArmorPerLevel = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28];
+    this.warriorProfessionCharacteristics = { damage: 20, critChance: 15, critPower: 20 };
+    this.knightProfessionCharacteristics = { hp: 25, armor: 30, evasion: -50 };
+    this.assassinProfessionCharacteristics = { damage: -10, armor: -20, hp: -10, evasion: 10, critChance: 25, critPower: 70 };
+    this.berserkProfessionCharacteristics = { damage: 100, hp: -20, armor: -50, evasion: 10, critChance: 15, critPower: 20 };
+    this.gladiatorProfessionCharacteristics = { damage: 30, hp: 10, evasion: 20, critChance: 35, critPower: 70 };
     this.isLevelIncreased = false;
     this.infoByLevel = {
       2: ["Получен доступ к крафту предметов", "Доступны новые товары в магазине"],
       3: ["Доступны новые товары в магазине"],
-      4: ["Доступен выбор профессии"],
-      5: ["Доступно строительство", "Доступны новые товары в магазине"]
+      4: ["Доступен выбор воплощения"],
+      5: ["Доступно строительство", "Доступны новые товары в магазине"],
+      13: ["Доступен второй акт воплощения", "Доступны новые товары в магазине"],
     };
   }
 
@@ -97,6 +103,9 @@ class player {
       localStorage.removeItem("playerCritPower");
       localStorage.removeItem("playerLevelCharacteristics");
       localStorage.removeItem("playerBuffCharacteristics");
+      localStorage.removeItem("playerProfessionCharacteristics");
+      localStorage.removeItem("playerProfession");
+      localStorage.removeItem("playerMaxEvasion");
 
       store.state.playerEquipment.weaponDurability = 0;
       store.state.playerEquipment.helmetDurability = 0;
@@ -127,7 +136,7 @@ class player {
   }
 
   levelUpInfo() {
-    if (store.state.playerLevel <= 5) {
+    if (store.state.playerLevel <= 20) {
       const level = store.state.playerLevel;
       return this.infoByLevel[level];
     }
@@ -231,6 +240,19 @@ class player {
     store.state.playerEquipmentCharacteristics = bonusCharacteristics;
     localStorage.setItem("playerEquipmentCharacteristics", JSON.stringify(bonusCharacteristics));
   }
+
+  professionCharacteristics() {
+    if (store.state.playerProfession == "warrior") {
+      store.state.playerProfessionCharacteristics = this.warriorProfessionCharacteristics;
+    } else if (store.state.playerProfession == "knight") {
+      store.state.playerProfessionCharacteristics = this.knightProfessionCharacteristics;
+    } else if (store.state.playerProfession == "assassin") {
+      store.state.playerProfessionCharacteristics = this.assassinProfessionCharacteristics;
+    }
+
+    localStorage.setItem("playerProfessionCharacteristics", JSON.stringify(store.state.playerProfessionCharacteristics));
+  }
+
   buffDuration(characteristic) {
     const damageBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.damageBuffDuration));
     const armorBuffDuration = JSON.parse(JSON.stringify(store.state.playerBuffCharacteristics.armorBuffDuration));

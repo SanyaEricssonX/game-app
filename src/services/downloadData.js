@@ -39,12 +39,17 @@ export function downloadData() {
   if (localStorage.getItem("playerCritChance") != null) {
     store.state.playerCritChance = Number(localStorage.getItem("playerCritChance"));
   } else {
-    store.state.playerCritChance = 10;
+    store.state.playerCritChance = 5;
   }
   if (localStorage.getItem("playerCritPower") != null) {
     store.state.playerCritPower = Number(localStorage.getItem("playerCritPower"));
   } else {
     store.state.playerCritPower = 30;
+  }
+  if (localStorage.getItem("playerProfession") != null) {
+    store.state.playerProfession = localStorage.getItem("playerProfession");
+  } else {
+    store.state.playerProfession = "standart";
   }
   if (localStorage.getItem("playerGold") != null) {
     store.state.playerGold = Number(localStorage.getItem("playerGold"));
@@ -96,24 +101,105 @@ export function downloadData() {
   } else {
     store.state.playerBuffCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, evasionBuffDuration: 0, critChanceBuffDuration: 0, critPowerBuffDuration: 0, dropBuffDuration: 0 };
   }
+  if (localStorage.getItem("playerProfessionCharacteristics") != null) {
+    store.state.playerProfessionCharacteristics = JSON.parse(localStorage.getItem("playerProfessionCharacteristics"))
+  } else {
+    store.state.playerProfessionCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
+  }
 
-  // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов
-  store.state.playerDamage = store.state.playerDamage + store.state.playerLevelCharacteristics.damage + store.state.playerEquipmentCharacteristics.damage + store.state.playerBuffCharacteristics.damage;
-  store.state.playerArmor = store.state.playerArmor + store.state.playerLevelCharacteristics.armor + store.state.playerEquipmentCharacteristics.armor + store.state.playerBuffCharacteristics.armor;
-  store.state.playerMaxHp = store.state.playerMaxHp + store.state.playerLevelCharacteristics.hp + store.state.playerEquipmentCharacteristics.hp + store.state.playerBuffCharacteristics.hp;
-  store.state.playerEvasion = store.state.playerEvasion + store.state.playerEquipmentCharacteristics.evasion + store.state.playerBuffCharacteristics.evasion;
-  store.state.playerCritChance = store.state.playerCritChance + store.state.playerEquipmentCharacteristics.critChance + store.state.playerBuffCharacteristics.critChance;
-  store.state.playerCritPower = store.state.playerCritPower + store.state.playerEquipmentCharacteristics.critPower + store.state.playerBuffCharacteristics.critPower;
+  // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов, бафов и профессии
+  if (store.state.playerProfessionCharacteristics.damage) {
+    const damage = store.state.playerDamage +
+      store.state.playerLevelCharacteristics.damage +
+      store.state.playerEquipmentCharacteristics.damage;
 
-  // добавить условие, что максимум уклонения 60% у определенного класса
+    store.state.playerDamage = damage + Math.floor(damage / 100 * store.state.playerProfessionCharacteristics.damage) + store.state.playerBuffCharacteristics.damage;
+  } else {
+    store.state.playerDamage = store.state.playerDamage +
+      store.state.playerLevelCharacteristics.damage +
+      store.state.playerEquipmentCharacteristics.damage +
+      store.state.playerBuffCharacteristics.damage;
+  }
+
+  if (store.state.playerProfessionCharacteristics.armor) {
+    const armor = store.state.playerArmor +
+      store.state.playerLevelCharacteristics.armor +
+      store.state.playerEquipmentCharacteristics.armor;
+
+    store.state.playerArmor = armor + Math.floor(armor / 100 * store.state.playerProfessionCharacteristics.armor) + store.state.playerBuffCharacteristics.armor;
+  } else {
+    store.state.playerArmor = store.state.playerArmor +
+      store.state.playerLevelCharacteristics.armor +
+      store.state.playerEquipmentCharacteristics.armor +
+      store.state.playerBuffCharacteristics.armor;
+  }
+
+  if (store.state.playerProfessionCharacteristics.hp) {
+    const hp = store.state.playerMaxHp +
+      store.state.playerLevelCharacteristics.hp +
+      store.state.playerEquipmentCharacteristics.hp;
+
+    store.state.playerMaxHp = hp + Math.floor(hp / 100 * store.state.playerProfessionCharacteristics.hp) + store.state.playerBuffCharacteristics.hp;
+  } else {
+    store.state.playerMaxHp = store.state.playerMaxHp +
+      store.state.playerLevelCharacteristics.hp +
+      store.state.playerEquipmentCharacteristics.hp +
+      store.state.playerBuffCharacteristics.hp;
+  }
+
+  if (store.state.playerProfessionCharacteristics.evasion) {
+    store.state.playerEvasion = store.state.playerEvasion +
+      store.state.playerEquipmentCharacteristics.evasion +
+      store.state.playerBuffCharacteristics.evasion +
+      store.state.playerProfessionCharacteristics.evasion;
+  } else {
+    store.state.playerEvasion = store.state.playerEvasion +
+      store.state.playerEquipmentCharacteristics.evasion +
+      store.state.playerBuffCharacteristics.evasion;
+  }
+
+  if (store.state.playerProfessionCharacteristics.critChance) {
+    store.state.playerCritChance = store.state.playerCritChance +
+      store.state.playerEquipmentCharacteristics.critChance +
+      store.state.playerProfessionCharacteristics.critChance +
+      store.state.playerBuffCharacteristics.critChance;
+  } else {
+    store.state.playerCritChance = store.state.playerCritChance +
+      store.state.playerEquipmentCharacteristics.critChance +
+      store.state.playerBuffCharacteristics.critChance;
+  }
+
+  if (store.state.playerProfessionCharacteristics.critPower) {
+    store.state.playerCritPower = store.state.playerCritPower +
+      store.state.playerEquipmentCharacteristics.critPower +
+      store.state.playerProfessionCharacteristics.critPower +
+      store.state.playerBuffCharacteristics.critPower;
+  } else {
+    store.state.playerCritPower = store.state.playerCritPower +
+      store.state.playerEquipmentCharacteristics.critPower +
+      store.state.playerBuffCharacteristics.critPower;
+  }
+
+  if (store.state.playerProfession == "assassin") {
+    store.state.playerMaxEvasion = 60;
+    localStorage.setItem("playerMaxEvasion", 60);
+  }
   if (store.state.playerEvasion > store.state.playerMaxEvasion) {
     store.state.playerEvasion = store.state.playerMaxEvasion;
+  } else if (store.state.playerEvasion < 0) {
+    store.state.playerEvasion = 0;
   }
+
   if (store.state.playerCritChance > 100) {
     store.state.playerCritChance = 100;
+  } else if (store.state.playerCritChance < 0) {
+    store.state.playerCritChance = 0
   }
+
   if (store.state.playerCritPower > store.state.playerMaxCritPower) {
     store.state.playerCritPower = store.state.playerMaxCritPower;
+  } else if (store.state.playerCritPower < 0) {
+    store.state.playerCritPower = 0;
   }
 
   if (store.state.playerCurrentHp > store.state.playerMaxHp) {

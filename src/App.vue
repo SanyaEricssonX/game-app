@@ -7,14 +7,22 @@
         @click="closeModal"
       >
         <notification-info
-          @close-modal="closeModal"
           @click.stop
+          v-if="$store.state.levelIsUp || $store.state.modalNotification.visible"
         ></notification-info>
+        <profession-desc
+          @hide-modal="closeModal"
+          @click.stop
+          v-else-if="$store.state.professionIsChosen"
+        ></profession-desc>
       </modal-window>
 
       <app-header class="header"></app-header>
       <main class="container main">
-        <user-profile class="profile-block"></user-profile>
+        <user-profile
+          class="profile-block"
+          @show-modal="openModal"
+        ></user-profile>
         <router-view class="router-block" @show-modal="openModal"></router-view>
       </main>
       <app-footer></app-footer>
@@ -28,6 +36,7 @@ import AppHeader from "@/components/AppHeader";
 import UserProfile from "@/components/UserProfile";
 import ModalWindow from "@/components/ModalWindow";
 import NotificationInfo from "@/components/NotificationInfo";
+import ProfessionDesc from "@/components/ProfessionDesc";
 export default {
   extends: {},
   props: {},
@@ -44,6 +53,7 @@ export default {
     UserProfile,
     ModalWindow,
     NotificationInfo,
+    ProfessionDesc,
   },
   watch: {},
   methods: {
@@ -55,6 +65,7 @@ export default {
       this.isModalOpen = false;
 
       this.$store.state.levelIsUp = false;
+      this.$store.state.professionIsChosen = false;
       this.$store.state.modalNotification.visible = false;
 
       document.querySelector("body").classList.remove("scroll-lock");

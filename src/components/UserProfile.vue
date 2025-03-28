@@ -1,5 +1,44 @@
 <template>
   <div class="profile-container">
+    <div class="profile-block" v-if="$store.state.playerLevel >= 4">
+      <h2 class="profile__header">Воплощение</h2>
+
+      <div
+        class="profession-box"
+        v-if="
+          ($store.state.playerLevel >= 4 &&
+            $store.state.playerProfession == 'standart') ||
+          ($store.state.playerLevel >= 13 &&
+            ($store.state.playerProfession == 'warrior' ||
+              $store.state.playerProfession == 'knight' ||
+              $store.state.playerProfession == 'assassin'))
+        "
+      >
+        <base-button
+          class="profession__btn"
+          v-if="$store.state.playerProfession == 'standart'"
+          @click="choseProfession"
+          >Выбрать воплощение
+        </base-button>
+
+        <base-button
+          class="profession__btn"
+          v-if="
+            $store.state.playerLevel >= 13 &&
+            ($store.state.playerProfession == 'warrior' ||
+              $store.state.playerProfession == 'knight' ||
+              $store.state.playerProfession == 'assassin')
+          "
+          @click="choseProfession"
+          >Выбрать 2 акт воплощения
+        </base-button>
+      </div>
+
+      <span class="profession__title" v-else>{{
+        $store.state.playerProfession
+      }}</span>
+    </div>
+
     <div class="profile-block">
       <h2 class="profile__header">Характеристики</h2>
       <ul class="list characteristics-list">
@@ -27,7 +66,7 @@
           <h4 class="item__title">Крит шанс :</h4>
           {{ $store.state.playerCritChance }} <span class="symbol">%</span>
         </li>
-        <li class="item characteristics__item">
+        <li class="item characteristics__item crit_power">
           <h4 class="item__title">Крит сила :</h4>
           {{ $store.state.playerCritPower }} <span class="symbol">%</span>
         </li>
@@ -190,6 +229,14 @@ export default {
   components: {},
   watch: {},
   methods: {
+    showModal() {
+      this.$emit("show-modal");
+    },
+    choseProfession() {
+      this.$store.state.professionIsChosen = true;
+      this.showModal();
+    },
+
     resetData() {
       localStorage.clear();
       downloadData();
@@ -233,21 +280,36 @@ export default {
   padding: 10px;
   width: 210px;
 }
+.profession__btn {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 16px;
+  font-weight: 900;
+  background-color: var(--color-green);
+  color: var(--color-light);
+}
+.profession__btn:hover {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
 .profile__header {
-  margin-bottom: 30px;
-  font-size: 22px;
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 .list {
   width: 100%;
 }
 .item {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+}
+.crit_power {
+  margin-bottom: 0;
 }
 .item__title {
   margin-right: 5px;
   font-weight: 600;
-  font-size: 17px;
+  font-size: 15px;
 }
 .profile__btn {
   width: 100%;

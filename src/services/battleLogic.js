@@ -15,7 +15,7 @@ export function startBattle(playerCurrentHp, playerDamage, playerArmor, playerEv
     } else {
       // Условие для крита по врагу
       if (Math.random() <= playerCritChance / 100) {
-        const finalPlayerCritDamage = Math.floor(finalPlayerDamage * (playerCritPower / 100));
+        const finalPlayerCritDamage = finalPlayerDamage + Math.floor(finalPlayerDamage * (playerCritPower / 100));
 
         enemyCurrentHp -= finalPlayerCritDamage;
         battleLog.push(`Вы нанесли критический удар по цели ${enemy.name} и нанесли ${finalPlayerCritDamage} урона!`);
@@ -40,7 +40,7 @@ export function startBattle(playerCurrentHp, playerDamage, playerArmor, playerEv
     } else {
       // Условия для крита по игроку
       if (Math.random() <= enemy.critChance / 100) {
-        const finalEnemyCritDamage = Math.floor(finalEnemyDamage * (enemy.critPower / 100));
+        const finalEnemyCritDamage = finalEnemyDamage + Math.floor(finalEnemyDamage * (enemy.critPower / 100));
 
         playerCurrentHp -= finalEnemyCritDamage;
         battleLog.push(`${enemy.name} нанес вам критический удар ${finalEnemyCritDamage} урона!`);
