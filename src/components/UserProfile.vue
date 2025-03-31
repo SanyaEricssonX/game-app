@@ -40,7 +40,11 @@
     <div class="profile-block">
       <h2 class="profile__header">Характеристики</h2>
       <ul class="list characteristics-list">
-        <li class="item characteristics__item level__item" @click="showTooltip">
+        <li
+          class="item characteristics__item level__item"
+          @mouseenter="showTooltip"
+          @mouseleave="hideTooltip"
+        >
           <h4 class="item__title">Уровень :</h4>
           {{ $store.state.playerLevel }}
           <base-profile-tooltip
@@ -234,6 +238,7 @@ export default {
       tooltip: {
         visible: false,
       },
+      timeout: null,
     };
   },
   computed: {},
@@ -241,10 +246,13 @@ export default {
   watch: {},
   methods: {
     showTooltip() {
-      this.tooltip.visible = true;
-      setTimeout(() => {
-        this.tooltip.visible = false;
-      }, 3000);
+      this.timeout = setTimeout(() => {
+        this.tooltip.visible = true;
+      }, 500);
+    },
+    hideTooltip() {
+      clearTimeout(this.timeout);
+      this.tooltip.visible = false;
     },
     showModal() {
       this.$emit("show-modal");
@@ -307,6 +315,9 @@ export default {
   beforeCreate() {},
   mounted() {
     downloadData();
+  },
+  beforeUnmount() {
+    clearTimeout(this.timeout);
   },
 };
 </script>
