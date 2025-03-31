@@ -17,8 +17,9 @@ class enemies {
       { id: -2, name: "Тестовый", level: -10, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3000, time: 1000 },
       { id: -3, name: "Тестовый", level: -13, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 5700, time: 1000 },
       { id: -4, name: "Тестовый", level: -17, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 10700, time: 1000 },
-      { id: -5, name: "Тестовый", level: -20, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 15500, time: 1000 },
-      { id: -6, name: "Тестовый", level: -200, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 15500, time: 1000 },
+      { id: -5, name: "Тестовый", level: -19, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 13800, time: 1000 },
+      { id: -6, name: "Тестовый", level: -20, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 15500, time: 1000 },
+      { id: -7, name: "Тестовый", level: -200, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 15500, time: 1000 },
     ]
   }
 

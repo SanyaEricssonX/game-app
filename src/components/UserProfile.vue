@@ -40,9 +40,13 @@
     <div class="profile-block">
       <h2 class="profile__header">Характеристики</h2>
       <ul class="list characteristics-list">
-        <li class="item characteristics__item">
+        <li class="item characteristics__item level__item" @click="showTooltip">
           <h4 class="item__title">Уровень :</h4>
           {{ $store.state.playerLevel }}
+          <base-profile-tooltip
+            :tooltip="tooltip"
+            v-if="tooltip.visible"
+          ></base-profile-tooltip>
         </li>
         <li class="item hp__item">
           <h4 class="item__title hp__title">HP :</h4>
@@ -227,12 +231,21 @@ export default {
   data() {
     return {
       playerProfession: "",
+      tooltip: {
+        visible: false,
+      },
     };
   },
   computed: {},
   components: {},
   watch: {},
   methods: {
+    showTooltip() {
+      this.tooltip.visible = true;
+      setTimeout(() => {
+        this.tooltip.visible = false;
+      }, 3000);
+    },
     showModal() {
       this.$emit("show-modal");
     },
@@ -333,8 +346,13 @@ export default {
   width: 100%;
 }
 .item {
+  position: relative;
   display: flex;
   margin-bottom: 6px;
+}
+.level__item {
+  width: max-content;
+  cursor: pointer;
 }
 .hp__item {
   display: flex;
