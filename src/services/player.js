@@ -6,7 +6,7 @@ import { downloadData } from "./downloadData";
 
 class player {
   constructor() {
-    this.experienceForLevel = [50, 150, 300, 500, 800, 1200, 1700, 2300, 3000, 3800, 4700, 5700, 6800, 8000, 9300, 10700, 12200, 13800, 15500];
+    this.experienceForLevel = [50, 150, 300, 500, 800, 1200, 1700, 2300, 3200, 4400, 5800, 6000, 8200, 10600, 13200, 17000, 21200, 25800, 32000];
     this.increaseDamagePerLevel = [2, 5, 9, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85];
     this.increaseMaxHpPerLevel = [10, 21, 33, 46, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270];
     this.increaseArmorPerLevel = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28];
@@ -21,10 +21,12 @@ class player {
     this.pathfinderProfessionCharacteristics = { damage: 15, armor: 10, hp: 10, evasion: 30, critChance: 25, critPower: 70 };
     this.isLevelIncreased = false;
     this.infoByLevel = {
-      2: ["Получен доступ к крафту предметов", "Доступны новые товары в магазине"],
-      3: ["Доступны новые товары в магазине"],
+      2: ["Доступны новые товары в магазине"],
+      3: ["Получен доступ к крафту предметов", "Доступны новые товары в магазине"],
       4: ["Доступен выбор воплощения"],
       5: ["Доступно строительство", "Доступны новые товары в магазине"],
+      7: ["Доступны новые товары в магазине"],
+      10: ["Доступны новые товары в магазине"],
       13: ["Доступен второй акт воплощения", "Доступны новые товары в магазине"],
     };
   }
@@ -57,7 +59,7 @@ class player {
       }
     }
     // Условие для взятия 20 уровня
-    if (store.state.playerExperience >= 15500) {
+    if (store.state.playerExperience >= 32000) {
       store.state.playerLevel = 20;
     }
     if (store.state.playerLevel > localStorage.getItem("playerLevel")) {
