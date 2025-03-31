@@ -614,12 +614,20 @@ export default {
 
         // Проверяем хватает ли золота на покупку
         if (item.price <= this.$store.state.playerGold) {
-          this.$store.state.playerGold -= item.price;
-          localStorage.setItem("playerGold", this.$store.state.playerGold);
+          // Проверяем уровень игрока и предмета
+          if (item.requiredLevel <= this.$store.state.playerLevel) {
+            this.$store.state.playerGold -= item.price;
+            localStorage.setItem("playerGold", this.$store.state.playerGold);
 
-          inventory.push(item);
-          this.$store.state.playerInventory = inventory;
-          localStorage.setItem("playerInventory", JSON.stringify(inventory));
+            inventory.push(item);
+            this.$store.state.playerInventory = inventory;
+            localStorage.setItem("playerInventory", JSON.stringify(inventory));
+          } else {
+            this.$store.state.modalNotification.text =
+              "Невозможно совершить покупку. Уровень предмета выше вашего.";
+            this.$store.state.modalNotification.visible = true;
+            this.showModal();
+          }
         } else {
           this.$store.state.modalNotification.text =
             "Невозможно совершить покупку. Не хватает золота.";

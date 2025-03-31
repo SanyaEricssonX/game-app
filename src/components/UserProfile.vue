@@ -44,9 +44,13 @@
           <h4 class="item__title">Уровень :</h4>
           {{ $store.state.playerLevel }}
         </li>
-        <li class="item characteristics__item">
-          <h4 class="item__title">HP :</h4>
-          {{ $store.state.playerCurrentHp }}/{{ $store.state.playerMaxHp }}
+        <li class="item hp__item">
+          <h4 class="item__title hp__title">HP :</h4>
+          <base-progress
+            class="hp__bar"
+            :currentValue="$store.state.playerCurrentHp"
+            :maxValue="$store.state.playerMaxHp"
+          ></base-progress>
         </li>
         <li class="item characteristics__item">
           <h4 class="item__title">Урон :</h4>
@@ -331,6 +335,14 @@ export default {
 .item {
   display: flex;
   margin-bottom: 6px;
+}
+.hp__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.hp__title {
+  width: 40px;
 }
 .crit_power {
   margin-bottom: 0;
