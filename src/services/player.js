@@ -11,21 +11,22 @@ class player {
     this.increaseMaxHpPerLevel = [10, 21, 33, 46, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270];
     this.increaseArmorPerLevel = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28];
     this.warriorProfessionCharacteristics = { damage: 30, critChance: 15, critPower: 20 };
-    this.knightProfessionCharacteristics = { armor: 30, hp: 25, evasion: -50 };
+    this.knightProfessionCharacteristics = { armor: 30, hp: 25, evasion: -1000 };
     this.assassinProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 25, critPower: 70 };
     this.berserkProfessionCharacteristics = { damage: 100, armor: -20, hp: -20, evasion: 10, critChance: 15, critPower: 20 };
     this.gladiatorProfessionCharacteristics = { damage: 30, hp: 10, evasion: 20, critChance: 25, critPower: 70 };
-    this.templarProfessionCharacteristics = { armor: 50, hp: 50, evasion: -50 };
-    this.titanProfessionCharacteristics = { damage: 15, armor: 30, hp: 25, evasion: -50, critChance: 15, critPower: 20 };
-    this.reaperProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 35, critPower: 120 };
+    this.templarProfessionCharacteristics = { armor: 70, hp: 70, evasion: -1000 };
+    this.titanProfessionCharacteristics = { damage: 15, armor: 30, hp: 25, evasion: -1000, critChance: 15, critPower: 20 };
+    this.reaperProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 35, critPower: 150 };
     this.pathfinderProfessionCharacteristics = { damage: 15, armor: 10, hp: 10, evasion: 30, critChance: 25, critPower: 70 };
     this.isLevelIncreased = false;
     this.infoByLevel = {
       2: ["Доступны новые товары в магазине"],
       3: ["Получен доступ к крафту предметов", "Доступны новые товары в магазине"],
-      4: ["Доступен выбор воплощения"],
+      4: ["Доступен выбор воплощения", "Доступны новые товары в магазине"],
       5: ["Доступно строительство", "Доступны новые товары в магазине"],
-      7: ["Доступны новые товары в магазине"],
+      7: ["Получен доступ в подземелья с рейдовыми боссами"],
+      9: ["Доступны новые товары в магазине"],
       10: ["Доступны новые товары в магазине"],
       13: ["Доступен второй акт воплощения", "Доступны новые товары в магазине"],
     };
@@ -148,6 +149,7 @@ class player {
     }
   }
 
+  // Вспомогательная функция для основной функции рассчета бонусных характеристик с надетой экипировки
   findBonusCharacteristics(equipmentCategory, equipmentDurability) {
     let allItems = JSON.parse(JSON.stringify(items.list()));
     let bonusCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };

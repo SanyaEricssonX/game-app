@@ -228,7 +228,9 @@
                 <base-button
                   class="btn btn__buy"
                   :style="{
-                    'background-color': checkBtnRepairColor(repairCost),
+                    'background-color': checkBtnRepairColor(
+                      lowCost(Math.floor(item.price / 3))
+                    ),
                   }"
                   @click="repairItem(item)"
                   >Починить</base-button
@@ -278,7 +280,9 @@
                 <base-button
                   class="btn btn__buy"
                   :style="{
-                    'background-color': checkBtnRepairColor(repairCost),
+                    'background-color': checkBtnRepairColor(
+                      lowCost(Math.floor(item.price / 3))
+                    ),
                   }"
                   @click="repairInventoryItem(item)"
                   >Починить</base-button

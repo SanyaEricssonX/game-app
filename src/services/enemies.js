@@ -13,7 +13,7 @@ class enemies {
       { id: 8, name: "Арахнид", level: 3, hp: 90, damage: 25, armor: 3, evasion: 10, critChance: 10, critPower: 50, experience: 70, time: 1000 },
       { id: 9, name: "Наемник", level: 4, hp: 120, damage: 40, armor: 4, evasion: 30, critChance: 30, critPower: 70, experience: 110, time: 1000 },
       { id: 10, name: "Шаман орков", level: 4, hp: 120, damage: 35, armor: 7, evasion: 20, critChance: 20, critPower: 50, experience: 110, time: 1000 },
-      { id: 11, name: "Кентавр", level: 4, hp: 130, damage: 30, armor: 10, evasion: 20, critChance: 20, critPower: 50, experience: 110, time: 1000 },
+      { id: 11, name: "Кентавр", level: 4, hp: 130, damage: 30, armor: 10, evasion: 10, critChance: 20, critPower: 50, experience: 110, time: 1000 },
       { id: 12, name: "Лич", level: 5, hp: 170, damage: 50, armor: 5, evasion: 20, critChance: 20, critPower: 50, experience: 160, time: 1000 },
       { id: 13, name: "Медведь зомби", level: 5, hp: 180, damage: 40, armor: 10, evasion: 10, critChance: 30, critPower: 70, experience: 160, time: 1000 },
       { id: 14, name: "Тролль", level: 5, hp: 200, damage: 40, armor: 15, evasion: 10, critChance: 20, critPower: 30, experience: 160, time: 1000 },
@@ -30,7 +30,7 @@ class enemies {
       { id: 25, name: "Элементаль воздуха", level: 9, hp: 230, damage: 100, armor: 10, evasion: 30, critChance: 20, critPower: 70, experience: 410, time: 1000 },
       { id: 26, name: "Элементаль воды", level: 9, hp: 200, damage: 80, armor: 10, evasion: 40, critChance: 30, critPower: 100, experience: 410, time: 1000 },
       { id: 27, name: "Элементаль огня", level: 10, hp: 240, damage: 130, armor: 15, evasion: 30, critChance: 20, critPower: 100, experience: 490, time: 1000 },
-      { id: 28, name: "Гигант", level: 10, hp: 300, damage: 80, armor: 50, evasion: 90, critChance: 20, critPower: 100, experience: 490, time: 1000 },
+      { id: 28, name: "Гигант", level: 10, hp: 300, damage: 80, armor: 50, evasion: 10, critChance: 20, critPower: 100, experience: 490, time: 1000 },
       { id: 29, name: "Бес", level: 10, hp: 260, damage: 110, armor: 20, evasion: 20, critChance: 20, critPower: 70, experience: 490, time: 1000 },
       { id: 30, name: "Дварф страж", level: 11, hp: 320, damage: 95, armor: 60, evasion: 20, critChance: 20, critPower: 70, experience: 560, time: 1000 },
       { id: 31, name: "Демон", level: 11, hp: 300, damage: 100, armor: 15, evasion: 20, critChance: 30, critPower: 100, experience: 560, time: 1000 },
@@ -42,18 +42,18 @@ class enemies {
       { id: 37, name: "Темный эльф ассассин", level: 13, hp: 350, damage: 155, armor: 30, evasion: 30, critChance: 35, critPower: 175, experience: 720, time: 1000 },
       { id: 38, name: "Кракен", level: 13, hp: 500, damage: 130, armor: 70, evasion: 10, critChance: 20, critPower: 100, experience: 720, time: 1000 },
       { id: 39, name: "Лесной дух", level: 14, hp: 460, damage: 150, armor: 50, evasion: 30, critChance: 20, critPower: 70, experience: 800, time: 1000 },
-      { id: 40, name: "Живой доспех", level: 14, hp: 530, damage: 130, armor: 80, evasion: 10, critChance: 30, critPower: 70, experience: 800, time: 1000 },
+      { id: 40, name: "Живой доспех", level: 14, hp: 530, damage: 130, armor: 80, evasion: 10, critChance: 20, critPower: 70, experience: 800, time: 1000 },
       { id: 41, name: "Вампир", level: 14, hp: 480, damage: 160, armor: 30, evasion: 25, critChance: 25, critPower: 100, experience: 800, time: 1000 },
       { id: 42, name: "Насмешник", level: 15, hp: 100, damage: 200, armor: 150, evasion: 90, critChance: 30, critPower: 100, experience: 890, time: 1000 },
       { id: 43, name: "Энт", level: 15, hp: 700, damage: 180, armor: 90, evasion: 10, critChance: 20, critPower: 70, experience: 890, time: 1000 },
       { id: 44, name: "Сумеречный жнец", level: 15, hp: 550, damage: 170, armor: 30, evasion: 30, critChance: 40, critPower: 200, experience: 890, time: 1000 },
       { id: -1, name: "Тестовый", level: -5, hp: 500, damage: 50, armor: 15, evasion: 10, critChance: 30, critPower: 50, experience: 500, time: 1000 },
-      { id: -2, name: "Тестовый", level: -10, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3000, time: 1000 },
-      { id: -3, name: "Тестовый", level: -13, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 5700, time: 1000 },
-      { id: -4, name: "Тестовый", level: -17, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 10700, time: 1000 },
-      { id: -5, name: "Тестовый", level: -19, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 13800, time: 1000 },
-      { id: -6, name: "Тестовый", level: -20, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 15500, time: 1000 },
-      { id: -7, name: "Тестовый", level: -200, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 15500, time: 1000 },
+      { id: -2, name: "Тестовый", level: -10, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3200, time: 1000 },
+      { id: -3, name: "Тестовый", level: -13, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 6000, time: 1000 },
+      { id: -4, name: "Тестовый", level: -17, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 17000, time: 1000 },
+      { id: -5, name: "Тестовый", level: -19, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 25800, time: 1000 },
+      { id: -6, name: "Тестовый", level: -20, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 32000, time: 1000 },
+      { id: -7, name: "Тестовый", level: -200, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 32000, time: 1000 },
     ]
   }
 
@@ -62,13 +62,33 @@ class enemies {
       if (i == enemyId && this.list[i].level == 1) {
         return { gold: 3, wood: 0, stone: 0, iron: 0 };
       } else if (i == enemyId && this.list[i].level == 2) {
-        return { gold: 10, wood: 2, stone: 2, iron: 0 };
+        return { gold: 9, wood: 2, stone: 2, iron: 0 };
       } else if (i == enemyId && this.list[i].level == 3) {
-        return { gold: 25, wood: 5, stone: 5, iron: 2 };
+        return { gold: 20, wood: 3, stone: 3, iron: 2 };
       } else if (i == enemyId && this.list[i].level == 4) {
-        return { gold: 40, wood: 10, stone: 10, iron: 5 };
+        return { gold: 32, wood: 4, stone: 4, iron: 3 };
       } else if (i == enemyId && this.list[i].level == 5) {
-        return { gold: 60, wood: 15, stone: 15, iron: 8 };
+        return { gold: 45, wood: 5, stone: 5, iron: 5 };
+      } else if (i == enemyId && this.list[i].level == 6) {
+        return { gold: 56, wood: 5, stone: 5, iron: 5 };
+      } else if (i == enemyId && this.list[i].level == 7) {
+        return { gold: 64, wood: 5, stone: 5, iron: 5 };
+      } else if (i == enemyId && this.list[i].level == 8) {
+        return { gold: 78, wood: 5, stone: 5, iron: 5 };
+      } else if (i == enemyId && this.list[i].level == 9) {
+        return { gold: 90, wood: 7, stone: 7, iron: 5 };
+      } else if (i == enemyId && this.list[i].level == 10) {
+        return { gold: 110, wood: 8, stone: 8, iron: 6 };
+      } else if (i == enemyId && this.list[i].level == 11) {
+        return { gold: 124, wood: 9, stone: 9, iron: 7 };
+      } else if (i == enemyId && this.list[i].level == 12) {
+        return { gold: 140, wood: 9, stone: 9, iron: 7 };
+      } else if (i == enemyId && this.list[i].level == 13) {
+        return { gold: 160, wood: 10, stone: 10, iron: 8 };
+      } else if (i == enemyId && this.list[i].level == 14) {
+        return { gold: 178, wood: 10, stone: 10, iron: 8 };
+      } else if (i == enemyId && this.list[i].level == 15) {
+        return { gold: 195, wood: 12, stone: 12, iron: 10 };
       } else if (this.list[i].level < 0) {
         return { gold: 100000, wood: 100000, stone: 100000, iron: 100000 };
       }
