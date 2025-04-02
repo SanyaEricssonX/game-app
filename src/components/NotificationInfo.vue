@@ -21,12 +21,7 @@ import player from "@/services/player";
 export default {
   name: "notification-info",
   extends: {},
-  props: {
-    isModalOpen: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: {},
   data() {
     return {
       infoByLevel: [],

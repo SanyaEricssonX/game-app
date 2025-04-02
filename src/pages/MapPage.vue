@@ -81,6 +81,7 @@ export default {
             "playerCurrentHp",
             this.$store.state.playerCurrentHp
           );
+          this.sortEnemies();
 
           return;
         }

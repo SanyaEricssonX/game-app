@@ -223,12 +223,14 @@
               <div class="price-box">
                 <span>Цена: </span>
                 <span class="item__desc price">{{
-                  Math.floor(item.price / 3)
+                  lowCost(Math.floor(item.price / 3))
                 }}</span>
                 <base-button
                   class="btn btn__buy"
                   :style="{
-                    'background-color': checkBtnRepairColor(repairCost),
+                    'background-color': checkBtnRepairColor(
+                      lowCost(Math.floor(item.price / 3))
+                    ),
                   }"
                   @click="repairItem(item)"
                   >Починить</base-button
@@ -273,12 +275,14 @@
               <div class="price-box">
                 <span>Цена: </span>
                 <span class="item__desc price">{{
-                  Math.floor(item.price / 3)
+                  lowCost(Math.floor(item.price / 3))
                 }}</span>
                 <base-button
                   class="btn btn__buy"
                   :style="{
-                    'background-color': checkBtnRepairColor(repairCost),
+                    'background-color': checkBtnRepairColor(
+                      lowCost(Math.floor(item.price / 3))
+                    ),
                   }"
                   @click="repairInventoryItem(item)"
                   >Починить</base-button
@@ -343,7 +347,7 @@
             <div class="price-box">
               <span>Цена: </span>
               <span class="item__desc price">{{
-                Math.floor(item.price / 3)
+                lowCost(Math.floor(item.price / 3))
               }}</span>
               <base-button class="btn btn__sell" @click="sellItem(item)"
                 >Продать</base-button
@@ -364,6 +368,7 @@
 
 <script type="text/javascript">
 import items from "@/services/items";
+import player from "@/services/player";
 import { downloadData } from "@/services/downloadData";
 
 export default {
@@ -425,9 +430,13 @@ export default {
           this.playerInventory[index].durability <
           items.findItem(this.playerInventory[index].id).durability
         ) {
-          this.inventoryRepairCost += Math.floor(
-            this.playerInventory[index].price / 3
-          );
+          const cost = Math.floor(this.playerInventory[index].price / 3);
+
+          if (cost < 1) {
+            this.inventoryRepairCost += 1;
+          } else {
+            this.inventoryRepairCost += cost;
+          }
         }
       }
 
@@ -438,6 +447,7 @@ export default {
       let glovesId = Number(this.$store.state.playerEquipment.gloves);
       let bootsId = Number(this.$store.state.playerEquipment.boots);
 
+      // Оружие
       if (weaponId != 0 && weaponId == items.findItem(weaponId).id) {
         let item = items.findItem(weaponId);
 
@@ -449,9 +459,16 @@ export default {
         this.playerEquipment.push(item);
 
         if (item.currentDurability < item.durability) {
-          this.repairCost += Math.floor(item.price / 3);
+          const cost = Math.floor(item.price / 3);
+
+          if (cost < 1) {
+            this.repairCost += 1;
+          } else {
+            this.repairCost += cost;
+          }
         }
       }
+      // Шлем
       if (helmetId != 0 && helmetId == items.findItem(helmetId).id) {
         let item = items.findItem(helmetId);
 
@@ -463,9 +480,16 @@ export default {
         this.playerEquipment.push(item);
 
         if (item.currentDurability < item.durability) {
-          this.repairCost += Math.floor(item.price / 3);
+          const cost = Math.floor(item.price / 3);
+
+          if (cost < 1) {
+            this.repairCost += 1;
+          } else {
+            this.repairCost += cost;
+          }
         }
       }
+      // Верхний доспех
       if (upperId != 0 && upperId == items.findItem(upperId).id) {
         let item = items.findItem(upperId);
 
@@ -477,9 +501,16 @@ export default {
         this.playerEquipment.push(item);
 
         if (item.currentDurability < item.durability) {
-          this.repairCost += Math.floor(item.price / 3);
+          const cost = Math.floor(item.price / 3);
+
+          if (cost < 1) {
+            this.repairCost += 1;
+          } else {
+            this.repairCost += cost;
+          }
         }
       }
+      // Нижний доспех
       if (lowerId != 0 && lowerId == items.findItem(lowerId).id) {
         let item = items.findItem(lowerId);
 
@@ -491,9 +522,16 @@ export default {
         this.playerEquipment.push(item);
 
         if (item.currentDurability < item.durability) {
-          this.repairCost += Math.floor(item.price / 3);
+          const cost = Math.floor(item.price / 3);
+
+          if (cost < 1) {
+            this.repairCost += 1;
+          } else {
+            this.repairCost += cost;
+          }
         }
       }
+      // Перчатки
       if (glovesId != 0 && glovesId == items.findItem(glovesId).id) {
         let item = items.findItem(glovesId);
 
@@ -505,9 +543,16 @@ export default {
         this.playerEquipment.push(item);
 
         if (item.currentDurability < item.durability) {
-          this.repairCost += Math.floor(item.price / 3);
+          const cost = Math.floor(item.price / 3);
+
+          if (cost < 1) {
+            this.repairCost += 1;
+          } else {
+            this.repairCost += cost;
+          }
         }
       }
+      // Сапоги
       if (bootsId != 0 && bootsId == items.findItem(bootsId).id) {
         let item = items.findItem(bootsId);
 
@@ -519,7 +564,13 @@ export default {
         this.playerEquipment.push(item);
 
         if (item.currentDurability < item.durability) {
-          this.repairCost += Math.floor(item.price / 3);
+          const cost = Math.floor(item.price / 3);
+
+          if (cost < 1) {
+            this.repairCost += 1;
+          } else {
+            this.repairCost += cost;
+          }
         }
       }
     },
@@ -547,6 +598,13 @@ export default {
         return "var(--color-red)";
       }
     },
+    lowCost(price) {
+      if (price == 0) {
+        return 1;
+      } else {
+        return price;
+      }
+    },
     findItemDurability(itemId) {
       return items.findItem(itemId).durability;
     },
@@ -560,12 +618,20 @@ export default {
 
         // Проверяем хватает ли золота на покупку
         if (item.price <= this.$store.state.playerGold) {
-          this.$store.state.playerGold -= item.price;
-          localStorage.setItem("playerGold", this.$store.state.playerGold);
+          // Проверяем уровень игрока и предмета
+          if (item.requiredLevel <= this.$store.state.playerLevel) {
+            this.$store.state.playerGold -= item.price;
+            localStorage.setItem("playerGold", this.$store.state.playerGold);
 
-          inventory.push(item);
-          this.$store.state.playerInventory = inventory;
-          localStorage.setItem("playerInventory", JSON.stringify(inventory));
+            inventory.push(item);
+            this.$store.state.playerInventory = inventory;
+            localStorage.setItem("playerInventory", JSON.stringify(inventory));
+          } else {
+            this.$store.state.modalNotification.text =
+              "Невозможно совершить покупку. Уровень предмета выше вашего.";
+            this.$store.state.modalNotification.visible = true;
+            this.showModal();
+          }
         } else {
           this.$store.state.modalNotification.text =
             "Невозможно совершить покупку. Не хватает золота.";
@@ -585,8 +651,14 @@ export default {
     },
 
     repairItem(item) {
-      if (this.$store.state.playerGold >= Math.floor(item.price / 3)) {
-        this.$store.state.playerGold -= Math.floor(item.price / 3);
+      let cost = Math.floor(item.price / 3);
+
+      if (cost == 0) {
+        cost = 1;
+      }
+
+      if (this.$store.state.playerGold >= cost) {
+        this.$store.state.playerGold -= cost;
 
         switch (item.id.toString().slice(0, 3)) {
           case "100":
@@ -622,6 +694,8 @@ export default {
         localStorage.setItem("playerGold", this.$store.state.playerGold);
 
         downloadData();
+        player.equipmentCharacteristics();
+        downloadData();
 
         this.createEquipment();
       } else {
@@ -633,8 +707,14 @@ export default {
     },
 
     repairInventoryItem(item) {
-      if (this.$store.state.playerGold >= Math.floor(item.price / 3)) {
-        this.$store.state.playerGold -= Math.floor(item.price / 3);
+      let cost = Math.floor(item.price / 3);
+
+      if (cost == 0) {
+        cost = 1;
+      }
+
+      if (this.$store.state.playerGold >= cost) {
+        this.$store.state.playerGold -= cost;
 
         let newItem = item;
 
@@ -699,6 +779,8 @@ export default {
             "playerEquipment",
             JSON.stringify(this.$store.state.playerEquipment)
           );
+
+          player.equipmentCharacteristics();
         } else {
           // Условия для предметов в инвентаре
           for (let index = 0; index < this.playerInventory.length; index++) {
@@ -730,7 +812,13 @@ export default {
     },
 
     sellItem(item) {
-      this.$store.state.playerGold += Math.floor(item.price / 3);
+      const cost = Math.floor(item.price / 3);
+      if (cost == 0) {
+        this.$store.state.playerGold += 1;
+      } else {
+        this.$store.state.playerGold += cost;
+      }
+
       localStorage.setItem("playerGold", this.$store.state.playerGold);
 
       this.playerInventory.splice(item.cellId, 1);
