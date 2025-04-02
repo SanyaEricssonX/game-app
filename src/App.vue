@@ -8,7 +8,9 @@
       >
         <notification-info
           @click.stop
-          v-if="$store.state.levelIsUp || $store.state.modalNotification.visible"
+          v-if="
+            $store.state.levelIsUp || $store.state.modalNotification.visible
+          "
         ></notification-info>
         <profession-desc
           @hide-modal="closeModal"
