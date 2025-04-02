@@ -184,6 +184,10 @@ export function downloadData() {
     store.state.playerMaxEvasion = 60;
     localStorage.setItem("playerMaxEvasion", 60);
   }
+  if (store.state.playerProfession == "knight" || store.state.playerProfession == "templar" || store.state.playerProfession == "titan") {
+    store.state.playerEvasion = 10;
+    localStorage.setItem("playerEvasion", 10);
+  }
   if (store.state.playerEvasion > store.state.playerMaxEvasion) {
     store.state.playerEvasion = store.state.playerMaxEvasion;
   } else if (store.state.playerEvasion < 0) {

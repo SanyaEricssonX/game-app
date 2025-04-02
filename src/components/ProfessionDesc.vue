@@ -66,7 +66,7 @@
             >HP увеличено на {{ professionKnight.hp }}%</span
           >
           <span class="characteristic"
-            >Уклонение: {{ professionKnight.evasion }}%</span
+            >Уклонение фиксированно 10%</span
           >
           <base-button
             class="btn warrior__btn"
@@ -228,7 +228,7 @@
             >
             <span class="characteristic">HP: {{ professionTemplar.hp }}%</span>
             <span class="characteristic"
-              >Уклонение: {{ professionTemplar.evasion }}%</span
+              >Уклонение фиксированно 10%</span
             >
             <base-button
               class="btn templar__btn"
@@ -254,7 +254,7 @@
               >HP увеличено на {{ professionTitan.hp }}%</span
             >
             <span class="characteristic"
-              >Уклонение: {{ professionTitan.evasion }}%</span
+              >Уклонение фиксированно 10%</span
             >
             <span class="characteristic"
               >Шанс крита увеличен на {{ professionTitan.critChance }}%</span

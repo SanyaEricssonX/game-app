@@ -47,7 +47,7 @@ class enemies {
       { id: 42, name: "Насмешник", level: 15, hp: 100, damage: 200, armor: 150, evasion: 90, critChance: 30, critPower: 100, experience: 890, time: 1000 },
       { id: 43, name: "Энт", level: 15, hp: 700, damage: 180, armor: 90, evasion: 10, critChance: 20, critPower: 70, experience: 890, time: 1000 },
       { id: 44, name: "Сумеречный жнец", level: 15, hp: 550, damage: 170, armor: 30, evasion: 30, critChance: 40, critPower: 200, experience: 890, time: 1000 },
-      { id: -1, name: "Тестовый", level: -5, hp: 500, damage: 50, armor: 15, evasion: 10, critChance: 30, critPower: 50, experience: 500, time: 1000 },
+      { id: -1, name: "Тестовый", level: -4, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 500, time: 1000 },
       { id: -2, name: "Тестовый", level: -10, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3200, time: 1000 },
       { id: -3, name: "Тестовый", level: -13, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 6000, time: 1000 },
       { id: -4, name: "Тестовый", level: -17, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 17000, time: 1000 },
