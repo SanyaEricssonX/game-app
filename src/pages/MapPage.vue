@@ -1,27 +1,54 @@
 <template>
   <div class="container map-container">
-    <div class="enemy-block" v-if="!selectedEnemy && !isBattleEnd">
-      <h3 class="enemy-block__header">Найдены противники:</h3>
-      <div class="enemies" v-for="enemy in sortedEnemies" :key="enemy.id">
-        <base-button @click="startBattle(enemy)">
-          {{ enemy.name }}
-        </base-button>
-        <span class="enemy__level">{{ enemy.level }} Lvl</span>
-      </div>
-    </div>
-    <div class="battle-block" v-else-if="selectedEnemy && !isBattleEnd">
-      Битва в разгаре
-    </div>
-    <div class="result-block" v-else>
-      <ul class="result-list" v-for="log in battleLog" :key="log.id">
-        <li class="result__item">{{ log }}</li>
+    <ul class="nav-list">
+      <li
+        class="nav__item"
+        :class="{ active: isActiveBtn(1) }"
+        @click="activeContent(1)"
+      >
+        <h4 class="item__header">Охотничьи локации</h4>
+      </li>
+      <li
+        class="nav__item"
+        :class="{ active: isActiveBtn(2) }"
+        @click="activeContent(2)"
+      >
+        <h4 class="item__header">Рейдовые подземелья</h4>
+      </li>
+    </ul>
+    <div class="locations-block" v-if="selectedTab == 1">
+      <ul class="locations-list">
+        <li class="location__item" v-for="map in maps" :key="map.id">
+        {{ map.name }}
+        </li>
       </ul>
-      <base-button @click="resetSelection">Найти нового противника</base-button>
+
+      <!-- <div class="enemy-block" v-if="!selectedEnemy && !isBattleEnd">
+        <h3 class="enemy-block__header">Найдены противники:</h3>
+        <div class="enemies" v-for="enemy in sortedEnemies" :key="enemy.id">
+          <base-button @click="startBattle(enemy)">
+            {{ enemy.name }}
+          </base-button>
+          <span class="enemy__level">{{ enemy.level }} Lvl</span>
+        </div>
+      </div>
+      <div class="battle-block" v-else-if="selectedEnemy && !isBattleEnd">
+        Битва в разгаре
+      </div>
+      <div class="result-block" v-else>
+        <ul class="result-list" v-for="log in battleLog" :key="log.id">
+          <li class="result__item">{{ log }}</li>
+        </ul>
+        <base-button @click="resetSelection"
+          >Найти нового противника</base-button
+        >
+      </div> -->
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
+import map from "@/services/map"
 import { startBattle } from "@/services/battleLogic";
 import enemies from "@/services/enemies";
 import { downloadData } from "@/services/downloadData";
@@ -33,11 +60,14 @@ export default {
   props: {},
   data() {
     return {
+      selectedTab: 1,
       result: null,
       battleLog: [],
       selectedEnemy: null,
       isBattleEnd: false,
+      currentLocation: 9990,
       sortedEnemies: [],
+      maps: [],
     };
   },
   computed: {
@@ -54,6 +84,12 @@ export default {
     },
   },
   methods: {
+    activeContent(tabNumber) {
+      this.selectedTab = tabNumber;
+    },
+    isActiveBtn(tabNumber) {
+      return this.selectedTab == tabNumber;
+    },
     async startBattle(enemy) {
       this.selectedEnemy = enemy;
       const battleResult = startBattle(
@@ -242,6 +278,9 @@ export default {
     },
     sortEnemies() {
       this.sortedEnemies = [];
+      this.currentLocation = 9990,
+      this.maps = map.locationList;
+
       for (let i = 0; i < enemies.list.length; i++) {
         if (
           enemies.list[i].level == this.$store.state.playerLevel ||
@@ -269,6 +308,16 @@ export default {
 .map-container {
   display: flex;
 }
+.nav-list {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+  border: 2px solid var(--color-light);
+}
+.nav__item {
+  padding: 5px 10px;
+  cursor: pointer;
+}
 .enemy-block__header {
   margin-bottom: 30px;
 }
@@ -289,5 +338,9 @@ export default {
   line-height: 1;
   color: var(--color-dark);
   background-color: var(--color-light);
+}
+.active {
+  background-color: var(--color-light);
+  color: var(--color-dark);
 }
 </style>

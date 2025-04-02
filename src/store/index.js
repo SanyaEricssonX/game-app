@@ -18,6 +18,7 @@ export default createStore({
     playerCritPower: 30,
     playerProfession: "standart",
     playerInventorySize: 50,
+    playerCurrentLocation: 9990,
     playerGold: 0,
     playerResources: { wood: 0, stone: 0, iron: 0 },
     defaultPlayerCharacteristics: { damage: 10, armor: 5, hp: 100, evasion: 10, critChance: 5, critPower: 30 },
