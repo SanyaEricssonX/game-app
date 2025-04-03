@@ -3,6 +3,7 @@
     <div class="equipment-block">
       <h2 class="equipment__header">Экипировка</h2>
       <ul class="equipment-list">
+        <!-- Оружие -->
         <li class="equipment__item">
           <h4 class="equipment__item__header">Оружие</h4>
           <span
@@ -16,9 +17,14 @@
               )
             "
           >
+            <img
+              :src="getImage(playerEquipment.weapon)"
+              :alt="playerEquipment.weapon"
+              v-if="getImage(playerEquipment.weapon) != 0"
+            />
             <span
               class="equipment__item__text"
-              v-show="playerEquipment.weapon > 999"
+              v-else-if="playerEquipment.weapon > 999"
               >{{ playerEquipment.weapon }}</span
             >
             <base-tooltip
@@ -31,10 +37,19 @@
                   'weapon'
                 )
               "
-              v-if="tooltip.visible && selectedItem == 'weapon'"
+              v-if="
+                playerEquipment.weapon != 0 &&
+                tooltip.visible &&
+                selectedItem == 'weapon'
+              "
             ></base-tooltip>
+            <span class="item__level" v-if="playerEquipment.weapon > 999"
+              >Ур.{{ itemLevel(playerEquipment.weapon) }}</span
+            >
           </span>
         </li>
+
+        <!-- Шлем -->
         <li class="equipment__item">
           <h4 class="equipment__item__header">Шлем</h4>
           <span
@@ -48,9 +63,14 @@
               )
             "
           >
+            <img
+              :src="getImage(playerEquipment.helmet)"
+              :alt="playerEquipment.helmet"
+              v-if="getImage(playerEquipment.helmet) != 0"
+            />
             <span
               class="equipment__item__text"
-              v-show="playerEquipment.helmet > 999"
+              v-else-if="playerEquipment.helmet > 999"
               >{{ playerEquipment.helmet }}</span
             >
             <base-tooltip
@@ -63,10 +83,16 @@
                   'helmet'
                 )
               "
-              v-if="tooltip.visible && selectedItem == 'helmet'"
+              v-if="
+                playerEquipment.helmet != 0 &&
+                tooltip.visible &&
+                selectedItem == 'helmet'
+              "
             ></base-tooltip>
           </span>
         </li>
+
+        <!-- Верхний доспех -->
         <li class="equipment__item">
           <h4 class="equipment__item__header">Верхний доспех</h4>
           <span
@@ -79,9 +105,15 @@
                 'upper'
               )
             "
-            ><span
+          >
+            <img
+              :src="getImage(playerEquipment.upper)"
+              :alt="playerEquipment.upper"
+              v-if="getImage(playerEquipment.upper) != 0"
+            />
+            <span
               class="equipment__item__text"
-              v-show="playerEquipment.upper > 999"
+              v-else-if="playerEquipment.upper > 999"
               >{{ playerEquipment.upper }}</span
             >
             <base-tooltip
@@ -94,10 +126,16 @@
                   'upper'
                 )
               "
-              v-if="tooltip.visible && selectedItem == 'upper'"
+              v-if="
+                playerEquipment.upper != 0 &&
+                tooltip.visible &&
+                selectedItem == 'upper'
+              "
             ></base-tooltip>
           </span>
         </li>
+
+        <!-- Нижний доспех -->
         <li class="equipment__item">
           <h4 class="equipment__item__header">Нижний доспех</h4>
           <span
@@ -110,9 +148,14 @@
                 'lower'
               )
             "
-            ><span
+          >
+            <img
+              :src="getImage(playerEquipment.lower)"
+              :alt="playerEquipment.lower"
+              v-if="getImage(playerEquipment.lower) != 0" />
+            <span
               class="equipment__item__text"
-              v-show="playerEquipment.lower > 999"
+              v-else-if="playerEquipment.lower > 999"
               >{{ playerEquipment.lower }}</span
             >
             <base-tooltip
@@ -125,10 +168,16 @@
                   'lower'
                 )
               "
-              v-if="tooltip.visible && selectedItem == 'lower'"
+              v-if="
+                playerEquipment.lower != 0 &&
+                tooltip.visible &&
+                selectedItem == 'lower'
+              "
             ></base-tooltip
           ></span>
         </li>
+
+        <!-- Перчатки -->
         <li class="equipment__item">
           <h4 class="equipment__item__header">Перчатки</h4>
           <span
@@ -141,9 +190,14 @@
                 'gloves'
               )
             "
-            ><span
+          >
+            <img
+              :src="getImage(playerEquipment.gloves)"
+              :alt="playerEquipment.gloves"
+              v-if="getImage(playerEquipment.gloves) != 0" />
+            <span
               class="equipment__item__text"
-              v-show="playerEquipment.gloves > 999"
+              v-else-if="playerEquipment.gloves > 999"
               >{{ playerEquipment.gloves }}</span
             >
             <base-tooltip
@@ -156,10 +210,16 @@
                   'gloves'
                 )
               "
-              v-if="tooltip.visible && selectedItem == 'gloves'"
+              v-if="
+                playerEquipment.gloves != 0 &&
+                tooltip.visible &&
+                selectedItem == 'gloves'
+              "
             ></base-tooltip
           ></span>
         </li>
+
+        <!-- Сапоги -->
         <li class="equipment__item">
           <h4 class="equipment__item__header">Сапоги</h4>
           <span
@@ -172,9 +232,14 @@
                 'boots'
               )
             "
-            ><span
+          >
+            <img
+              :src="getImage(playerEquipment.boots)"
+              :alt="playerEquipment.boots"
+              v-if="getImage(playerEquipment.boots) != 0" />
+            <span
               class="equipment__item__text"
-              v-show="playerEquipment.boots > 999"
+              v-else-if="playerEquipment.boots > 999"
               >{{ playerEquipment.boots }}</span
             ><base-tooltip
               class="tooltip"
@@ -186,7 +251,11 @@
                   'boots'
                 )
               "
-              v-if="tooltip.visible && selectedItem == 'boots'"
+              v-if="
+                playerEquipment.boots != 0 &&
+                tooltip.visible &&
+                selectedItem == 'boots'
+              "
             ></base-tooltip
           ></span>
         </li>
@@ -218,7 +287,8 @@
           :key="item.cellId"
           @click="showTooltip(item.id, item.durability, item.cellId)"
         >
-          <span class="inventory__item__id" v-show="item.id > 999">
+          <img :src="getImage(item.image)" :alt="item.id" v-if="item.image" />
+          <span class="inventory__item__id" v-else-if="item.id > 999">
             {{ item.id }}
           </span>
           <base-tooltip
@@ -276,6 +346,26 @@ export default {
     },
   },
   methods: {
+    itemLevel(itemId) {
+      const item = items.findItem(itemId);
+      return item.requiredLevel;
+    },
+
+    getImage(key) {
+      if (key != 0 && typeof key == "number") {
+        const item = items.findItem(key);
+        if (item.image) {
+          return require(`@/assets/images/${item.image}`);
+        } else {
+          return 0;
+        }
+      } else if (key != 0 && typeof key == "string") {
+        return require(`@/assets/images/${key}`);
+      } else {
+        return 0;
+      }
+    },
+
     updateInventory() {
       this.inventoryCells = player.createInventory();
       this.playerInventory = JSON.parse(
@@ -750,9 +840,20 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 74px;
+  height: 74px;
   border: 2px solid var(--color-light);
+}
+.item__level {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2px;
+  background-color: var(--color-light);
+  font-family: Bahnschrift;
+  font-weight: 900;
+  font-size: 14px;
+  z-index: 100;
 }
 .nav-list {
   display: flex;

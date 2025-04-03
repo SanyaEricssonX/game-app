@@ -52,9 +52,9 @@ export function downloadData() {
     store.state.playerProfession = "standart";
   }
   if (localStorage.getItem("playerCurrentLocation") != null) {
-    store.state.playerProfession = Number(localStorage.getItem("playerCurrentLocation"));
+    store.state.playerCurrentLocation = Number(localStorage.getItem("playerCurrentLocation"));
   } else {
-    store.state.playerProfession = 9990;
+    store.state.playerCurrentLocation = 9990;
   }
   if (localStorage.getItem("playerGold") != null) {
     store.state.playerGold = Number(localStorage.getItem("playerGold"));

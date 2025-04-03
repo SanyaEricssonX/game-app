@@ -1,8 +1,8 @@
 class items {
   constructor() {
     this.weaponList = [
-      { id: 1000, name: "Железный меч", category: "sword", damage: 10, durability: 10, requiredLevel: 1, price: 50 },
-      { id: 1001, name: "Стальной меч", category: "sword", damage: 35, durability: 25, requiredLevel: 4, price: 240 },
+      { id: 1000, name: "Железный меч", category: "sword", damage: 10, durability: 10, requiredLevel: 1, price: 50, image: "iron_sword.webp" },
+      { id: 1001, name: "Стальной меч", category: "sword", damage: 35, durability: 25, requiredLevel: 4, price: 240, image: "steel_sword.webp" },
       { id: 1002, name: "Стальной кинжал", category: "dagger", damage: 25, critChance: 10, critPower: 15, durability: 25, requiredLevel: 4, price: 240 },
       { id: 1003, name: "Закаленный зазубренный меч", category: "sword", damage: 60, critChance: 5, critPower: 15, durability: 40, requiredLevel: 9, price: 650 },
       { id: 1004, name: "Закаленный легкий кинжал", category: "dagger", damage: 50, critChance: 15, critPower: 30, durability: 40, requiredLevel: 9, price: 650 },
