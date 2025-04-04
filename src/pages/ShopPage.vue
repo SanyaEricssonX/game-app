@@ -935,6 +935,7 @@ export default {
   width: 74px;
   height: 74px;
   background-color: var(--color-light);
+  border: 1px solid var(--color-light);
 }
 .item-box {
   display: flex;
