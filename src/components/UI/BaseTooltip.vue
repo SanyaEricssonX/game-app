@@ -143,7 +143,7 @@ export default {
 }
 .position::after {
   content: "";
-  right: 6%;
+  right: 9%;
   top: unset;
   bottom: 99%;
   border: 9px solid transparent;

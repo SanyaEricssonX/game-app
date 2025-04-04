@@ -113,6 +113,7 @@ class player {
       localStorage.removeItem("playerProfessionCharacteristics");
       localStorage.removeItem("playerProfession");
       localStorage.removeItem("playerMaxEvasion");
+      localStorage.removeItem("playerCurrentLocation");
 
       store.state.playerEquipment.weaponDurability = 0;
       store.state.playerEquipment.helmetDurability = 0;
