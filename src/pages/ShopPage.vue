@@ -43,7 +43,13 @@
       <div class="shop-box" v-if="selectedTab == 1">
         <ul class="item-list">
           <li class="list__item" v-for="item in weaponList" :key="item.id">
-            <span class="item__logo"></span>
+            <span class="item__logo">
+              <img
+                :src="getImage(item.image)"
+                :alt="item.id"
+                v-if="item.image"
+              />
+            </span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
               <div class="desc-box">
@@ -99,7 +105,13 @@
       <div class="shop-box" v-if="selectedTab == 2">
         <ul class="item-list">
           <li class="list__item" v-for="item in armorList" :key="item.id">
-            <span class="item__logo"></span>
+            <span class="item__logo">
+              <img
+                :src="getImage(item.image)"
+                :alt="item.id"
+                v-if="item.image"
+              />
+            </span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
               <div class="desc-box">
@@ -155,7 +167,13 @@
       <div class="shop-box" v-if="selectedTab == 3">
         <ul class="item-list">
           <li class="list__item" v-for="item in consumablesList" :key="item.id">
-            <span class="item__logo"></span>
+            <span class="item__logo">
+              <img
+                :src="getImage(item.image)"
+                :alt="item.id"
+                v-if="item.image"
+              />
+            </span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
               <div class="desc-box">
@@ -210,7 +228,13 @@
               :key="item.id"
               v-show="item.durability != item.currentDurability"
             >
-              <span class="item__logo"></span>
+              <span class="item__logo">
+                <img
+                  :src="getImage(item.id)"
+                  :alt="item.id"
+                  v-if="getImage(item.id) != 0"
+                />
+              </span>
               <div class="item-box">
                 <h6 class="item__header">{{ item.name }}</h6>
                 <div class="desc-box">
@@ -262,7 +286,13 @@
               :key="item.id"
               v-show="item.durability != findItemDurability(item.id)"
             >
-              <span class="item__logo"></span>
+              <span class="item__logo">
+                <img
+                  :src="getImage(item.id)"
+                  :alt="item.id"
+                  v-if="getImage(item.id) != 0"
+                />
+              </span>
               <div class="item-box">
                 <h6 class="item__header">{{ item.name }}</h6>
                 <div class="desc-box">
@@ -304,7 +334,13 @@
       <div class="shop-box" v-if="selectedTab == 5">
         <ul class="item-list">
           <li class="list__item" v-for="item in playerInventory" :key="item.id">
-            <span class="item__logo"></span>
+            <span class="item__logo">
+              <img
+                :src="getImage(item.image)"
+                :alt="item.id"
+                v-if="getImage(item.image) != 0"
+              />
+            </span>
             <div class="item-box">
               <h6 class="item__header">{{ item.name }}</h6>
               <div class="desc-box">
@@ -403,6 +439,21 @@ export default {
     },
   },
   methods: {
+    getImage(key) {
+      if (key != 0 && typeof key == "number") {
+        const item = items.findItem(key);
+        if (item.image) {
+          return require(`@/assets/images/${item.image}`);
+        } else {
+          return 0;
+        }
+      } else if (key != 0 && typeof key == "string") {
+        return require(`@/assets/images/${key}`);
+      } else {
+        return 0;
+      }
+    },
+
     createEquipment() {
       this.playerEquipment = [];
       this.playerInventory = [];
@@ -881,8 +932,8 @@ export default {
 .item__logo {
   display: block;
   margin-right: 30px;
-  width: 60px;
-  height: 60px;
+  width: 74px;
+  height: 74px;
   background-color: var(--color-light);
 }
 .item-box {
