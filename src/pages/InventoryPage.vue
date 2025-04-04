@@ -89,6 +89,9 @@
                 selectedItem == 'helmet'
               "
             ></base-tooltip>
+            <span class="item__level" v-if="playerEquipment.helmet > 999"
+              >Ур.{{ itemLevel(playerEquipment.helmet) }}</span
+            >
           </span>
         </li>
 
@@ -132,6 +135,9 @@
                 selectedItem == 'upper'
               "
             ></base-tooltip>
+            <span class="item__level" v-if="playerEquipment.upper > 999"
+              >Ур.{{ itemLevel(playerEquipment.upper) }}</span
+            >
           </span>
         </li>
 
@@ -152,7 +158,8 @@
             <img
               :src="getImage(playerEquipment.lower)"
               :alt="playerEquipment.lower"
-              v-if="getImage(playerEquipment.lower) != 0" />
+              v-if="getImage(playerEquipment.lower) != 0"
+            />
             <span
               class="equipment__item__text"
               v-else-if="playerEquipment.lower > 999"
@@ -173,8 +180,11 @@
                 tooltip.visible &&
                 selectedItem == 'lower'
               "
-            ></base-tooltip
-          ></span>
+            ></base-tooltip>
+            <span class="item__level" v-if="playerEquipment.lower > 999"
+              >Ур.{{ itemLevel(playerEquipment.lower) }}</span
+            ></span
+          >
         </li>
 
         <!-- Перчатки -->
@@ -194,7 +204,8 @@
             <img
               :src="getImage(playerEquipment.gloves)"
               :alt="playerEquipment.gloves"
-              v-if="getImage(playerEquipment.gloves) != 0" />
+              v-if="getImage(playerEquipment.gloves) != 0"
+            />
             <span
               class="equipment__item__text"
               v-else-if="playerEquipment.gloves > 999"
@@ -215,8 +226,11 @@
                 tooltip.visible &&
                 selectedItem == 'gloves'
               "
-            ></base-tooltip
-          ></span>
+            ></base-tooltip>
+            <span class="item__level" v-if="playerEquipment.gloves > 999"
+              >Ур.{{ itemLevel(playerEquipment.gloves) }}</span
+            >
+          </span>
         </li>
 
         <!-- Сапоги -->
@@ -236,7 +250,8 @@
             <img
               :src="getImage(playerEquipment.boots)"
               :alt="playerEquipment.boots"
-              v-if="getImage(playerEquipment.boots) != 0" />
+              v-if="getImage(playerEquipment.boots) != 0"
+            />
             <span
               class="equipment__item__text"
               v-else-if="playerEquipment.boots > 999"
@@ -256,8 +271,11 @@
                 tooltip.visible &&
                 selectedItem == 'boots'
               "
-            ></base-tooltip
-          ></span>
+            ></base-tooltip>
+            <span class="item__level" v-if="playerEquipment.boots > 999"
+              >Ур.{{ itemLevel(playerEquipment.boots) }}</span
+            >
+          </span>
         </li>
       </ul>
     </div>
@@ -299,6 +317,9 @@
             "
             @use="useItem(item)"
           ></base-tooltip>
+          <span class="item__level" v-if="item.id > 999"
+            >Ур.{{ item.requiredLevel }}</span
+          >
         </li>
       </ul>
       <div class="craft-list" v-if="selectedTab == 2">Доступные рецепты</div>
@@ -850,6 +871,7 @@ export default {
   right: 0;
   padding: 2px;
   background-color: var(--color-light);
+  color: var(--color-dark);
   font-family: Bahnschrift;
   font-weight: 900;
   font-size: 14px;
