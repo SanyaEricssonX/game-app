@@ -24,11 +24,27 @@ class items {
         durability: 40, requiredLevel: 13, price: 1020, image: "ice_dagger_of_war.webp"
       },
       {
-        id: 1007, name: "ТЕСТОВЫЙ обезоруживатель", category: "sword", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200,
+        id: 1007, name: "Меч благих намерений", category: "sword", type: "craft", damage: 25,
+        durability: 20, requiredLevel: 1, price: 60, image: ""
+      },
+      {
+        id: 1008, name: "Ритуальный кинжал", category: "dagger", type: "craft", damage: 18, critChance: 5, critPower: 10,
+        durability: 20, requiredLevel: 1, price: 60, image: ""
+      },
+      {
+        id: 1009, name: "Темный легион", category: "sword", type: "craft", damage: 50, critChance: 5, critPower: 15,
+        durability: 40, requiredLevel: 4, price: 210, image: ""
+      },
+      {
+        id: 10010, name: "Последний вздох", category: "dagger", type: "craft", damage: 40, critChance: 10, critPower: 25,
+        durability: 40, requiredLevel: 4, price: 210, image: ""
+      },
+      {
+        id: 10011, name: "ТЕСТОВЫЙ обезоруживатель", category: "sword", type: "test", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200,
         durability: 100, requiredLevel: 1, price: 1, image: "test_item.webp"
       },
       {
-        id: 1008, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", damage: 5000,
+        id: 10012, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", type: "test", damage: 5000,
         durability: 1000, requiredLevel: 3, price: 1000000, image: "test_item.webp"
       },
     ];
@@ -127,7 +143,7 @@ class items {
         armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 260, image: "light_boots_of_balance.webp"
       },
       {
-        id: 10123, name: "Cверхпрочные ультра сапоги высшего порядка", category: "boots", secondCategory: "heavy",
+        id: 10123, name: "Cверхпрочные ультра сапоги высшего порядка", category: "boots", secondCategory: "heavy", type: "test",
         damage: 50, armor: 100, hp: 1000, evasion: 50, critChance: 100, critPower: 250, durability: 100, requiredLevel: 1, price: 1, image: "test_item.webp"
       },
     ];
@@ -145,7 +161,10 @@ class items {
         id: 1022, name: "Малый эликсир брони", category: "buffArmor", desc: "При использовании на 1 бой увеличивает защиту на 5",
         amount: 5, duration: 1, requiredLevel: 2, price: 15, image: "elixir_of_armor.webp"
       },
-      { id: 1023, name: "Малый эликсир богатства", category: "buffDrop", desc: "При использовании на 1 бой увеличивает дроп в 2 раза", amount: 2, duration: 1, requiredLevel: 2, price: 50, image: "elixir_of_wealth.webp" },
+      {
+        id: 1023, name: "Малый эликсир богатства", category: "buffDrop", desc: "При использовании на 1 бой увеличивает дроп в 2 раза",
+        amount: 2, duration: 1, requiredLevel: 2, price: 50, image: "elixir_of_wealth.webp"
+      },
       {
         id: 1024, name: "Эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 70 HP",
         amount: 70, requiredLevel: 3, price: 30, image: "elixir_of_health.webp"
@@ -179,33 +198,74 @@ class items {
         amount: 25, duration: 1, requiredLevel: 10, price: 100, image: "elixir_of_bloodlust.webp"
       },
       {
-        id: 10212, name: "Синтезированный эликсир здоровья I", category: "restoreHp", secondCategory: "craft", desc: "При использовании восстанавливает 50 HP",
-        amount: 50, requiredLevel: 1, price: 15, recipe: [{ material: 1030, count: 3 }, { material: 1031, count: 1 }], image: "elixir_of_health.webp"
+        id: 10212, name: "Синтезированный эликсир здоровья I", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 50 HP",
+        amount: 50, requiredLevel: 1, price: 15, image: "elixir_of_health.webp"
       },
       {
-        id: 10213, name: "Синтезированный эликсир здоровья II", category: "restoreHp", secondCategory: "craft", desc: "При использовании восстанавливает 120 HP",
-        amount: 120, requiredLevel: 1, price: 60, recipe: [{ material: 1030, count: 5 }, { material: 1032, count: 2 }], image: "elixir_of_health.webp"
+        id: 10213, name: "Синтезированный эликсир здоровья II", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 120 HP",
+        amount: 120, requiredLevel: 1, price: 60, image: "elixir_of_health.webp"
       },
       {
-        id: 10214, name: "Синтезированный эликсир здоровья III", category: "restoreHp", secondCategory: "craft", desc: "При использовании восстанавливает 250 HP",
-        amount: 250, requiredLevel: 1, price: 120, recipe: [{ material: 1030, count: 7 }, { material: 1033, count: 2 }], image: "elixir_of_health.webp"
+        id: 10214, name: "Синтезированный эликсир здоровья III", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 250 HP",
+        amount: 250, requiredLevel: 1, price: 120, image: "elixir_of_health.webp"
       },
       {
-        id: 10215, name: "Синтезированный эликсир здоровья IV", category: "restoreHp", secondCategory: "craft", desc: "При использовании восстанавливает 500 HP",
-        amount: 500, requiredLevel: 1, price: 210, recipe: [{ material: 1030, count: 10 }, { material: 1034, count: 3 }], image: "elixir_of_health.webp"
+        id: 10215, name: "Синтезированный эликсир здоровья IV", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 500 HP",
+        amount: 500, requiredLevel: 1, price: 210, image: "elixir_of_health.webp"
       },
       {
-        id: 10216, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 3000 HP",
+        id: 10216, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
         amount: 3000, requiredLevel: 1, price: 1, image: "elixir_of_health.webp"
       },
 
     ];
     this.craftIngredientList = [
-      { id: 1030, name: "Кровь монстра", dropChance: 25 },
-      { id: 1031, name: "Магическая субстанция I", dropChance: 10 },
-      { id: 1032, name: "Магическая субстанция II", dropChance: 10 },
-      { id: 1033, name: "Магическая субстанция III", dropChance: 10 },
-      { id: 1034, name: "Магическая субстанция IV", dropChance: 10 },
+      { id: 1030, name: "Стеклянная колба", dropChance: 15 },
+      { id: 1031, name: "Кровь монстра", dropChance: 25 },
+      { id: 1032, name: "Магическая эссенция I", dropChance: 10 },
+      { id: 1033, name: "Магическая эссенция II", dropChance: 10 },
+      { id: 1034, name: "Магическая эссенция III", dropChance: 10 },
+      { id: 1035, name: "Магическая эссенция IV", dropChance: 10 },
+      { id: 1036, name: "Сломанная рукоять", dropChance: 20 },
+      { id: 1037, name: "Лезвие меча", dropChance: 5 },
+      { id: 1038, name: "Лезвие кинжала", dropChance: 5 },
+      { id: 1039, name: "Кристаллическая пыль", dropChance: 30 },
+      { id: 10310, name: "Гарда темного легиона", dropChance: 1 },
+      { id: 10311, name: "Гарда последнего вздоха", dropChance: 1 },
+    ];
+    this.recipeList = [
+      {
+        id: 1040, name: "Рецепт: Синтезированный эликсир здоровья I", category: "elixir", dropChance: 5, itemId: 10212, requiredLevel: 1,
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }]
+      },
+      {
+        id: 1041, name: "Рецепт: Синтезированный эликсир здоровья II", category: "elixir", dropChance: 5, itemId: 10213, requiredLevel: 1,
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 5 }, { material: 1033, count: 2 }]
+      },
+      {
+        id: 1042, name: "Рецепт: Синтезированный эликсир здоровья III", category: "elixir", dropChance: 5, itemId: 10214, requiredLevel: 1,
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 7 }, { material: 1034, count: 2 }]
+      },
+      {
+        id: 1043, name: "Рецепт: Синтезированный эликсир здоровья IV", category: "elixir", dropChance: 5, itemId: 10215, requiredLevel: 1,
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 10 }, { material: 1035, count: 2 }]
+      },
+      {
+        id: 1044, name: "Рецепт: Меч благих намерений", category: "weapon", dropChance: 5, itemId: 1007, requiredLevel: 1,
+        ingredients: [{ material: 1036, count: 3 }, { material: 1037, count: 1 }, { material: 1039, count: 10 }], resources: { wood: 5, iron: 10 }
+      },
+      {
+        id: 1045, name: "Рецепт: Ритуальный кинжал", category: "weapon", dropChance: 5, itemId: 1008, requiredLevel: 1,
+        ingredients: [{ material: 1036, count: 3 }, { material: 1038, count: 1 }, { material: 1039, count: 10 }], resources: { wood: 5, iron: 10 }
+      },
+      {
+        id: 1046, name: "Рецепт: Темный легион", category: "weapon", dropChance: 5, itemId: 1009, requiredLevel: 4,
+        ingredients: [{ material: 1036, count: 10 }, { material: 1037, count: 3 }, { material: 1039, count: 15 }, { material: 10310, count: 1 }], resources: { wood: 15, iron: 30 }
+      },
+      {
+        id: 1047, name: "Рецепт: Последний вздох", category: "weapon", dropChance: 5, itemId: 10010, requiredLevel: 4,
+        ingredients: [{ material: 1036, count: 10 }, { material: 1038, count: 3 }, { material: 1039, count: 15 }, { material: 10311, count: 1 }], resources: { wood: 15, iron: 30 }
+      },
     ];
   }
 
