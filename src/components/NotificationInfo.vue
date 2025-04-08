@@ -1,5 +1,10 @@
 <template>
-  <div class="modal-container">
+  <div
+    class="modal-container"
+    :class="{
+      'modal-container--whatsnew': $store.state.modalNotification.from == 'app',
+    }"
+  >
     <div
       class="map-block"
       v-if="
@@ -122,6 +127,28 @@
         {{ $store.state.modalNotification.text }}
       </h4>
     </div>
+
+    <div
+      class="whats_new-block"
+      v-else-if="
+        $store.state.modalNotification.visible &&
+        $store.state.modalNotification.from == 'app'
+      "
+    >
+      <h4 class="modal__header">
+        = {{ $store.state.modalNotification.text }} =
+      </h4>
+      <span class="whats_new__title">Что нового:</span>
+      <div class="whats_new-box">
+        <p
+          class="whats_new__desc"
+          v-for="paragraph in updateInfo"
+          :key="paragraph.id"
+        >
+          {{ paragraph }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -136,6 +163,21 @@ export default {
   data() {
     return {
       infoByLevel: [],
+      updateInfo: [
+        "Добавлена система крафта предметов:",
+        "На старнице инвентаря во вкладке Крафт теперь отображаются выпавшие с монстров рецепты, а также материалы и ресурсы, которые необходимы для создания предмета. Сами создаваемые предметы по характеристикам превосходят аналогичные по уровню, что продаются в магазине. Материалы и рецепты выпадают в зависимости от локации в которой вы сражаетесь. Чем выше сложность локации, тем лучше рецепты и материалы.",
+        "Добавлены крафт предметы:",
+        "Синтезированный эликсир здоровья I",
+        "Синтезированный эликсир здоровья II",
+        "Синтезированный эликсир здоровья III",
+        "Синтезированный эликсир здоровья IV",
+        "Меч благих намерений (лв.1)",
+        "Ритуальный кинжал (лв.1)",
+        "Темный легион (лв.4)",
+        "Последний вздох (лв.4)",
+        "Оптимизирована работа модальных окон. Произведены улучшения на страницах: Карта, Магазин.",
+        "",
+      ],
     };
   },
   computed: {},
@@ -171,6 +213,12 @@ export default {
   background-color: var(--color-blue);
   border: 1px solid var(--color-dark);
 }
+.modal-container--whatsnew {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  max-height: 45vh;
+  overflow: auto;
+}
 .modal__header {
   margin-bottom: 10px;
 }
@@ -187,5 +235,20 @@ export default {
 }
 .craft__characteristic:not(:last-child) {
   margin-bottom: 5px;
+}
+.whats_new-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.whats_new__title {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+.whats_new__desc {
+  margin-bottom: 7px;
+  font-size: 18px;
+  line-height: 1.1;
 }
 </style>

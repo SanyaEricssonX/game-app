@@ -263,7 +263,9 @@ export default {
     },
 
     resetData() {
+      const currentVersion = localStorage.getItem("appVersion");
       localStorage.clear();
+      localStorage.setItem("appVersion", currentVersion);
       downloadData();
       this.$store.dispatch("triggerSortEnemies");
       this.$store.dispatch("triggerUpdateInventory");
