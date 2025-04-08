@@ -61,25 +61,20 @@ export function downloadData() {
   } else {
     store.state.playerGold = 0;
   }
-  if (localStorage.getItem("resourcesWood") != null) {
-    store.state.playerResources.wood = Number(localStorage.getItem("resourcesWood"));
+  if (localStorage.getItem("playerResources") != null) {
+    store.state.playerResources = JSON.parse(localStorage.getItem("playerResources"))
   } else {
-    store.state.playerResources.wood = 0;
-  }
-  if (localStorage.getItem("resourcesStone") != null) {
-    store.state.playerResources.stone = Number(localStorage.getItem("resourcesStone"));
-  } else {
-    store.state.playerResources.stone = 0;
-  }
-  if (localStorage.getItem("resourcesIron") != null) {
-    store.state.playerResources.iron = Number(localStorage.getItem("resourcesIron"));
-  } else {
-    store.state.playerResources.iron = 0;
+    store.state.playerResources = { wood: 0, stone: 0, iron: 0 };
   }
   if (localStorage.getItem("playerInventory") != null) {
     store.state.playerInventory = JSON.parse(localStorage.getItem("playerInventory"));
   } else {
     store.state.playerInventory = [];
+  }
+  if (localStorage.getItem("playerCraftInventory") != null) {
+    store.state.playerCraftInventory = JSON.parse(localStorage.getItem("playerCraftInventory"));
+  } else {
+    store.state.playerCraftInventory = [];
   }
   if (localStorage.getItem("playerInventorySize") != null) {
     store.state.playerInventorySize = Number(localStorage.getItem("playerInventorySize"));

@@ -4,6 +4,7 @@
       <small class="copyright">
         © 2025 Red Avalanche. Project in development.
       </small>
+      <small class="version">{{ currentVersion }}</small>
     </div>
   </footer>
 </template>
@@ -14,7 +15,9 @@ export default {
   extends: {},
   props: {},
   data() {
-    return {};
+    return {
+      currentVersion: process.env.VUE_APP_VERSION || "1.0.0",
+    };
   },
   computed: {},
   components: {},
@@ -27,6 +30,9 @@ export default {
 
 <style scoped>
 .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0;
   height: 30px;
 }

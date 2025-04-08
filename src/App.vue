@@ -44,6 +44,8 @@ export default {
   props: {},
   data() {
     return {
+      showUpdateModal: false,
+      currentVersion: process.env.VUE_APP_VERSION || "1.0.0",
       isMenuOpen: false,
       isModalOpen: false,
     };
@@ -72,9 +74,38 @@ export default {
 
       document.querySelector("body").classList.remove("scroll-lock");
     },
+
+    checkVersion() {
+      const savedVersion = localStorage.getItem("appVersion");
+      const isNewVersion = savedVersion !== this.currentVersion;
+
+      if (isNewVersion) {
+        this.showUpdateModal = true;
+        localStorage.setItem("appVersion", this.currentVersion);
+        localStorage.removeItem("updateShown"); // Сброс флага показа
+      }
+
+      // Проверяем, было ли уже показано уведомление для этой версии
+      const updateShown = localStorage.getItem("updateShown");
+      if (isNewVersion && !updateShown) {
+        this.showWhatsNew();
+      }
+    },
+    showWhatsNew() {
+      this.$store.state.modalNotification.text = `Новая версия ${this.currentVersion}`;
+      this.$store.state.modalNotification.from = "app";
+      this.$store.state.modalNotification.visible = true;
+      this.openModal();
+      localStorage.setItem("updateShown", "true");
+    },
+    closeWhatsNew() {
+      this.showUpdateModal = false;
+    },
   },
   beforeCreate() {},
-  mounted() {},
+  mounted() {
+    this.checkVersion();
+  },
 };
 </script>
 
@@ -103,6 +134,16 @@ export default {
   flex-direction: column;
   padding: 20px 35px;
   width: calc(100% - 210px);
+}
+.update-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 </style>
 

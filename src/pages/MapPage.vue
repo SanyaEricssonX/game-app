@@ -112,6 +112,7 @@ import { startBattle } from "@/services/battleLogic";
 import enemies from "@/services/enemies";
 import { downloadData } from "@/services/downloadData";
 import player from "@/services/player";
+// import items from "@/services/items";
 
 export default {
   name: "MapPage",
@@ -191,16 +192,6 @@ export default {
           this.$store.state.playerExperience
         );
         player.characteristics();
-        // Если уровень повысился, то открываем модальное окно
-        if (this.$store.state.levelIsUp) {
-          this.showModal();
-
-          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
-          localStorage.setItem(
-            "playerCurrentHp",
-            this.$store.state.playerCurrentHp
-          );
-        }
 
         // Дроп
         const drop = enemies.randomDrop(enemy.id);
@@ -248,18 +239,74 @@ export default {
           }
         }
 
+        // Дроп с локаций
+        const locationCraftDrop = map.drop(this.currentLocation);
+        let playerCraftInventory = JSON.parse(
+          JSON.stringify(this.$store.state.playerCraftInventory)
+        );
+
+        // Выводим модальное окно с информацией о дропе и поднятому уровню
+        if (this.$store.state.levelIsUp && locationCraftDrop.length > 0) {
+          this.$store.state.modalNotification.text = locationCraftDrop;
+          this.$store.state.modalNotification.from = "map";
+          this.$store.state.modalNotification.visible = true;
+          this.showModal();
+
+          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
+          localStorage.setItem(
+            "playerCurrentHp",
+            this.$store.state.playerCurrentHp
+          );
+        } else if (
+          this.$store.state.levelIsUp &&
+          locationCraftDrop.length == 0
+        ) {
+          this.$store.state.modalNotification.text = "";
+          this.$store.state.modalNotification.from = "map";
+          this.$store.state.modalNotification.visible = true;
+          this.showModal();
+
+          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
+          localStorage.setItem(
+            "playerCurrentHp",
+            this.$store.state.playerCurrentHp
+          );
+        } else if (locationCraftDrop.length > 0) {
+          this.$store.state.modalNotification.text = locationCraftDrop;
+          this.$store.state.modalNotification.from = "map";
+          this.$store.state.modalNotification.visible = true;
+          this.showModal();
+        }
+
+        // Сохраняем дроп игрока
+        locationCraftDrop.forEach((dropItem) => {
+          // Ищем соответствующий элемент в инвентаре
+          const existingItem = playerCraftInventory.find(
+            (invItem) => invItem.craftItemId === dropItem.craftItemId
+          );
+
+          if (existingItem) {
+            // Если элемент найден, увеличиваем count
+            existingItem.count += dropItem.count;
+          } else {
+            // Если элемент не найден, добавляем новый
+            playerCraftInventory.push({
+              craftItemId: dropItem.craftItemId,
+              count: dropItem.count,
+            });
+          }
+        });
+
+        this.$store.state.playerCraftInventory = playerCraftInventory;
+        localStorage.setItem(
+          "playerCraftInventory",
+          JSON.stringify(this.$store.state.playerCraftInventory)
+        );
+
         localStorage.setItem("playerGold", this.$store.state.playerGold);
         localStorage.setItem(
-          "resourcesWood",
-          this.$store.state.playerResources.wood
-        );
-        localStorage.setItem(
-          "resourcesStone",
-          this.$store.state.playerResources.stone
-        );
-        localStorage.setItem(
-          "resourcesIron",
-          this.$store.state.playerResources.iron
+          "playerResources",
+          JSON.stringify(this.$store.state.playerResources)
         );
 
         // Проверяем время действия бафов
@@ -337,7 +384,6 @@ export default {
       this.selectedEnemy = null;
       this.battleLog = [];
       this.isBattleEnd = false;
-      this.isLocationSelected = false;
     },
     sortEnemies() {
       this.sortedEnemies = [];

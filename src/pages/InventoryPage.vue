@@ -322,7 +322,82 @@
           >
         </li>
       </ul>
-      <div class="craft-list" v-if="selectedTab == 2">Доступные рецепты</div>
+      <ul class="craft-list" v-if="selectedTab == 2">
+        <li
+          class="craft__item"
+          v-for="item in playerCraftRecipes"
+          :key="item.id"
+        >
+          <span
+            class="craft__item__icon"
+            @click="showCraftItemInfo(item.targetId)"
+          >
+            <img
+              class="craft_icon"
+              :src="getImage(item.targetId)"
+              :alt="item.targetId"
+              v-if="getImage(item.targetId) != 0"
+            />
+            <span class="craft__item__icon__text" v-else>
+              {{ item.targetId }}
+            </span>
+          </span>
+
+          <div class="craft__item-box">
+            <h4 class="craft__item__title">{{ item.name }}</h4>
+            <div class="craft__item__desc-box">
+              <div class="craft__item__resources-box" v-if="item.resources">
+                <span
+                  class="resources-box__text"
+                  v-show="item.resources.wood && item.resources.wood > 0"
+                >
+                  Древесина: {{ item.resources.wood }}
+                </span>
+                <span
+                  class="resources-box__text"
+                  v-show="item.resources.stone && item.resources.stone > 0"
+                >
+                  Камень: {{ item.resources.stone }}
+                </span>
+                <span
+                  class="resources-box__text"
+                  v-show="item.resources.iron && item.resources.iron > 0"
+                >
+                  Железо: {{ item.resources.iron }}
+                </span>
+              </div>
+
+              <div
+                class="craft__item__desc-block"
+                v-for="ingredient in item.ingredients"
+                :key="ingredient.material"
+              >
+                <span class="block__desc__title">
+                  {{ ingredientName(ingredient.material) }}:
+                </span>
+                <div class="block__desc-box">
+                  <span class="craft__item__material_current">
+                    {{ currentResourceCount(ingredient.material) }}
+                  </span>
+                  /
+                  <span class="craft__item__material_max">
+                    {{ ingredient.count }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <base-button
+            class="craft__item__btn"
+            :style="{
+              'background-color': checkCraftBtnColor(item),
+            }"
+            @click="craftItem(item)"
+            >Создать</base-button
+          >
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -342,6 +417,8 @@ export default {
       inventoryCells: [], // Основная переменная ячеек инвентаря
       playerEquipment: {},
       playerInventory: [],
+      playerCraftResources: [],
+      playerCraftRecipes: [],
       tooltip: {
         visible: false,
         text: "Предмет",
@@ -363,12 +440,25 @@ export default {
       if (newValue) {
         this.updateInventory();
         this.updateEquipment();
+        this.updateCraftInventory();
       }
     },
   },
   methods: {
-    itemLevel(itemId) {
-      const item = items.findItem(itemId);
+    currentResourceCount(id) {
+      for (let i = 0; i < this.playerCraftResources.length; i++) {
+        if (this.playerCraftResources[i].craftItemId == id) {
+          return this.playerCraftResources[i].count;
+        }
+      }
+      return 0;
+    },
+    ingredientName(id) {
+      const ingredient = items.findCraftIngredient(id);
+      return ingredient.name;
+    },
+    itemLevel(id) {
+      const item = items.findItem(id);
       return item.requiredLevel;
     },
 
@@ -398,6 +488,31 @@ export default {
         JSON.stringify(this.$store.state.playerEquipment)
       );
     },
+    updateCraftInventory() {
+      this.playerCraftResources = [];
+      this.playerCraftRecipes = [];
+      this.playerCraftInventory = [];
+      const playerCraftInventory = JSON.parse(
+        JSON.stringify(this.$store.state.playerCraftInventory)
+      );
+
+      for (let i = 0; i < playerCraftInventory.length; i++) {
+        if (
+          playerCraftInventory[i].craftItemId.toString().slice(0, 3) == "104"
+        ) {
+          this.playerCraftRecipes.push(
+            items.findCraftRecipe(playerCraftInventory[i].craftItemId)
+          );
+        } else if (
+          playerCraftInventory[i].craftItemId.toString().slice(0, 3) == "103"
+        ) {
+          this.playerCraftResources.push({
+            craftItemId: playerCraftInventory[i].craftItemId,
+            count: playerCraftInventory[i].count,
+          });
+        }
+      }
+    },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
     },
@@ -418,6 +533,7 @@ export default {
       }
       return newItem;
     },
+
     showTooltip(itemId, durability, target) {
       const newItem = this.allItemsList(itemId);
 
@@ -506,38 +622,35 @@ export default {
         this.tooltip.visible = false;
       }, 1);
     },
-    handleClickOutside(event) {
-      if (this.tooltip.visible) {
-        const tooltip = this.$el.querySelector(".tooltip");
-        const inventory = this.$el.querySelector(".inventory-list");
-        const equipmentItems = this.$el.querySelectorAll(
-          ".equipment__item__icon"
-        );
-        const isOutsideEquipment = Array.from(equipmentItems).every(
-          (item) => !item.contains(event.target)
-        );
 
-        // Проверяем, кликнули ли мы вне инвентаря и тултипа
-        if (
-          this.tooltip.visible &&
-          tooltip &&
-          inventory &&
-          !tooltip.contains(event.target) &&
-          !inventory.contains(event.target) &&
-          isOutsideEquipment
-        ) {
-          this.hideTooltip();
-        } else if (
-          this.tooltip.visible &&
-          this.selectedTab == 2 &&
-          tooltip &&
-          !tooltip.contains(event.target) &&
-          isOutsideEquipment
-        ) {
+    handleClickOutside(event) {
+      if (!this.tooltip?.visible) return;
+
+      const tooltip = this.$el.querySelector(".tooltip");
+      if (!tooltip) return;
+
+      // Проверяем, был ли клик на tooltip или его дочерних элементах
+      const isClickInsideTooltip = tooltip.contains(event.target);
+      if (isClickInsideTooltip) return;
+
+      // Проверяем, был ли клик на equipment items
+      const equipmentItems = this.$el.querySelectorAll(
+        ".equipment__item__icon"
+      );
+      const isClickOnEquipment = Array.from(equipmentItems).some((item) =>
+        item.contains(event.target)
+      );
+
+      if (this.selectedTab === 1) {
+        const inventory = this.$el.querySelector(".inventory-list");
+        if (!inventory?.contains(event.target) && !isClickOnEquipment) {
           this.hideTooltip();
         }
+      } else if (this.selectedTab === 2 && !isClickOnEquipment) {
+        this.hideTooltip();
       }
     },
+
     useItem(item) {
       const category = this.itemCategory(item.id);
 
@@ -755,7 +868,11 @@ export default {
 
         downloadData();
       } else {
-        console.log("Вы не можете пользоваться этим предметом");
+        this.$store.state.modalNotification.text =
+          "Невозможно надеть. Уровень предмета выше вашего.";
+          this.$store.state.modalNotification.from = "inventory";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
       }
       this.hideTooltip();
     },
@@ -817,14 +934,162 @@ export default {
         player.equipmentCharacteristics();
 
         downloadData();
+      } else {
+        this.$store.state.modalNotification.text =
+          "Невозможно снять предмет. Инвентарь переполнен.";
+          this.$store.state.modalNotification.from = "inventory";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
       }
       this.hideTooltip();
+    },
+
+    hasEnoughResources(item) {
+      let recipe = item;
+      let playerResources = JSON.parse(
+        JSON.stringify(this.$store.state.playerResources)
+      );
+      let playerCraftInventory = JSON.parse(
+        JSON.stringify(this.playerCraftResources)
+      );
+
+      // Проверяем достаточно ли ресурсов
+      for (const [resource, requiredCount] of Object.entries(
+        recipe.resources || {}
+      )) {
+        const playerCount = playerResources[resource] || 0;
+        if (playerCount < requiredCount) {
+          return {
+            success: false,
+            message: "Невозможно создать предмет. Не хватает ресурсов.",
+          };
+        }
+      }
+
+      // Проверяем материалы (craft items)
+      for (const ingredient of recipe.ingredients || []) {
+        const playerItem = playerCraftInventory.find(
+          (item) => item.craftItemId === ingredient.material
+        );
+        const playerCount = playerItem ? playerItem.count : 0;
+        if (playerCount < ingredient.count) {
+          return {
+            success: false,
+            message: "Невозможно создать предмет. Не хватает материалов.",
+          };
+        }
+      }
+
+      if (this.$store.state.playerInventory.length < 50) {
+        return { success: true, message: "Вы создали предмет!" };
+      } else {
+        return {
+          success: false,
+          message: "Невозможно создать предмет. Инвентарь переполнен.",
+        };
+      }
+    },
+
+    craftItem(item) {
+      // Сначала проверяем, хватает ли ресурсов
+      const isEnough = this.hasEnoughResources(item);
+      if (isEnough.success == true) {
+        let recipe = item;
+        let playerResources = JSON.parse(
+          JSON.stringify(this.$store.state.playerResources)
+        );
+        let playerCraftInventory = JSON.parse(
+          JSON.stringify(this.$store.state.playerCraftInventory)
+        );
+
+        // Вычитаем ресурсы
+        for (const [resource, requiredCount] of Object.entries(
+          recipe.resources || {}
+        )) {
+          playerResources[resource] -= requiredCount;
+        }
+
+        // Вычитаем материалы
+        for (const ingredient of recipe.ingredients || []) {
+          const playerItemIndex = playerCraftInventory.findIndex(
+            (item) => item.craftItemId === ingredient.material
+          );
+          if (playerItemIndex !== -1) {
+            playerCraftInventory[playerItemIndex].count -= ingredient.count;
+
+            // Удаляем предмет, если количество стало 0
+            if (playerCraftInventory[playerItemIndex].count <= 0) {
+              playerCraftInventory.splice(playerItemIndex, 1);
+            }
+          }
+        }
+
+        let foundItem = this.allItemsList(item.targetId);
+
+        this.playerInventory = JSON.parse(
+          JSON.stringify(this.$store.state.playerInventory)
+        );
+
+        this.playerInventory.push(foundItem);
+
+        this.$store.state.playerInventory = this.playerInventory;
+        localStorage.setItem(
+          "playerInventory",
+          JSON.stringify(this.playerInventory)
+        );
+
+        this.$store.state.playerResources = playerResources;
+        localStorage.setItem(
+          "playerResources",
+          JSON.stringify(this.$store.state.playerResources)
+        );
+
+        this.$store.state.playerCraftInventory = playerCraftInventory;
+        localStorage.setItem(
+          "playerCraftInventory",
+          JSON.stringify(this.$store.state.playerCraftInventory)
+        );
+
+        downloadData();
+
+        this.updateInventory();
+        this.updateCraftInventory();
+
+        this.$store.state.modalNotification.text = isEnough.message;
+        this.$store.state.modalNotification.from = "inventory";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
+      } else {
+        this.$store.state.modalNotification.text = isEnough.message;
+        this.$store.state.modalNotification.from = "inventory";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
+      }
+    },
+
+    showModal() {
+      this.$emit("show-modal");
+    },
+    showCraftItemInfo(itemId) {
+      let item = items.findItem(itemId);
+      this.$store.state.modalNotification.text = item;
+      this.$store.state.modalNotification.from = "inventory";
+      this.$store.state.modalNotification.visible = true;
+      this.showModal();
+    },
+    checkCraftBtnColor(item) {
+      if (this.hasEnoughResources(item).success == true) {
+        return "var(--color-green)";
+      } else {
+        return "var(--color-red)";
+      }
     },
   },
   beforeCreate() {},
   created() {
     this.updateInventory();
     this.updateEquipment();
+    this.updateCraftInventory();
   },
   mounted() {
     document.addEventListener("click", this.handleClickOutside);
@@ -901,6 +1166,71 @@ export default {
   flex-basis: 10%;
   aspect-ratio: 1 / 1;
   border: 1px solid var(--color-light);
+}
+.craft-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 50vh;
+  overflow: auto;
+}
+.craft__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 2px solid var(--color-light);
+}
+.craft__item__icon {
+  position: relative;
+  align-content: center;
+  text-align: center;
+  height: 74px;
+  width: 74px;
+  border: 1px solid var(--color-dark);
+  cursor: pointer;
+}
+.craft__item__icon:hover {
+  border: 1px solid var(--color-light);
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
+.craft__item-box {
+  width: 500px;
+}
+.craft__item__title {
+  margin-bottom: 10px;
+}
+.craft__item__desc-block {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.craft__item__desc-block:last-child {
+  margin-bottom: 0;
+}
+.craft__item__btn {
+  border: 1px solid var(--color-dark);
+}
+.craft__item__btn:hover {
+  border: 1px solid var(--color-light);
+  background-color: var(--color-dark);
+  color: var(--color-light);
+}
+.block__desc__title {
+  margin-right: 10px;
+  width: 250px;
+}
+.craft__item__resources-box {
+  display: flex;
+}
+.resources-box__text {
+  margin-right: 30px;
+  margin-bottom: 10px;
+}
+.resources-box__text:last-child {
+  margin-bottom: 0;
+  margin-right: 0;
 }
 .active {
   background-color: var(--color-light);

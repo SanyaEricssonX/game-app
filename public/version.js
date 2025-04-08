@@ -1,0 +1,1 @@
+window.appVersion = '0.5.1';
