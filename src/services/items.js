@@ -25,7 +25,7 @@ class items {
       },
       {
         id: 1007, name: "Меч благих намерений", category: "sword", type: "craft", damage: 25,
-        durability: 20, requiredLevel: 1, price: 60, image: ""
+        durability: 20, requiredLevel: 1, price: 60, image: "",
       },
       {
         id: 1008, name: "Ритуальный кинжал", category: "dagger", type: "craft", damage: 18, critChance: 5, critPower: 10,
@@ -236,7 +236,7 @@ class items {
     this.recipeList = [
       {
         id: 1040, name: "Рецепт: Синтезированный эликсир здоровья I", category: "elixir", dropChance: 5, targetId: 10212, requiredLevel: 1,
-        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }], resources: {stone: 1000}
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }], resources: { stone: 1000 }
       },
       {
         id: 1041, name: "Рецепт: Синтезированный эликсир здоровья II", category: "elixir", dropChance: 5, targetId: 10213, requiredLevel: 1,

@@ -388,7 +388,12 @@
             </div>
           </div>
 
-          <base-button class="craft__item__btn" @click="craftItem(item)"
+          <base-button
+            class="craft__item__btn"
+            :style="{
+              'background-color': checkCraftBtnColor(item),
+            }"
+            @click="craftItem(item)"
             >Создать</base-button
           >
         </li>
@@ -408,7 +413,7 @@ export default {
   props: {},
   data() {
     return {
-      selectedTab: 2,
+      selectedTab: 1,
       inventoryCells: [], // Основная переменная ячеек инвентаря
       playerEquipment: {},
       playerInventory: [],
@@ -619,34 +624,30 @@ export default {
     },
 
     handleClickOutside(event) {
-      if (this.tooltip.visible) {
-        const tooltip = this.$el.querySelector(".tooltip");
-        const inventory = this.$el.querySelector(".inventory-list");
-        const equipmentItems = this.$el.querySelectorAll(
-          ".equipment__item__icon"
-        );
-        const isOutsideEquipment = Array.from(equipmentItems).every(
-          (item) => !item.contains(event.target)
-        );
+      if (!this.tooltip?.visible) return;
 
-        // Проверяем, кликнули ли мы вне инвентаря и тултипа
-        if (
-          this.tooltip.visible &&
-          tooltip &&
-          inventory &&
-          !tooltip.contains(event.target) &&
-          !inventory.contains(event.target) &&
-          isOutsideEquipment
-        ) {
+      const tooltip = this.$el.querySelector(".tooltip");
+      if (!tooltip) return;
+
+      // Проверяем, был ли клик на tooltip или его дочерних элементах
+      const isClickInsideTooltip = tooltip.contains(event.target);
+      if (isClickInsideTooltip) return;
+
+      // Проверяем, был ли клик на equipment items
+      const equipmentItems = this.$el.querySelectorAll(
+        ".equipment__item__icon"
+      );
+      const isClickOnEquipment = Array.from(equipmentItems).some((item) =>
+        item.contains(event.target)
+      );
+
+      if (this.selectedTab === 1) {
+        const inventory = this.$el.querySelector(".inventory-list");
+        if (!inventory?.contains(event.target) && !isClickOnEquipment) {
           this.hideTooltip();
         }
-        if (
-          this.selectedTab == 2 &&
-          !tooltip.contains(event.target) &&
-          isOutsideEquipment
-        ) {
-          this.hideTooltip();
-        }
+      } else if (this.selectedTab === 2 && !isClickOnEquipment) {
+        this.hideTooltip();
       }
     },
 
@@ -1071,6 +1072,13 @@ export default {
       this.$store.state.modalNotification.visible = true;
       this.showModal();
     },
+    checkCraftBtnColor(item) {
+      if (this.hasEnoughResources(item).success == true) {
+        return "var(--color-green)";
+      } else {
+        return "var(--color-red)";
+      }
+    },
   },
   beforeCreate() {},
   created() {
@@ -1174,7 +1182,13 @@ export default {
   text-align: center;
   height: 74px;
   width: 74px;
+  border: 1px solid var(--color-dark);
+  cursor: pointer;
+}
+.craft__item__icon:hover {
   border: 1px solid var(--color-light);
+  background-color: var(--color-light);
+  color: var(--color-dark);
 }
 .craft__item-box {
   width: 500px;
@@ -1189,6 +1203,14 @@ export default {
 }
 .craft__item__desc-block:last-child {
   margin-bottom: 0;
+}
+.craft__item__btn {
+  border: 1px solid var(--color-dark);
+}
+.craft__item__btn:hover {
+  border: 1px solid var(--color-light);
+  background-color: var(--color-dark);
+  color: var(--color-light);
 }
 .block__desc__title {
   margin-right: 10px;
@@ -1212,14 +1234,5 @@ export default {
 .equipped {
   background-color: var(--color-light);
   color: var(--color-dark);
-}
-.tooltip {
-  position: absolute;
-  z-index: 9999;
-  background: var(--color-light);
-  color: var(--color-dark);
-  border: 1px solid var(--color-dark);
-  padding: 10px;
-  pointer-events: none; /* Чтобы не перехватывал клики */
 }
 </style>
