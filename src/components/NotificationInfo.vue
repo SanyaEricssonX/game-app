@@ -135,18 +135,20 @@
         $store.state.modalNotification.from == 'app'
       "
     >
-      <h4 class="modal__header">
-        = {{ $store.state.modalNotification.text }} =
-      </h4>
-      <span class="whats_new__title">Что нового:</span>
-      <div class="whats_new-box">
-        <p
-          class="whats_new__desc"
-          v-for="paragraph in updateInfo"
-          :key="paragraph.id"
-        >
-          {{ paragraph }}
-        </p>
+      <div class="update-block">
+        <h3 class="update__title">
+          Новая версия {{ currentUpdate.version }}
+          <span class="date">{{ currentUpdate.date }}</span>
+        </h3>
+        <ul>
+          <li
+            class="update__item"
+            v-for="(change, i) in currentUpdate.changes"
+            :key="i"
+          >
+            {{ change }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -163,21 +165,8 @@ export default {
   data() {
     return {
       infoByLevel: [],
-      updateInfo: [
-        "Добавлена система крафта предметов:",
-        "На старнице инвентаря во вкладке Крафт теперь отображаются выпавшие с монстров рецепты, а также материалы и ресурсы, которые необходимы для создания предмета. Сами создаваемые предметы по характеристикам превосходят аналогичные по уровню, что продаются в магазине. Материалы и рецепты выпадают в зависимости от локации в которой вы сражаетесь. Чем выше сложность локации, тем лучше рецепты и материалы.",
-        "Добавлены крафт предметы:",
-        "Синтезированный эликсир здоровья I",
-        "Синтезированный эликсир здоровья II",
-        "Синтезированный эликсир здоровья III",
-        "Синтезированный эликсир здоровья IV",
-        "Меч благих намерений (лв.1)",
-        "Ритуальный кинжал (лв.1)",
-        "Темный легион (лв.4)",
-        "Последний вздох (лв.4)",
-        "Оптимизирована работа модальных окон. Произведены улучшения на страницах: Карта, Магазин.",
-        "",
-      ],
+      updates: [],
+      currentUpdate: [],
     };
   },
   computed: {},
@@ -194,12 +183,25 @@ export default {
         return "15px";
       }
     },
+    async loadUpdates() {
+      try {
+        const response = await fetch("/updates.json");
+        this.updates = (await response.json()).sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      } catch (error) {
+        console.error("Ошибка загрузки обновлений:", error);
+      }
+    },
   },
   beforeCreate() {},
   created() {
     this.infoByLevel = player.levelUpInfo();
   },
-  mounted() {},
+  async mounted() {
+    await this.loadUpdates();
+    this.currentUpdate = this.updates[0];
+  },
 };
 </script>
 
@@ -236,19 +238,18 @@ export default {
 .craft__characteristic:not(:last-child) {
   margin-bottom: 5px;
 }
-.whats_new-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.whats_new__title {
+.update__title {
   margin-bottom: 10px;
-  font-size: 20px;
+  font-size: 25px;
 }
-.whats_new__desc {
-  margin-bottom: 7px;
+.date {
+  margin-left: 15px;
+  color: #666;
   font-size: 18px;
-  line-height: 1.1;
+}
+.update__item {
+  margin-bottom: 10px;
+  line-height: 1.2;
+  font-size: 18px;
 }
 </style>
