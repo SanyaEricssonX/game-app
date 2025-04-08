@@ -328,7 +328,7 @@
           selectedTab == 4 && repairCost == 0 && inventoryRepairCost == 0
         "
       >
-        Ваши предметы не неуждаются в починке
+        Ваши предметы не неуждаются в починке.
       </div>
 
       <div class="shop-box" v-if="selectedTab == 5">
@@ -395,7 +395,7 @@
           class="fix-desc"
           v-show="selectedTab == 5 && playerInventoryCount == 0"
         >
-          Нет предметов в инвентаре
+          Нет предметов в инвентаре.
         </div>
       </div>
     </div>
