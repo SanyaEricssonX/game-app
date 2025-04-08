@@ -250,16 +250,8 @@ export default {
 
         localStorage.setItem("playerGold", this.$store.state.playerGold);
         localStorage.setItem(
-          "resourcesWood",
-          this.$store.state.playerResources.wood
-        );
-        localStorage.setItem(
-          "resourcesStone",
-          this.$store.state.playerResources.stone
-        );
-        localStorage.setItem(
-          "resourcesIron",
-          this.$store.state.playerResources.iron
+          "playerResources",
+          JSON.stringify(this.$store.state.playerResources)
         );
 
         // Проверяем время действия бафов

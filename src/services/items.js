@@ -235,35 +235,35 @@ class items {
     ];
     this.recipeList = [
       {
-        id: 1040, name: "Рецепт: Синтезированный эликсир здоровья I", category: "elixir", dropChance: 5, itemId: 10212, requiredLevel: 1,
-        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }]
+        id: 1040, name: "Рецепт: Синтезированный эликсир здоровья I", category: "elixir", dropChance: 5, targetId: 10212, requiredLevel: 1,
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }], resources: {stone: 1000}
       },
       {
-        id: 1041, name: "Рецепт: Синтезированный эликсир здоровья II", category: "elixir", dropChance: 5, itemId: 10213, requiredLevel: 1,
+        id: 1041, name: "Рецепт: Синтезированный эликсир здоровья II", category: "elixir", dropChance: 5, targetId: 10213, requiredLevel: 1,
         ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 5 }, { material: 1033, count: 2 }]
       },
       {
-        id: 1042, name: "Рецепт: Синтезированный эликсир здоровья III", category: "elixir", dropChance: 5, itemId: 10214, requiredLevel: 1,
+        id: 1042, name: "Рецепт: Синтезированный эликсир здоровья III", category: "elixir", dropChance: 5, targetId: 10214, requiredLevel: 1,
         ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 7 }, { material: 1034, count: 2 }]
       },
       {
-        id: 1043, name: "Рецепт: Синтезированный эликсир здоровья IV", category: "elixir", dropChance: 5, itemId: 10215, requiredLevel: 1,
+        id: 1043, name: "Рецепт: Синтезированный эликсир здоровья IV", category: "elixir", dropChance: 5, targetId: 10215, requiredLevel: 1,
         ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 10 }, { material: 1035, count: 2 }]
       },
       {
-        id: 1044, name: "Рецепт: Меч благих намерений", category: "weapon", dropChance: 5, itemId: 1007, requiredLevel: 1,
-        ingredients: [{ material: 1036, count: 3 }, { material: 1037, count: 1 }, { material: 1039, count: 10 }], resources: { wood: 5, iron: 10 }
+        id: 1044, name: "Рецепт: Меч благих намерений", category: "weapon", dropChance: 5, targetId: 1007, requiredLevel: 1,
+        ingredients: [{ material: 1036, count: 3 }, { material: 1037, count: 1 }, { material: 1039, count: 12 }], resources: { wood: 5, iron: 10 }
       },
       {
-        id: 1045, name: "Рецепт: Ритуальный кинжал", category: "weapon", dropChance: 5, itemId: 1008, requiredLevel: 1,
+        id: 1045, name: "Рецепт: Ритуальный кинжал", category: "weapon", dropChance: 5, targetId: 1008, requiredLevel: 1,
         ingredients: [{ material: 1036, count: 3 }, { material: 1038, count: 1 }, { material: 1039, count: 10 }], resources: { wood: 5, iron: 10 }
       },
       {
-        id: 1046, name: "Рецепт: Темный легион", category: "weapon", dropChance: 5, itemId: 1009, requiredLevel: 4,
+        id: 1046, name: "Рецепт: Темный легион", category: "weapon", dropChance: 5, targetId: 1009, requiredLevel: 4,
         ingredients: [{ material: 1036, count: 10 }, { material: 1037, count: 3 }, { material: 1039, count: 15 }, { material: 10310, count: 1 }], resources: { wood: 15, iron: 30 }
       },
       {
-        id: 1047, name: "Рецепт: Последний вздох", category: "weapon", dropChance: 5, itemId: 10010, requiredLevel: 4,
+        id: 1047, name: "Рецепт: Последний вздох", category: "weapon", dropChance: 5, targetId: 10010, requiredLevel: 4,
         ingredients: [{ material: 1036, count: 10 }, { material: 1038, count: 3 }, { material: 1039, count: 15 }, { material: 10311, count: 1 }], resources: { wood: 15, iron: 30 }
       },
     ];
@@ -277,14 +277,38 @@ class items {
 
   findItem(itemId) {
     const allItems = JSON.parse(JSON.stringify(this.list()));
-    let newItem;
+    let foundItem;
 
     for (let i = 0; i < allItems.length; i++) {
       if (allItems[i].id == itemId) {
-        newItem = allItems[i];
+        foundItem = allItems[i];
       }
     }
-    return newItem;
+    return foundItem;
+  }
+
+  findCraftRecipe(itemId) {
+    const allRecipes = JSON.parse(JSON.stringify(this.recipeList));
+    let foundRecipe;
+
+    for (let i = 0; i < allRecipes.length; i++) {
+      if (allRecipes[i].id == itemId) {
+        foundRecipe = allRecipes[i];
+      }
+    }
+    return foundRecipe;
+  }
+
+  findCraftIngredient(itemId) {
+    const allIngredients = JSON.parse(JSON.stringify(this.craftIngredientList));
+    let foundIngredient;
+
+    for (let i = 0; i < allIngredients.length; i++) {
+      if (allIngredients[i].id == itemId) {
+        foundIngredient = allIngredients[i];
+      }
+    }
+    return foundIngredient;
   }
 }
 

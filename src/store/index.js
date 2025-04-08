@@ -27,6 +27,7 @@ export default createStore({
     playerBuffCharacteristics: { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, evasionBuffDuration: 0, critChanceBuffDuration: 0, critPowerBuffDuration: 0, dropBuffDuration: 0 },
     playerProfessionCharacteristics: { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 },
     playerInventory: [],
+    playerCraftInventory: [{ craftItemId: 1044, count: 5 }, { craftItemId: 1030, count: 1 }, { craftItemId: 1031, count: 3 }, { craftItemId: 1032, count: 1 }, { craftItemId: 1040, count: 100 }, { craftItemId: 1041, count: 100 }, { craftItemId: 1042, count: 100 }],
     playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 },
     levelIsUp: false,
     professionIsChosen: false,
