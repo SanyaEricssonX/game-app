@@ -74,7 +74,7 @@ export function downloadData() {
   if (localStorage.getItem("playerCraftInventory") != null) {
     store.state.playerCraftInventory = JSON.parse(localStorage.getItem("playerCraftInventory"));
   } else {
-    store.state.playerCraftInventory = [{ craftItemId: 1044, count: 5 }, { craftItemId: 1030, count: 1 }, { craftItemId: 1031, count: 3 }, { craftItemId: 1032, count: 1 }, { craftItemId: 1040, count: 1 }, { craftItemId: 1041, count: 100 }, { craftItemId: 1042, count: 100 }];
+    store.state.playerCraftInventory = [];
   }
   if (localStorage.getItem("playerInventorySize") != null) {
     store.state.playerInventorySize = Number(localStorage.getItem("playerInventorySize"));

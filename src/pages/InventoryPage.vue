@@ -870,6 +870,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно надеть. Уровень предмета выше вашего.";
+          this.$store.state.modalNotification.from = "inventory";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -936,6 +937,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно снять предмет. Инвентарь переполнен.";
+          this.$store.state.modalNotification.from = "inventory";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -1054,10 +1056,12 @@ export default {
         this.updateCraftInventory();
 
         this.$store.state.modalNotification.text = isEnough.message;
+        this.$store.state.modalNotification.from = "inventory";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       } else {
         this.$store.state.modalNotification.text = isEnough.message;
+        this.$store.state.modalNotification.from = "inventory";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -1069,6 +1073,7 @@ export default {
     showCraftItemInfo(itemId) {
       let item = items.findItem(itemId);
       this.$store.state.modalNotification.text = item;
+      this.$store.state.modalNotification.from = "inventory";
       this.$store.state.modalNotification.visible = true;
       this.showModal();
     },

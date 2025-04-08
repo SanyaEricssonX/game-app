@@ -1,8 +1,14 @@
 class items {
   constructor() {
     this.weaponList = [
-      { id: 1000, name: "Железный меч", category: "sword", damage: 10, durability: 10, requiredLevel: 1, price: 50, image: "iron_sword.webp" },
-      { id: 1001, name: "Стальной меч", category: "sword", damage: 35, durability: 25, requiredLevel: 4, price: 240, image: "steel_sword.webp" },
+      {
+        id: 1000, name: "Железный меч", category: "sword", damage: 10,
+        durability: 10, requiredLevel: 1, price: 50, image: "iron_sword.webp"
+      },
+      {
+        id: 1001, name: "Стальной меч", category: "sword", damage: 35,
+        durability: 25, requiredLevel: 4, price: 240, image: "steel_sword.webp"
+      },
       {
         id: 1002, name: "Стальной кинжал", category: "dagger", damage: 25, critChance: 10, critPower: 15,
         durability: 25, requiredLevel: 4, price: 240, image: "steel_dagger.webp"
@@ -52,95 +58,95 @@ class items {
     this.armorList = [
       {
         id: 1010, name: "Железный шлем", category: "helmet", secondCategory: "heavy",
-        armor: 3, hp: 15, durability: 10, requiredLevel: 1, price: 45, image: "iron_helmet.webp"
+        armor: 3, hp: 15, durability: 10, requiredLevel: 1, price: 30, image: "iron_helmet.webp"
       },
       {
         id: 1011, name: "Железная кираса", category: "upper", secondCategory: "heavy",
-        armor: 6, hp: 15, durability: 10, requiredLevel: 1, price: 60, image: "iron_cuirass.webp"
+        armor: 6, hp: 15, durability: 10, requiredLevel: 1, price: 40, image: "iron_cuirass.webp"
       },
       {
         id: 1012, name: "Железные сапоги", category: "boots", secondCategory: "heavy",
-        armor: 3, hp: 15, durability: 10, requiredLevel: 1, price: 45, image: "iron_boots.webp"
+        armor: 3, hp: 15, durability: 10, requiredLevel: 1, price: 30, image: "iron_boots.webp"
       },
       {
         id: 1013, name: "Стальной шлем", category: "helmet", secondCategory: "heavy",
-        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 120, image: "steel_helmet.webp"
+        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 80, image: "steel_helmet.webp"
       },
       {
         id: 1014, name: "Стальная кираса", category: "upper", secondCategory: "heavy",
-        armor: 15, hp: 50, durability: 25, requiredLevel: 4, price: 150, image: "steel_cuirass.webp"
+        armor: 15, hp: 50, durability: 25, requiredLevel: 4, price: 100, image: "steel_cuirass.webp"
       },
       {
         id: 1015, name: "Стальные набедренники", category: "lower", secondCategory: "heavy",
-        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 120, image: "steel_pants.webp"
+        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 80, image: "steel_pants.webp"
       },
       {
         id: 1016, name: "Стальные перчатки", category: "gloves", secondCategory: "heavy",
-        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 120, image: "steel_gloves.webp"
+        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 80, image: "steel_gloves.webp"
       },
       {
         id: 1017, name: "Стальные сапоги", category: "boots", secondCategory: "heavy",
-        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 120, image: "steel_boots.webp"
+        armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 80, image: "steel_boots.webp"
       },
       {
         id: 1018, name: "Кожаный легий шлем", category: "helmet", secondCategory: "light",
-        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 120, image: "leather_light_helmet.webp"
+        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 80, image: "leather_light_helmet.webp"
       },
       {
         id: 1019, name: "Кожаный легкий жилет", category: "upper", secondCategory: "light",
-        armor: 10, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 150, image: "leather_light_vest.webp"
+        armor: 10, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 100, image: "leather_light_vest.webp"
       },
       {
         id: 10110, name: "Кожаные легкие штаны", category: "lower", secondCategory: "light",
-        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 120, image: "leather_light_pants.webp"
+        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 80, image: "leather_light_pants.webp"
       },
       {
         id: 10111, name: "Кожаные легкие перчатки", category: "gloves", secondCategory: "light",
-        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 120, image: "leather_light_gloves.webp"
+        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 80, image: "leather_light_gloves.webp"
       },
       {
         id: 10112, name: "Кожаные легкие сапоги", category: "boots", secondCategory: "light",
-        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 120, image: "leather_light_boots.webp"
+        armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 80, image: "leather_light_boots.webp"
       },
       {
         id: 10113, name: "Тяжелый шлем бессмертия", category: "helmet", secondCategory: "heavy",
-        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 260, image: "heavy_helmet_of_immortality.webp"
+        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 200, image: "heavy_helmet_of_immortality.webp"
       },
       {
         id: 10114, name: "Тяжелая кираса бессмертия", category: "upper", secondCategory: "heavy",
-        armor: 25, hp: 80, durability: 40, requiredLevel: 13, price: 300, image: "heavy_cuirass_of_immortality.webp"
+        armor: 25, hp: 80, durability: 40, requiredLevel: 13, price: 230, image: "heavy_cuirass_of_immortality.webp"
       },
       {
         id: 10115, name: "Тяжелые набедренники бессмертия", category: "lower", secondCategory: "heavy",
-        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 260, image: "heavy_pants_of_immortality.webp"
+        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 200, image: "heavy_pants_of_immortality.webp"
       },
       {
         id: 10116, name: "Тяжелые перчатки бессмертия", category: "gloves", secondCategory: "heavy",
-        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 260, image: "heavy_gloves_of_immortality.webp"
+        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 200, image: "heavy_gloves_of_immortality.webp"
       },
       {
         id: 10117, name: "Тяжелые сапоги бессмертия", category: "boots", secondCategory: "heavy",
-        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 260, image: "heavy_boots_of_immortality.webp"
+        armor: 15, hp: 80, durability: 40, requiredLevel: 13, price: 200, image: "heavy_boots_of_immortality.webp"
       },
       {
         id: 10118, name: "Легкий шлем равновесия", category: "helmet", secondCategory: "light",
-        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 260, image: "light_helmet_of_balance.webp"
+        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 200, image: "light_helmet_of_balance.webp"
       },
       {
         id: 10119, name: "Легкая кираса равновесия", category: "upper", secondCategory: "light",
-        armor: 13, hp: 50, evasion: 10, durability: 40, requiredLevel: 13, price: 300, image: "light_cuirass_of_balance.webp"
+        armor: 13, hp: 50, evasion: 10, durability: 40, requiredLevel: 13, price: 230, image: "light_cuirass_of_balance.webp"
       },
       {
         id: 10120, name: "Легкие набедренники равновесия", category: "lower", secondCategory: "light",
-        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 260, image: "light_pants_of_balance.webp"
+        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 200, image: "light_pants_of_balance.webp"
       },
       {
         id: 10121, name: "Легкие перчатки равновесия", category: "gloves", secondCategory: "light",
-        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 260, image: "light_gloves_of_balance.webp"
+        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 200, image: "light_gloves_of_balance.webp"
       },
       {
         id: 10122, name: "Легкие сапоги равновесия", category: "boots", secondCategory: "light",
-        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 260, image: "light_boots_of_balance.webp"
+        armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 200, image: "light_boots_of_balance.webp"
       },
       {
         id: 10123, name: "Cверхпрочные ультра сапоги высшего порядка", category: "boots", secondCategory: "heavy", type: "test",
@@ -162,7 +168,7 @@ class items {
         amount: 5, duration: 1, requiredLevel: 2, price: 15, image: "elixir_of_armor.webp"
       },
       {
-        id: 1023, name: "Малый эликсир богатства", category: "buffDrop", desc: "При использовании на 1 бой увеличивает дроп в 2 раза",
+        id: 1023, name: "Малый эликсир богатства", category: "buffDrop", desc: "При использовании на 1 бой увеличивает дроп золота и ресурсов в 2 раза",
         amount: 2, duration: 1, requiredLevel: 2, price: 50, image: "elixir_of_wealth.webp"
       },
       {
@@ -236,7 +242,7 @@ class items {
     this.recipeList = [
       {
         id: 1040, name: "Рецепт: Синтезированный эликсир здоровья I", category: "elixir", dropChance: 5, targetId: 10212, requiredLevel: 1,
-        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }], resources: { stone: 1000 }
+        ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }]
       },
       {
         id: 1041, name: "Рецепт: Синтезированный эликсир здоровья II", category: "elixir", dropChance: 5, targetId: 10213, requiredLevel: 1,
@@ -252,7 +258,7 @@ class items {
       },
       {
         id: 1044, name: "Рецепт: Меч благих намерений", category: "weapon", dropChance: 5, targetId: 1007, requiredLevel: 1,
-        ingredients: [{ material: 1036, count: 3 }, { material: 1037, count: 1 }, { material: 1039, count: 12 }], resources: { wood: 5, iron: 10 }
+        ingredients: [{ material: 1036, count: 3 }, { material: 1037, count: 1 }, { material: 1039, count: 10 }], resources: { wood: 5, iron: 10 }
       },
       {
         id: 1045, name: "Рецепт: Ритуальный кинжал", category: "weapon", dropChance: 5, targetId: 1008, requiredLevel: 1,
@@ -309,6 +315,18 @@ class items {
       }
     }
     return foundIngredient;
+  }
+
+  findAllCraftItems(itemId) {
+    const allCraftItems = this.craftIngredientList.concat(this.recipeList);
+    let foundItem;
+
+    for (let i = 0; i < allCraftItems.length; i++) {
+      if (allCraftItems[i].id == itemId) {
+        foundItem = allCraftItems[i];
+      }
+    }
+    return foundItem;
   }
 }
 

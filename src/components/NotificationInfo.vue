@@ -1,20 +1,55 @@
 <template>
   <div class="modal-container">
-    <div class="levelup-block" v-if="$store.state.levelIsUp">
-      <h4 class="modal__header">
-        Вы достигли уровня {{ $store.state.playerLevel }}
-      </h4>
-      <p class="modal__desc" v-for="info in infoByLevel" :key="info.id">
-        {{ info }}
-      </p>
+    <div
+      class="map-block"
+      v-if="
+        $store.state.modalNotification.visible &&
+        $store.state.modalNotification.from == 'map'
+      "
+    >
+      <div
+        class="levelup-block"
+        :style="{
+          'margin-bottom': checkBottom(),
+        }"
+        v-if="$store.state.levelIsUp"
+      >
+        <h4 class="modal__header">
+          Вы достигли уровня {{ $store.state.playerLevel }}
+        </h4>
+        <p class="modal__desc" v-for="info in infoByLevel" :key="info.id">
+          {{ info }}
+        </p>
+      </div>
+      <div
+        class="drop-block"
+        v-if="
+          $store.state.modalNotification.text != '' &&
+          $store.state.modalNotification.from == 'map'
+        "
+      >
+        <h4 class="modal__header">Вы нашли:</h4>
+        <ul class="drop-list">
+          <li
+            class="drop__item"
+            v-for="text in $store.state.modalNotification.text"
+            :key="text.id"
+          >
+            {{ craftItemName(text.craftItemId) }}
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div
-      class="purchase-block"
-      v-else-if="$store.state.modalNotification.visible"
+      class="inventory-block"
+      v-else-if="
+        $store.state.modalNotification.visible &&
+        $store.state.modalNotification.from == 'inventory'
+      "
     >
       <h4
-        class="modal__header"
+        class="inventory__header"
         v-if="typeof $store.state.modalNotification.text == 'string'"
       >
         {{ $store.state.modalNotification.text }}
@@ -23,7 +58,7 @@
         class="craft-block"
         v-else-if="typeof $store.state.modalNotification.text == 'object'"
       >
-        <h4 class="craft__title">
+        <h4 class="modal__header">
           {{ $store.state.modalNotification.text.name }}
         </h4>
         <span
@@ -75,11 +110,24 @@
         >
       </div>
     </div>
+
+    <div
+      class="shop-block"
+      v-else-if="
+        $store.state.modalNotification.visible &&
+        $store.state.modalNotification.from == 'shop'
+      "
+    >
+      <h4 class="shop__header">
+        {{ $store.state.modalNotification.text }}
+      </h4>
+    </div>
   </div>
 </template>
 
 <script type="text/javascript">
 import player from "@/services/player";
+import items from "@/services/items";
 
 export default {
   name: "notification-info",
@@ -93,7 +141,18 @@ export default {
   computed: {},
   components: {},
   watch: {},
-  methods: {},
+  methods: {
+    craftItemName(itemId) {
+      return items.findAllCraftItems(itemId).name;
+    },
+    checkBottom() {
+      if (this.$store.state.modalNotification.text == "") {
+        return "0";
+      } else {
+        return "15px";
+      }
+    },
+  },
   beforeCreate() {},
   created() {
     this.infoByLevel = player.levelUpInfo();
@@ -112,15 +171,19 @@ export default {
   background-color: var(--color-blue);
   border: 1px solid var(--color-dark);
 }
-.modal__desc {
-  margin-top: 10px;
+.modal__header {
+  margin-bottom: 10px;
 }
-.craft-block {
+.modal__desc {
+  margin-bottom: 7px;
+}
+.craft-block,
+.drop-list {
   display: flex;
   flex-direction: column;
 }
-.craft__title {
-  margin-bottom: 10px;
+.drop__item:not(:last-child) {
+  margin-bottom: 7px;
 }
 .craft__characteristic:not(:last-child) {
   margin-bottom: 5px;
