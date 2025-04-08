@@ -37,6 +37,42 @@
         <ul class="drop-list">
           <li
             class="drop__item"
+            v-if="$store.state.modalNotification.resources.gold > 0"
+          >
+            <span class="drop_gold"
+              >Золото: {{ $store.state.modalNotification.resources.gold }}</span
+            >
+          </li>
+          <li
+            class="drop__item"
+            v-if="$store.state.modalNotification.resources.wood > 0"
+          >
+            <span class="drop_gold"
+              >Древесина:
+              {{ $store.state.modalNotification.resources.wood }}</span
+            >
+          </li>
+          <li
+            class="drop__item"
+            v-if="$store.state.modalNotification.resources.stone > 0"
+          >
+            <span class="drop_gold"
+              >Камень:
+              {{ $store.state.modalNotification.resources.stone }}</span
+            >
+          </li>
+          <li
+            class="drop__item"
+            v-if="$store.state.modalNotification.resources.iron > 0"
+          >
+            <span class="drop_gold"
+              >Железо: {{ $store.state.modalNotification.resources.iron }}</span
+            >
+          </li>
+        </ul>
+        <ul class="drop-list">
+          <li
+            class="drop__item"
             v-for="text in $store.state.modalNotification.text"
             :key="text.id"
           >
@@ -231,6 +267,9 @@ export default {
 .drop-list {
   display: flex;
   flex-direction: column;
+}
+.drop-list {
+  margin-bottom: 7px;
 }
 .drop__item:not(:last-child) {
   margin-bottom: 7px;

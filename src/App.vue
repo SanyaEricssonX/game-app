@@ -71,6 +71,13 @@ export default {
       this.$store.state.levelIsUp = false;
       this.$store.state.professionIsChosen = false;
       this.$store.state.modalNotification.visible = false;
+      this.$store.state.modalNotification.from = "";
+      this.$store.state.modalNotification.resources = {
+        gold: 0,
+        wood: 0,
+        stone: 0,
+        iron: 0,
+      };
 
       document.querySelector("body").classList.remove("scroll-lock");
     },

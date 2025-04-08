@@ -293,7 +293,14 @@
         :class="{ active: isActiveBtn(2) }"
         @click="activeContent(2)"
       >
-        <h4 class="item__header">Крафт</h4>
+        <h4 class="item__header">Материалы для крафта</h4>
+      </li>
+      <li
+        class="nav__item"
+        :class="{ active: isActiveBtn(3) }"
+        @click="activeContent(3)"
+      >
+        <h4 class="item__header">Рецепты</h4>
       </li>
     </ul>
 
@@ -322,7 +329,37 @@
           >
         </li>
       </ul>
-      <ul class="craft-list" v-if="selectedTab == 2">
+      <span
+        class="block__title"
+        v-else-if="selectedTab == 2 && playerCraftResources.length == 0"
+        >У вас пока еще нет материалов для крафта.<br />Их можно получить убивая
+        врагов.</span
+      >
+      <ul
+        class="material-list"
+        v-else-if="selectedTab == 2 && playerCraftResources.length > 0"
+      >
+        <li
+          class="material__item"
+          v-for="material in playerCraftResources"
+          :key="material.id"
+        >
+          <h4 class="material__title">
+            {{ materialName(material.craftItemId) }} :
+          </h4>
+          <span class="material__count">{{ material.count }}</span>
+        </li>
+      </ul>
+      <span
+        class="block__title"
+        v-else-if="selectedTab == 3 && playerCraftRecipes.length == 0"
+        >У вас пока еще нет рецептов для крафта.<br />Их можно получить убивая
+        врагов.</span
+      >
+      <ul
+        class="craft-list"
+        v-else-if="selectedTab == 3 && playerCraftRecipes.length > 0"
+      >
         <li
           class="craft__item"
           v-for="item in playerCraftRecipes"
@@ -445,6 +482,9 @@ export default {
     },
   },
   methods: {
+    materialName(materialId) {
+      return items.findCraftIngredient(materialId).name;
+    },
     currentResourceCount(id) {
       for (let i = 0; i < this.playerCraftResources.length; i++) {
         if (this.playerCraftResources[i].craftItemId == id) {
@@ -647,6 +687,8 @@ export default {
           this.hideTooltip();
         }
       } else if (this.selectedTab === 2 && !isClickOnEquipment) {
+        this.hideTooltip();
+      } else if (this.selectedTab === 3 && !isClickOnEquipment) {
         this.hideTooltip();
       }
     },
@@ -870,7 +912,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно надеть. Уровень предмета выше вашего.";
-          this.$store.state.modalNotification.from = "inventory";
+        this.$store.state.modalNotification.from = "inventory";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -937,7 +979,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно снять предмет. Инвентарь переполнен.";
-          this.$store.state.modalNotification.from = "inventory";
+        this.$store.state.modalNotification.from = "inventory";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -1167,9 +1209,31 @@ export default {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--color-light);
 }
+.material-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  max-height: 50vh;
+  overflow: auto;
+}
+.material__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 250px;
+}
+.material__item:not(:last-child) {
+  margin-bottom: 15px;
+}
+.material__title {
+  margin-right: 10px;
+}
 .craft-list {
   display: flex;
   flex-direction: column;
+  padding-right: 15px;
   max-height: 50vh;
   overflow: auto;
 }
@@ -1239,5 +1303,11 @@ export default {
 .equipped {
   background-color: var(--color-light);
   color: var(--color-dark);
+}
+.block__title {
+  display: block;
+  margin-top: 30px;
+  text-align: center;
+  line-height: 1.5;
 }
 </style>

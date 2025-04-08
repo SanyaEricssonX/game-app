@@ -196,46 +196,60 @@ export default {
         // Дроп
         const drop = enemies.randomDrop(enemy.id);
         const minDropGold = Math.floor(drop.gold / 1.4);
+        let dropGold = 0;
+        let dropWood = 0;
+        let dropStone = 0;
+        let dropIron = 0;
 
         if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
-          this.$store.state.playerGold +=
+          dropGold =
             Math.floor(
               Math.random() * (drop.gold - minDropGold) + minDropGold
             ) * this.$store.state.playerBuffCharacteristics.drop;
 
+          this.$store.state.playerGold += dropGold;
+
           if (drop.wood != 0) {
-            this.$store.state.playerResources.wood +=
+            dropWood =
               Math.floor(Math.random() * (drop.wood - 1 + 1) + 1) *
               this.$store.state.playerBuffCharacteristics.drop;
+
+            this.$store.state.playerResources.wood += dropWood;
           }
           if (drop.stone != 0) {
-            this.$store.state.playerResources.stone +=
+            dropStone =
               Math.floor(Math.random() * (drop.stone - 1 + 1) + 1) *
               this.$store.state.playerBuffCharacteristics.drop;
+
+            this.$store.state.playerResources.stone += dropStone;
           }
           if (drop.iron != 0) {
-            this.$store.state.playerResources.iron +=
+            dropIron =
               Math.floor(Math.random() * (drop.iron - 1 + 1) + 1) *
               this.$store.state.playerBuffCharacteristics.drop;
+
+            this.$store.state.playerResources.iron += dropIron;
           }
         } else {
-          this.$store.state.playerGold += Math.floor(
+          dropGold = Math.floor(
             Math.random() * (drop.gold - minDropGold) + minDropGold
           );
+
+          this.$store.state.playerGold += dropGold;
           if (drop.wood != 0) {
-            this.$store.state.playerResources.wood += Math.floor(
-              Math.random() * (drop.wood - 1 + 1) + 1
-            );
+            dropWood = Math.floor(Math.random() * (drop.wood - 1 + 1) + 1);
+
+            this.$store.state.playerResources.wood += dropWood;
           }
           if (drop.stone != 0) {
-            this.$store.state.playerResources.stone += Math.floor(
-              Math.random() * (drop.stone - 1 + 1) + 1
-            );
+            dropStone = Math.floor(Math.random() * (drop.stone - 1 + 1) + 1);
+
+            this.$store.state.playerResources.stone += dropStone;
           }
           if (drop.iron != 0) {
-            this.$store.state.playerResources.iron += Math.floor(
-              Math.random() * (drop.iron - 1 + 1) + 1
-            );
+            dropIron = Math.floor(Math.random() * (drop.iron - 1 + 1) + 1);
+
+            this.$store.state.playerResources.iron += dropIron;
           }
         }
 
@@ -248,6 +262,12 @@ export default {
         // Выводим модальное окно с информацией о дропе и поднятому уровню
         if (this.$store.state.levelIsUp && locationCraftDrop.length > 0) {
           this.$store.state.modalNotification.text = locationCraftDrop;
+          this.$store.state.modalNotification.resources = {
+            gold: dropGold,
+            wood: dropWood,
+            stone: dropStone,
+            iron: dropIron,
+          };
           this.$store.state.modalNotification.from = "map";
           this.$store.state.modalNotification.visible = true;
           this.showModal();
@@ -262,6 +282,12 @@ export default {
           locationCraftDrop.length == 0
         ) {
           this.$store.state.modalNotification.text = "";
+          this.$store.state.modalNotification.resources = {
+            gold: dropGold,
+            wood: dropWood,
+            stone: dropStone,
+            iron: dropIron,
+          };
           this.$store.state.modalNotification.from = "map";
           this.$store.state.modalNotification.visible = true;
           this.showModal();
@@ -273,12 +299,28 @@ export default {
           );
         } else if (locationCraftDrop.length > 0) {
           this.$store.state.modalNotification.text = locationCraftDrop;
+          this.$store.state.modalNotification.resources = {
+            gold: dropGold,
+            wood: dropWood,
+            stone: dropStone,
+            iron: dropIron,
+          };
+          this.$store.state.modalNotification.from = "map";
+          this.$store.state.modalNotification.visible = true;
+          this.showModal();
+        } else {
+          this.$store.state.modalNotification.resources = {
+            gold: dropGold,
+            wood: dropWood,
+            stone: dropStone,
+            iron: dropIron,
+          };
           this.$store.state.modalNotification.from = "map";
           this.$store.state.modalNotification.visible = true;
           this.showModal();
         }
 
-        // Сохраняем дроп игрока
+        // Сохраняем дроп крафт предметов игрока
         locationCraftDrop.forEach((dropItem) => {
           // Ищем соответствующий элемент в инвентаре
           const existingItem = playerCraftInventory.find(
