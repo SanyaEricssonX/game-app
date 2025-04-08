@@ -330,7 +330,7 @@
         >
           <span
             class="craft__item__icon"
-            @click="showTooltip(item.targetId, '', item.id)"
+            @click="showCraftItemInfo(item.targetId)"
           >
             <img
               class="craft_icon"
@@ -341,11 +341,6 @@
             <span class="craft__item__icon__text" v-else>
               {{ item.targetId }}
             </span>
-            <base-tooltip
-              class="tooltip"
-              :tooltip="tooltip"
-              v-if="item.id && tooltip.visible && selectedItem == item.id"
-            ></base-tooltip>
           </span>
 
           <div class="craft__item-box">
@@ -624,36 +619,31 @@ export default {
     },
 
     handleClickOutside(event) {
-      if (!this.tooltip.visible) return;
-
-      const tooltip = this.$el.querySelector(".tooltip");
-      if (!tooltip) return;
-
-      const equipmentItems = this.$el.querySelectorAll(
-        ".equipment__item__icon"
-      );
-      const isOutsideEquipment = Array.from(equipmentItems).every(
-        (item) => !item.contains(event.target)
-      );
-
-      // Общие условия для скрытия тултипа
-      const shouldHide =
-        this.tooltip.visible &&
-        !tooltip.contains(event.target) &&
-        isOutsideEquipment;
-
-      if (this.selectedTab === 1) {
+      if (this.tooltip.visible) {
+        const tooltip = this.$el.querySelector(".tooltip");
         const inventory = this.$el.querySelector(".inventory-list");
-        if (shouldHide && inventory && !inventory.contains(event.target)) {
+        const equipmentItems = this.$el.querySelectorAll(
+          ".equipment__item__icon"
+        );
+        const isOutsideEquipment = Array.from(equipmentItems).every(
+          (item) => !item.contains(event.target)
+        );
+
+        // Проверяем, кликнули ли мы вне инвентаря и тултипа
+        if (
+          this.tooltip.visible &&
+          tooltip &&
+          inventory &&
+          !tooltip.contains(event.target) &&
+          !inventory.contains(event.target) &&
+          isOutsideEquipment
+        ) {
           this.hideTooltip();
         }
-      } else if (this.selectedTab === 2) {
-        const craftItem = this.$el.querySelector(".craft__item__icon");
-        const craftIcon = this.$el.querySelector(".craft_icon");
         if (
-          shouldHide &&
-          (!craftItem || !craftItem.contains(event.target)) &&
-          (!craftIcon || !craftIcon.contains(event.target))
+          this.selectedTab == 2 &&
+          !tooltip.contains(event.target) &&
+          isOutsideEquipment
         ) {
           this.hideTooltip();
         }
@@ -1075,6 +1065,12 @@ export default {
     showModal() {
       this.$emit("show-modal");
     },
+    showCraftItemInfo(itemId) {
+      let item = items.findItem(itemId);
+      this.$store.state.modalNotification.text = item;
+      this.$store.state.modalNotification.visible = true;
+      this.showModal();
+    },
   },
   beforeCreate() {},
   created() {
@@ -1216,5 +1212,14 @@ export default {
 .equipped {
   background-color: var(--color-light);
   color: var(--color-dark);
+}
+.tooltip {
+  position: absolute;
+  z-index: 9999;
+  background: var(--color-light);
+  color: var(--color-dark);
+  border: 1px solid var(--color-dark);
+  padding: 10px;
+  pointer-events: none; /* Чтобы не перехватывал клики */
 }
 </style>
