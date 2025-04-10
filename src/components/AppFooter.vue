@@ -4,7 +4,6 @@
       <small class="copyright">
         © 2025 Red Avalanche. Project in development.
       </small>
-      <small class="version">{{ currentVersion }}</small>
     </div>
   </footer>
 </template>
@@ -15,9 +14,7 @@ export default {
   extends: {},
   props: {},
   data() {
-    return {
-      currentVersion: process.env.VUE_APP_VERSION || "1.0.0",
-    };
+    return {};
   },
   computed: {},
   components: {},

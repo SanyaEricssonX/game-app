@@ -23,8 +23,10 @@
       <main class="container main">
         <user-profile
           class="profile-block"
+          v-if="['Inventory', 'Shop', 'Map'].includes($route.name)"
           @show-modal="openModal"
-        ></user-profile>
+        />
+        <app-sidebar class="menu-block" :key="$route.name" v-else />
         <router-view class="router-block" @show-modal="openModal"></router-view>
       </main>
       <app-footer></app-footer>
@@ -39,6 +41,7 @@ import UserProfile from "@/components/UserProfile";
 import ModalWindow from "@/components/ModalWindow";
 import NotificationInfo from "@/components/NotificationInfo";
 import ProfessionDesc from "@/components/ProfessionDesc";
+import AppSidebar from "@/components/AppSidebar";
 export default {
   extends: {},
   props: {},
@@ -58,6 +61,7 @@ export default {
     ModalWindow,
     NotificationInfo,
     ProfessionDesc,
+    AppSidebar,
   },
   watch: {},
   methods: {
@@ -133,7 +137,8 @@ export default {
   display: flex;
   min-height: calc(100vh - 150px);
 }
-.profile-block {
+.profile-block,
+.menu-block {
   height: min-content;
 }
 .router-block {
@@ -141,6 +146,9 @@ export default {
   flex-direction: column;
   padding: 20px 35px;
   width: calc(100% - 210px);
+}
+.router-block--full_width {
+  width: 100%;
 }
 .update-modal {
   position: fixed;

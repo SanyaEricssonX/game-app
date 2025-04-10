@@ -1,6 +1,11 @@
 <template>
   <div class="container main-container">
-    <updates-feed :updates="updates" />
+    <div class="main-block" v-if="$store.state.menuContent == 1">Об игре</div>
+    <div class="main-block" v-if="$store.state.menuContent == 2">Настройки</div>
+    <div class="main-block" v-if="$store.state.menuContent == 3">
+      <base-loader v-if="!isDataLoaded" />
+      <updates-feed :updates="updates" v-else />
+    </div>
   </div>
 </template>
 
@@ -13,6 +18,7 @@ export default {
   props: {},
   data() {
     return {
+      isDataLoaded: false,
       updates: [],
     };
   },
@@ -29,6 +35,7 @@ export default {
       } catch (error) {
         console.error("Ошибка загрузки обновлений:", error);
       }
+      this.isDataLoaded = true;
     },
   },
   beforeCreate() {},
