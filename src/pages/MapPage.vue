@@ -112,7 +112,6 @@ import { startBattle } from "@/services/battleLogic";
 import enemies from "@/services/enemies";
 import { downloadData } from "@/services/downloadData";
 import player from "@/services/player";
-// import items from "@/services/items";
 
 export default {
   name: "MapPage",
@@ -204,7 +203,7 @@ export default {
         if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
           dropGold =
             Math.floor(
-              Math.random() * (drop.gold - minDropGold) + minDropGold
+              Math.random() * (drop.gold - minDropGold + 1) + minDropGold
             ) * this.$store.state.playerBuffCharacteristics.drop;
 
           this.$store.state.playerGold += dropGold;
@@ -232,7 +231,7 @@ export default {
           }
         } else {
           dropGold = Math.floor(
-            Math.random() * (drop.gold - minDropGold) + minDropGold
+            Math.random() * (drop.gold - minDropGold + 1) + minDropGold
           );
 
           this.$store.state.playerGold += dropGold;
@@ -426,6 +425,9 @@ export default {
       this.selectedEnemy = null;
       this.battleLog = [];
       this.isBattleEnd = false;
+      if (this.$store.state.playerCurrentLocation == 9990) {
+        this.isLocationSelected = false;
+      }
     },
     sortEnemies() {
       this.sortedEnemies = [];

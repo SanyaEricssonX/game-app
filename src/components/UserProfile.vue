@@ -267,6 +267,7 @@ export default {
       localStorage.clear();
       localStorage.setItem("appVersion", currentVersion);
       downloadData();
+      this.$store.state.playerCurrentLocation = 9990;
       this.$store.dispatch("triggerSortEnemies");
       this.$store.dispatch("triggerUpdateInventory");
       this.$store.dispatch("triggerUpdateShop");
