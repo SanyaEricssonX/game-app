@@ -31,7 +31,7 @@ export default createStore({
     playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 },
     levelIsUp: false,
     professionIsChosen: false,
-    modalNotification: { visible: false, text: "", from: "", resources: {gold: 0, wood: 0, stone: 0, iron: 0} },
+    modalNotification: { visible: false, text: "", from: "", resources: { gold: 0, wood: 0, stone: 0, iron: 0 } },
     menuContent: 1,
   },
   getters: {},
@@ -40,7 +40,7 @@ export default createStore({
       state.triggerSortEnemies = value;
       state.triggerUpdateInventory = value;
       state.triggerUpdateShop = value;
-    }
+    },
   },
   actions: {
     triggerSortEnemies({ commit }) {

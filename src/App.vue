@@ -26,7 +26,11 @@
           v-if="['Inventory', 'Shop', 'Map'].includes($route.name)"
           @show-modal="openModal"
         />
-        <app-sidebar class="menu-block" :key="$route.name" v-else />
+        <app-sidebar
+          class="menu-block"
+          :key="$route.name"
+          v-else-if="['Home', 'Help'].includes($route.name)"
+        />
         <router-view class="router-block" @show-modal="openModal"></router-view>
       </main>
       <app-footer></app-footer>

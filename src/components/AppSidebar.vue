@@ -26,6 +26,7 @@
         <h6 class="menu__text">История обновлений</h6>
       </li>
     </ul>
+
     <ul class="sidebar-menu" v-if="'Help'.includes($route.name)">
       <li
         class="menu__item"
@@ -41,7 +42,7 @@
         :class="{ active: selectedTab == 2 }"
         @click="selectContent(2)"
       >
-        <h6 class="menu__text">Боевая система</h6>
+        <h6 class="menu__text">Характеристики</h6>
       </li>
       <li
         class="menu__item"
@@ -49,7 +50,23 @@
         :class="{ active: selectedTab == 3 }"
         @click="selectContent(3)"
       >
-        <h6 class="menu__text">Игровые предметы</h6>
+        <h6 class="menu__text">Предметы</h6>
+      </li>
+      <li
+        class="menu__item"
+        role="button"
+        :class="{ active: selectedTab == 4 }"
+        @click="selectContent(4)"
+      >
+        <h6 class="menu__text">Крафт</h6>
+      </li>
+      <li
+        class="menu__item"
+        role="button"
+        :class="{ active: selectedTab == 5 }"
+        @click="selectContent(5)"
+      >
+        <h6 class="menu__text">Боевая система</h6>
       </li>
     </ul>
   </div>
@@ -86,7 +103,7 @@ export default {
 .sidebar-menu {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 20px 10px;
   width: 210px;
 }
 .menu__item {
@@ -95,7 +112,7 @@ export default {
   cursor: pointer;
 }
 .menu__item:not(:last-child) {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .menu__item:hover {
   border-color: var(--color-light);
