@@ -1,7 +1,7 @@
 <template>
   <div class="container help-container">
-    <h2>Помощь по игре</h2>
-    <div class="help-section" v-html="compiledMarkdown"></div>
+    <base-loader v-if="!isDataLoaded" />
+    <div class="help-section" v-html="compiledMarkdown" v-else></div>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   name: "HelpPage",
   data() {
     return {
+      isDataLoaded: false,
       markdownContent: "",
       filename: "main",
       files: ["main", "characteristics", "items", "craft", "combat"],
@@ -36,6 +37,8 @@ export default {
         this.markdownContent =
           "## Ошибка загрузки статьи. Обратитесь к администратору!";
       }
+
+      this.isDataLoaded = true;
     },
   },
   watch: {
@@ -55,9 +58,4 @@ export default {
   display: flex;
   flex-direction: column;
 }
-/* .help-section {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-} */
 </style>
