@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="container footer-container">
       <small class="copyright">
-        © 2025 Red Avalanche. Project in development.
+        © 2025 Red Avalanche Studio. Project in development.
       </small>
     </div>
   </footer>

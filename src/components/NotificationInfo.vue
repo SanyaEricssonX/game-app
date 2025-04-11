@@ -220,9 +220,9 @@ export default {
     },
     checkBottom() {
       if (this.$store.state.modalNotification.text == "") {
-        return "10px";
-      } else {
         return "0";
+      } else {
+        return "10px";
       }
     },
     async loadUpdates() {

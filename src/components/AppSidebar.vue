@@ -7,7 +7,7 @@
         :class="{ active: selectedTab == 1 }"
         @click="selectContent(1)"
       >
-        <h6 class="menu__text">Об игре</h6>
+        <h6 class="menu__text">Основное</h6>
       </li>
       <li
         class="menu__item"

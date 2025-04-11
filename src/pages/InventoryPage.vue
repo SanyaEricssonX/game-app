@@ -519,9 +519,11 @@ export default {
 
     updateInventory() {
       this.inventoryCells = player.createInventory();
+      console.log(this.playerInventory);
       this.playerInventory = JSON.parse(
         JSON.stringify(this.$store.state.playerInventory)
       );
+      console.log(this.playerInventory);
     },
     updateEquipment() {
       this.playerEquipment = JSON.parse(
