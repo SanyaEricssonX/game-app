@@ -106,6 +106,11 @@ export function downloadData() {
   } else {
     store.state.playerProfessionCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
   }
+  if (localStorage.getItem("accountStatus") != null) {
+    store.state.accountStatus = localStorage.getItem("accountStatus");
+  } else {
+    store.state.accountStatus = "Стандарт+"
+  }
 
   // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов, бафов и профессии
   if (store.state.playerProfessionCharacteristics.damage) {

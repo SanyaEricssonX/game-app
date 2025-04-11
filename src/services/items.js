@@ -46,12 +46,20 @@ class items {
         durability: 40, requiredLevel: 4, price: 210, image: ""
       },
       {
-        id: 10011, name: "ТЕСТОВЫЙ обезоруживатель", category: "sword", type: "test", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200,
-        durability: 100, requiredLevel: 1, price: 1, image: "test_item.webp"
+        id: 10011, name: "Вершитель судеб", category: "sword", type: "craft", damage: 80, critChance: 5, critPower: 30,
+        durability: 50, requiredLevel: 9, price: 300, image: ""
       },
       {
-        id: 10012, name: "НЕВЕРОЯТНЫХ размеров трехзвездочный ультра мега меч", category: "sword", type: "test", damage: 5000,
-        durability: 1000, requiredLevel: 3, price: 1000000, image: "test_item.webp"
+        id: 10012, name: "Душегуб", category: "dagger", type: "craft", damage: 60, critChance: 15, critPower: 40,
+        durability: 50, requiredLevel: 9, price: 300, image: ""
+      },
+      {
+        id: 10013, name: "ТЕСТОВЫЙ обезоруживатель", category: "sword", type: "test", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200,
+        durability: 100, requiredLevel: 1, price: 10000000, image: "test_item.webp"
+      },
+      {
+        id: 10014, name: "НЕВЕРОЯТНЫХ размеров меч", category: "sword", type: "test", damage: 5000,
+        durability: 1000, requiredLevel: 3, price: 10000000, image: "test_item.webp"
       },
     ];
 
@@ -150,7 +158,7 @@ class items {
       },
       {
         id: 10123, name: "Cверхпрочные ультра сапоги высшего порядка", category: "boots", secondCategory: "heavy", type: "test",
-        damage: 50, armor: 100, hp: 1000, evasion: 50, critChance: 100, critPower: 250, durability: 100, requiredLevel: 1, price: 1, image: "test_item.webp"
+        damage: 50, armor: 100, hp: 1000, evasion: 50, critChance: 100, critPower: 250, durability: 100, requiredLevel: 1, price: 10000000, image: "test_item.webp"
       },
     ];
 
@@ -220,10 +228,13 @@ class items {
         amount: 500, requiredLevel: 1, price: 210, image: "elixir_of_health.webp"
       },
       {
-        id: 10216, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
+        id: 10216, name: "Синтезированный эликсир богатства I", category: "buffDrop", type: "craft", desc: "При использовании на 5 боев увеличивает дроп золота и ресурсов в 2 раза",
+        amount: 2, duration: 5, requiredLevel: 1, price: 60, image: "elixir_of_wealth.webp"
+      },
+      {
+        id: 10217, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
         amount: 3000, requiredLevel: 1, price: 1, image: "elixir_of_health.webp"
       },
-
     ];
     this.craftIngredientList = [
       { id: 1030, name: "Стеклянная колба", dropChance: 15 },
@@ -238,6 +249,10 @@ class items {
       { id: 1039, name: "Кристаллическая пыль", dropChance: 30 },
       { id: 10310, name: "Гарда темного легиона", dropChance: 1 },
       { id: 10311, name: "Гарда последнего вздоха", dropChance: 1 },
+      { id: 10312, name: "Частица благодати ангела", dropChance: 2 },
+      { id: 10313, name: "Гарда вершителя судеб", dropChance: 1 },
+      { id: 10314, name: "Гарда душегуба", dropChance: 1 },
+      { id: 10315, name: "Губительный кристалл", dropChance: 3 }, // будет выпадать с босса в подземелье
     ];
     this.recipeList = [
       {
@@ -271,6 +286,18 @@ class items {
       {
         id: 1047, name: "Рецепт: Последний вздох", category: "weapon", dropChance: 5, targetId: 10010, requiredLevel: 4,
         ingredients: [{ material: 1036, count: 10 }, { material: 1038, count: 3 }, { material: 1039, count: 15 }, { material: 10311, count: 1 }], resources: { wood: 15, iron: 30 }
+      },
+      {
+        id: 1048, name: "Рецепт: Синтезированный эликсир богатства I", category: "elixir", dropChance: 5, targetId: 10216, requiredLevel: 1,
+        ingredients: [{ material: 1030, count: 1 }, { material: 1034, count: 7 }, { material: 1039, count: 7 }, { material: 10312, count: 1 }]
+      },
+      {
+        id: 1049, name: "Рецепт: Вершитель судеб", category: "weapon", dropChance: 5, targetId: 10011, requiredLevel: 9,
+        ingredients: [{ material: 1036, count: 15 }, { material: 1037, count: 3 }, { material: 1039, count: 20 }, { material: 10313, count: 1 }, { material: 10315, count: 5 }], resources: { wood: 20, iron: 35 }
+      },
+      {
+        id: 10410, name: "Рецепт: Душегуб", category: "weapon", dropChance: 5, targetId: 10012, requiredLevel: 9,
+        ingredients: [{ material: 1036, count: 15 }, { material: 1038, count: 3 }, { material: 1039, count: 20 }, { material: 10314, count: 1 }, { material: 10315, count: 5 }], resources: { wood: 20, iron: 35 }
       },
     ];
   }

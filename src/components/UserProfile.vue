@@ -219,7 +219,7 @@
         </li>
       </ul>
     </div>
-    <base-button class="profile__btn" @click="resetData"
+    <base-button class="profile__btn" v-if="$store.state.accountStatus == 'Тестовый'" @click="resetData"
       >Сброс данных</base-button
     >
   </div>

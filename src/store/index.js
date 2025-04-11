@@ -34,7 +34,7 @@ export default createStore({
     modalNotification: { visible: false, text: "", from: "", resources: { gold: 0, wood: 0, stone: 0, iron: 0 } },
     menuContent: 1,
     accountId: "TBD",
-    accountStatus: "Тестовый",
+    accountStatus: "Стандарт+",
     playerBp: "TBD",
   },
   getters: {},

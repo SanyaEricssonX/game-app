@@ -5,7 +5,7 @@
       <p class="main__version">Версия: {{ currentVersion }}</p>
 
       <div class="account-block">
-        <h4 class="account__heading">Аккаунт:</h4>
+        <h4 class="account__heading">Аккаунт</h4>
         <ul class="account-list">
           <li class="account__item">
             Аккаунт ID: {{ $store.state.accountId }}
@@ -19,7 +19,7 @@
         </ul>
       </div>
 
-      <h4 class="main__title">Полезные ссылки:</h4>
+      <h4 class="main__title">Полезные ссылки</h4>
       <ul class="contact-list">
         <li class="contact__item">
           <a
@@ -43,8 +43,7 @@
     <div class="main-block" v-if="$store.state.menuContent == 2">
       <h2 class="settings__heading">Настройки</h2>
 
-      <div class="settings-block"></div>
-
+      <h4 class="code__heading">Активационные коды</h4>
       <form class="code-box" @submit.prevent="enterCode(code)">
         <input
           type="text"
@@ -55,6 +54,13 @@
         />
         <base-button class="code__btn" type="submit">Активировать</base-button>
       </form>
+
+      <div class="settings-block">
+        <h4 class="code__heading">Управление</h4>
+        <base-button class="settings__btn--reset" @click="resetData"
+          >Сбросить все данные</base-button
+        >
+      </div>
     </div>
 
     <div class="main-block" v-if="$store.state.menuContent == 3">
@@ -65,6 +71,7 @@
 </template>
 
 <script type="text/javascript">
+import { downloadData } from "@/services/downloadData";
 import UpdatesFeed from "@/components/UpdatesFeed";
 
 export default {
@@ -133,6 +140,20 @@ export default {
           );
 
           break;
+        case "testerGOD":
+          this.$store.state.modalNotification.text = "Код успешно активирован";
+          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.visible = true;
+
+          this.showModal();
+
+          this.$store.state.accountStatus = "Тестовый";
+          localStorage.setItem(
+            "accountStatus",
+            this.$store.state.accountStatus
+          );
+
+          break;
         default:
           // Аналогично для неправильного кода
           this.inputError = false;
@@ -145,6 +166,16 @@ export default {
     },
     showModal() {
       this.$emit("show-modal");
+    },
+    resetData() {
+      const currentVersion = localStorage.getItem("appVersion");
+      localStorage.clear();
+      localStorage.setItem("appVersion", currentVersion);
+      downloadData();
+      this.$store.state.playerCurrentLocation = 9990;
+      this.$store.dispatch("triggerSortEnemies");
+      this.$store.dispatch("triggerUpdateInventory");
+      this.$store.dispatch("triggerUpdateShop");
     },
   },
   beforeCreate() {},
@@ -201,14 +232,26 @@ export default {
   margin-bottom: 30px;
 }
 .account__item:not(:last-child) {
-  margin-bottom: 7px;
+  margin-bottom: 10px;
 }
 .settings__heading {
-  margin-bottom: 30px;
+  margin-bottom: 50px;
+}
+.settings__btn--reset {
+  padding: 7px 10px;
+}
+.settings__btn--reset:hover {
+  background-color: var(--color-red);
+  color: var(--color-light);
+  font-weight: 900;
+}
+.code__heading {
+  margin-bottom: 15px;
 }
 .code-box {
   display: flex;
   align-items: center;
+  margin-bottom: 50px;
 }
 .code {
   border: 2px solid black;
