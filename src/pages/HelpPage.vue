@@ -16,7 +16,7 @@ export default {
       isDataLoaded: false,
       markdownContent: "",
       filename: "main",
-      files: ["main", "characteristics", "items", "craft", "combat"],
+      files: ["main",  "combat", "profession", "items", "craft"],
     };
   },
   computed: {
@@ -54,6 +54,7 @@ export default {
 </script>
 
 <style scoped>
+
 .help-container {
   display: flex;
   flex-direction: column;

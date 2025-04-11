@@ -42,7 +42,7 @@
         :class="{ active: selectedTab == 2 }"
         @click="selectContent(2)"
       >
-        <h6 class="menu__text">Характеристики</h6>
+        <h6 class="menu__text">Боевая система</h6>
       </li>
       <li
         class="menu__item"
@@ -50,7 +50,7 @@
         :class="{ active: selectedTab == 3 }"
         @click="selectContent(3)"
       >
-        <h6 class="menu__text">Предметы</h6>
+        <h6 class="menu__text">Воплощения</h6>
       </li>
       <li
         class="menu__item"
@@ -58,7 +58,7 @@
         :class="{ active: selectedTab == 4 }"
         @click="selectContent(4)"
       >
-        <h6 class="menu__text">Крафт</h6>
+        <h6 class="menu__text">Предметы</h6>
       </li>
       <li
         class="menu__item"
@@ -66,7 +66,7 @@
         :class="{ active: selectedTab == 5 }"
         @click="selectContent(5)"
       >
-        <h6 class="menu__text">Боевая система</h6>
+        <h6 class="menu__text">Крафт</h6>
       </li>
     </ul>
   </div>

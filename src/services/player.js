@@ -6,7 +6,7 @@ import { downloadData } from "./downloadData";
 
 class player {
   constructor() {
-    this.experienceForLevel = [50, 150, 300, 500, 800, 1200, 1700, 2300, 3200, 4400, 5800, 6000, 8200, 10600, 13200, 17000, 21200, 25800, 32000];
+    this.experienceForLevel = [50, 150, 300, 500, 800, 1200, 1700, 2300, 3200, 4200, 5300, 6500, 8000, 10600, 13200, 17000, 21200, 25800, 32000];
     this.increaseDamagePerLevel = [2, 5, 9, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85];
     this.increaseMaxHpPerLevel = [10, 21, 33, 46, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270];
     this.increaseArmorPerLevel = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28];

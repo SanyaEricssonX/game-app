@@ -32,6 +32,7 @@
           v-show="['Home', 'Help'].includes($route.name)"
         />
         <router-view class="router-block" @show-modal="openModal"></router-view>
+        <scroll-to-top-button />
       </main>
       <app-footer></app-footer>
     </div>
@@ -46,6 +47,8 @@ import ModalWindow from "@/components/ModalWindow";
 import NotificationInfo from "@/components/NotificationInfo";
 import ProfessionDesc from "@/components/ProfessionDesc";
 import AppSidebar from "@/components/AppSidebar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+
 export default {
   extends: {},
   props: {},
@@ -66,6 +69,7 @@ export default {
     NotificationInfo,
     ProfessionDesc,
     AppSidebar,
+    ScrollToTopButton,
   },
   watch: {},
   methods: {

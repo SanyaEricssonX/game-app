@@ -13,7 +13,7 @@ export default createStore({
     playerArmor: 5,
     playerEvasion: 10,
     playerMaxEvasion: 50,
-    playerMaxCritPower: 250,
+    playerMaxCritPower: 300,
     playerCritChance: 5,
     playerCritPower: 30,
     playerProfession: "standart",
