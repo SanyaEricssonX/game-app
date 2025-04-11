@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-if="isModalOpen == true">
+  <div class="modal" v-if="isModalOpen == true" @keydown.enter="closeModal">
     <div class="modal-position">
       <slot />
       <button class="close_btn" @click="closeModal">
@@ -34,14 +34,32 @@ export default {
   },
   computed: {},
   components: {},
-  watch: {},
+  watch: {
+    isModalOpen(newVal) {
+      if (newVal) {
+        // Добавляем обработчик при открытии
+        document.addEventListener("keydown", this.handleKeyDown);
+      } else {
+        // Удаляем обработчик при закрытии
+        document.removeEventListener("keydown", this.handleKeyDown);
+      }
+    },
+  },
   methods: {
     closeModal() {
       this.$emit("close");
     },
+    handleKeyDown(event) {
+      if (event.key === "Enter") {
+        this.closeModal();
+      }
+    },
   },
   beforeCreate() {},
   mounted() {},
+  beforeUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
+  },
 };
 </script>
 

@@ -23,13 +23,13 @@
       <main class="container main">
         <user-profile
           class="profile-block"
-          v-if="['Inventory', 'Shop', 'Map'].includes($route.name)"
+          v-show="['Inventory', 'Shop', 'Map'].includes($route.name)"
           @show-modal="openModal"
         />
         <app-sidebar
           class="menu-block"
           :key="$route.name"
-          v-else-if="['Home', 'Help'].includes($route.name)"
+          v-show="['Home', 'Help'].includes($route.name)"
         />
         <router-view class="router-block" @show-modal="openModal"></router-view>
       </main>

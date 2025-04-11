@@ -53,9 +53,7 @@
           v-model="code"
           @input="inputError = false"
         />
-        <base-button class="code__btn" type="submit" @click="enterCode(code)"
-          >Активировать</base-button
-        >
+        <base-button class="code__btn" type="submit">Активировать</base-button>
       </form>
     </div>
 
@@ -67,7 +65,6 @@
 </template>
 
 <script type="text/javascript">
-import { downloadData } from "@/services/downloadData";
 import UpdatesFeed from "@/components/UpdatesFeed";
 
 export default {
@@ -99,6 +96,15 @@ export default {
       this.isDataLoaded = true;
     },
     enterCode(code) {
+      if (!code.trim()) {
+        // Сбрасываем ошибку и снова устанавливаем после небольшой задержки
+        this.inputError = false;
+        setTimeout(() => {
+          this.inputError = true;
+        }, 10);
+        return;
+      }
+
       switch (code) {
         case "moneyKing":
           this.$store.state.modalNotification.text = "Код успешно активирован";
@@ -107,17 +113,32 @@ export default {
 
           this.showModal();
 
-          console.log(this.$store.state.playerGold);
           this.$store.state.playerGold += 1000;
           localStorage.setItem("playerGold", this.$store.state.playerGold);
 
-          downloadData();
           break;
-        case "qwer":
-          console.log("asdf");
+        case "resourcePrince":
+          this.$store.state.modalNotification.text = "Код успешно активирован";
+          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.visible = true;
+
+          this.showModal();
+
+          this.$store.state.playerResources.wood += 50;
+          this.$store.state.playerResources.stone += 50;
+          this.$store.state.playerResources.iron += 50;
+          localStorage.setItem(
+            "playerResources",
+            JSON.stringify(this.$store.state.playerResources)
+          );
+
           break;
         default:
-          this.inputError = true;
+          // Аналогично для неправильного кода
+          this.inputError = false;
+          setTimeout(() => {
+            this.inputError = true;
+          }, 10);
           break;
       }
       this.code = "";
@@ -208,6 +229,7 @@ export default {
 }
 .error-animation {
   animation: shake 0.5s, glow-red 0.5s;
+  animation-iteration-count: 1;
 }
 
 @keyframes shake {
