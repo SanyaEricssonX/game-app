@@ -219,7 +219,7 @@
         </li>
       </ul>
     </div>
-    <base-button class="profile__btn" @click="resetData"
+    <base-button class="profile__btn" v-if="$store.state.accountStatus == 'Тестовый'" @click="resetData"
       >Сброс данных</base-button
     >
   </div>
@@ -267,6 +267,7 @@ export default {
       localStorage.clear();
       localStorage.setItem("appVersion", currentVersion);
       downloadData();
+      this.$store.state.playerCurrentLocation = 9990;
       this.$store.dispatch("triggerSortEnemies");
       this.$store.dispatch("triggerUpdateInventory");
       this.$store.dispatch("triggerUpdateShop");

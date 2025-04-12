@@ -23,9 +23,16 @@
       <main class="container main">
         <user-profile
           class="profile-block"
+          v-show="['Inventory', 'Shop', 'Map'].includes($route.name)"
           @show-modal="openModal"
-        ></user-profile>
+        />
+        <app-sidebar
+          class="menu-block"
+          :key="$route.name"
+          v-show="['Home', 'Manual'].includes($route.name)"
+        />
         <router-view class="router-block" @show-modal="openModal"></router-view>
+        <scroll-to-top-button />
       </main>
       <app-footer></app-footer>
     </div>
@@ -39,6 +46,9 @@ import UserProfile from "@/components/UserProfile";
 import ModalWindow from "@/components/ModalWindow";
 import NotificationInfo from "@/components/NotificationInfo";
 import ProfessionDesc from "@/components/ProfessionDesc";
+import AppSidebar from "@/components/AppSidebar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+
 export default {
   extends: {},
   props: {},
@@ -58,6 +68,8 @@ export default {
     ModalWindow,
     NotificationInfo,
     ProfessionDesc,
+    AppSidebar,
+    ScrollToTopButton,
   },
   watch: {},
   methods: {
@@ -133,7 +145,8 @@ export default {
   display: flex;
   min-height: calc(100vh - 150px);
 }
-.profile-block {
+.profile-block,
+.menu-block {
   height: min-content;
 }
 .router-block {
@@ -141,6 +154,9 @@ export default {
   flex-direction: column;
   padding: 20px 35px;
   width: calc(100% - 210px);
+}
+.router-block--full_width {
+  width: 100%;
 }
 .update-modal {
   position: fixed;

@@ -26,7 +26,7 @@ export default {
 
 <style scoped>
 .updates__header {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
 .update-block {
   border-left: 4px solid var(--color-green);

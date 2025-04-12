@@ -1,20 +1,23 @@
 <template>
   <header class="header">
     <div class="container header-container">
-      <span class="logo" @click="goToHomePage(0)">
+      <span class="logo" @click="goToHomePage()">
         <span class="logo__text">R</span>
       </span>
       <ul class="nav-list">
-        <li class="nav__item" @click="goToInventoryPage(1)">
+        <li class="nav__item" @click="goToHomePage()">
+          <span class="nav__link">Главная</span>
+        </li>
+        <li class="nav__item" @click="goToInventoryPage()">
           <span class="nav__link">Инвентарь</span>
         </li>
-        <li class="nav__item" @click="goToShopPage(2)">
+        <li class="nav__item" @click="goToShopPage()">
           <span class="nav__link">Магазин</span>
         </li>
-        <li class="nav__item" @click="goToMapPage(3)">
+        <li class="nav__item" @click="goToMapPage()">
           <span class="nav__link">Карта</span>
         </li>
-        <li class="nav__item" @click="goToHelpPage(4)">
+        <li class="nav__item" @click="goToManualPage()">
           <span class="nav__link">Помощь</span>
         </li>
       </ul>
@@ -54,8 +57,8 @@ export default {
         location.reload();
       });
     },
-    goToHelpPage() {
-      this.$router.push({ name: "Help" }).then(() => {
+    goToManualPage() {
+      this.$router.push({ name: "Manual" }).then(() => {
         location.reload();
       });
     },

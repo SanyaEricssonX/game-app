@@ -29,7 +29,8 @@
       <div
         class="drop-block"
         v-if="
-          $store.state.modalNotification.text != '' &&
+          $store.state.modalNotification.resources !=
+            { gold: 0, wood: 0, stone: 0, iron: 0 } &&
           $store.state.modalNotification.from == 'map'
         "
       >
@@ -70,15 +71,20 @@
             >
           </li>
         </ul>
-        <ul class="drop-list">
-          <li
-            class="drop__item"
-            v-for="text in $store.state.modalNotification.text"
-            :key="text.id"
-          >
-            {{ craftItemName(text.craftItemId) }}
-          </li>
-        </ul>
+        <div
+          class="material-block"
+          v-if="$store.state.modalNotification.text != ''"
+        >
+          <ul class="drop-list">
+            <li
+              class="drop__item"
+              v-for="text in $store.state.modalNotification.text"
+              :key="text.id"
+            >
+              {{ craftItemName(text.craftItemId) }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -216,7 +222,7 @@ export default {
       if (this.$store.state.modalNotification.text == "") {
         return "0";
       } else {
-        return "15px";
+        return "10px";
       }
     },
     async loadUpdates() {
@@ -257,10 +263,13 @@ export default {
   max-height: 45vh;
   overflow: auto;
 }
+.levelup-block {
+  margin-bottom: 10px;
+}
 .modal__header {
   margin-bottom: 10px;
 }
-.modal__desc {
+.modal__desc:not(:last-child) {
   margin-bottom: 7px;
 }
 .craft-block,
@@ -268,7 +277,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.drop-list {
+.drop-list:not(:last-child) {
   margin-bottom: 7px;
 }
 .drop__item:not(:last-child) {
