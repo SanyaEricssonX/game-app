@@ -17,7 +17,7 @@
         <li class="nav__item" @click="goToMapPage()">
           <span class="nav__link">Карта</span>
         </li>
-        <li class="nav__item" @click="goToHelpPage()">
+        <li class="nav__item" @click="goToManualPage()">
           <span class="nav__link">Помощь</span>
         </li>
       </ul>
@@ -57,8 +57,8 @@ export default {
         location.reload();
       });
     },
-    goToHelpPage() {
-      this.$router.push({ name: "Help" }).then(() => {
+    goToManualPage() {
+      this.$router.push({ name: "Manual" }).then(() => {
         location.reload();
       });
     },

@@ -29,7 +29,7 @@
         <app-sidebar
           class="menu-block"
           :key="$route.name"
-          v-show="['Home', 'Help'].includes($route.name)"
+          v-show="['Home', 'Manual'].includes($route.name)"
         />
         <router-view class="router-block" @show-modal="openModal"></router-view>
         <scroll-to-top-button />

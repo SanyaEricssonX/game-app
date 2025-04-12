@@ -2,6 +2,7 @@
   <div class="container help-container">
     <base-loader v-if="!isDataLoaded" />
     <div class="help-section" v-html="compiledMarkdown" v-else></div>
+    <!-- Испытываем временные трудности с этим контентом. Скоро починим! -->
   </div>
 </template>
 
@@ -10,13 +11,13 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 export default {
-  name: "HelpPage",
+  name: "ManualPage",
   data() {
     return {
       isDataLoaded: false,
       markdownContent: "",
       filename: "main",
-      files: ["main",  "combat", "profession", "items", "craft"],
+      files: ["main", "combat", "profession", "items", "craft"],
     };
   },
   computed: {
@@ -54,7 +55,6 @@ export default {
 </script>
 
 <style scoped>
-
 .help-container {
   display: flex;
   flex-direction: column;

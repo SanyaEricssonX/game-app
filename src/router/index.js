@@ -3,7 +3,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import InventoryPage from "@/pages/InventoryPage";
 import ShopPage from "@/pages/ShopPage";
 import MapPage from "@/pages/MapPage";
-import HelpPage from "@/pages/HelpPage";
+import ManualPage from "@/pages/ManualPage";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -33,9 +33,9 @@ const routes = [
     component: MapPage,
   },
   {
-    path: "/help",
-    name: "Help",
-    component: HelpPage,
+    path: "/manual",
+    name: "Manual",
+    component: ManualPage,
   },
 ];
 

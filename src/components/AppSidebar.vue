@@ -27,7 +27,7 @@
       </li>
     </ul>
 
-    <ul class="sidebar-menu" v-if="'Help'.includes($route.name)">
+    <ul class="sidebar-menu" v-if="'Manual'.includes($route.name)">
       <li
         class="menu__item"
         role="button"
