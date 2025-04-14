@@ -177,14 +177,14 @@
         $store.state.modalNotification.from == 'main'
       "
     >
-      <h4 class="main__header">
+      <h4 class="main__heading">
         {{ $store.state.modalNotification.text }}
       </h4>
       <div class="main-box">
-        <base-button class="main__btn--yes" @click="setAction(true)"
+        <base-button class="main__btn main__btn--yes" @click="setAction(true)"
           >Подтвердить</base-button
         >
-        <base-button class="main__btn--no" @click="setAction(false)"
+        <base-button class="main__btn main__btn--no" @click="setAction(false)"
           >Отменить</base-button
         >
       </div>
@@ -312,6 +312,31 @@ export default {
 }
 .craft__characteristic:not(:last-child) {
   margin-bottom: 5px;
+}
+.main__heading {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.main-box {
+  display: flex;
+  justify-content: center;
+}
+.main__btn {
+  padding: 7px 10px;
+}
+.main__btn--yes {
+  margin-right: 30px;
+
+}
+.main__btn--yes:hover {
+  background-color: var(--color-green);
+  color: var(--color-light);
+  font-weight: 900;
+}
+.main__btn--no:hover {
+  background-color: var(--color-red);
+  color: var(--color-light);
+  font-weight: 900;
 }
 .update__title {
   margin-bottom: 10px;
