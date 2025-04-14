@@ -117,7 +117,7 @@ h3 {
   border-bottom: 1px solid white;
   padding-bottom: 5px;
   margin-bottom: 20px;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 strong {

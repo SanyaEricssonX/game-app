@@ -233,15 +233,15 @@ class items {
       },
       {
         id: 10217, name: "Запечатанный магией серебряный сундук", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта I уровня",
-        amount: 35, requiredLevel: 1, price: 50, image: ""
+        amount: 35, requiredLevel: 1, price: 50, image: "silver_chest.webp"
       },
       {
         id: 10218, name: "Запечатанный магией золотой сундук богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта II уровня",
-        amount: 35, requiredLevel: 1, price: 100, image: ""
+        amount: 35, requiredLevel: 1, price: 100, image: "golden_chest.webp"
       },
       {
         id: 10219, name: "Запечатанный магией платиновый сундук невообразимого богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта III уровня",
-        amount: 35, requiredLevel: 1, price: 200, image: ""
+        amount: 35, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
       },
       {
         id: 10220, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
@@ -265,7 +265,7 @@ class items {
       { id: 10313, name: "Гарда вершителя судеб", dropChance: 1 },
       { id: 10314, name: "Гарда душегуба", dropChance: 1 },
       { id: 10315, name: "Губительный кристалл", dropChance: 3 }, // будет выпадать с босса в подземелье
-      { id: 10316, name: "Магический ключ", dropChance: 25 }, // 5
+      { id: 10316, name: "Магический ключ", dropChance: 5 },
     ];
     this.recipeList = [
       {

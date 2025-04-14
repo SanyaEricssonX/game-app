@@ -104,6 +104,7 @@ export default {
 .nav__item:not(:last-child) {
   margin-right: 50px;
   margin-bottom: 0;
+  line-height: 1;
 }
 .nav__item:hover {
   transform: translateY(1px);
