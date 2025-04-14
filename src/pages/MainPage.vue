@@ -57,7 +57,7 @@
 
       <div class="settings-block">
         <h4 class="code__heading">Управление</h4>
-        <base-button class="settings__btn--reset" @click="resetData"
+        <base-button class="settings__btn--reset" @click="resetAction"
           >Сбросить все данные</base-button
         >
       </div>
@@ -73,6 +73,7 @@
 <script type="text/javascript">
 import { downloadData } from "@/services/downloadData";
 import UpdatesFeed from "@/components/UpdatesFeed";
+import { mapGetters } from "vuex";
 
 export default {
   name: "MainPage",
@@ -87,9 +88,17 @@ export default {
       code: "",
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["currentActionType"]),
+  },
   components: { UpdatesFeed },
-  watch: {},
+  watch: {
+    currentActionType(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.handleActionChange(newVal);
+      }
+    },
+  },
   methods: {
     async loadUpdates() {
       try {
@@ -115,7 +124,7 @@ export default {
       switch (code) {
         case "moneyKing":
           this.$store.state.modalNotification.text = "Код успешно активирован";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
           this.showModal();
@@ -126,7 +135,7 @@ export default {
           break;
         case "resourcePrince":
           this.$store.state.modalNotification.text = "Код успешно активирован";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
           this.showModal();
@@ -142,7 +151,7 @@ export default {
           break;
         case "testerGOD":
           this.$store.state.modalNotification.text = "Код успешно активирован";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
           this.showModal();
@@ -167,6 +176,26 @@ export default {
     showModal() {
       this.$emit("show-modal");
     },
+    handleActionChange(type) {
+      switch (type) {
+        case true:
+          this.resetData();
+          this.$emit("hide-modal");
+          break;
+        case false:
+          break;
+        default:
+          console.log("Неизвестный тип действия");
+      }
+    },
+    resetAction() {
+      this.$store.state.modalNotification.text =
+        "Данное действие приведет к полному удалению всех данных. Вы уверены?";
+      this.$store.state.modalNotification.from = "main";
+      this.$store.state.modalNotification.visible = true;
+
+      this.showModal();
+    },
     resetData() {
       const currentVersion = localStorage.getItem("appVersion");
       localStorage.clear();
@@ -176,6 +205,12 @@ export default {
       this.$store.dispatch("triggerSortEnemies");
       this.$store.dispatch("triggerUpdateInventory");
       this.$store.dispatch("triggerUpdateShop");
+
+      this.$store.state.modalNotification.text = "Все данные удалены!";
+      this.$store.state.modalNotification.from = "basic";
+      this.$store.state.modalNotification.visible = true;
+
+      this.showModal();
     },
   },
   beforeCreate() {},

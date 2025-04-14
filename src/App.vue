@@ -8,6 +8,7 @@
       >
         <notification-info
           @click.stop
+          @hide-modal="closeModal"
           v-if="
             $store.state.levelIsUp || $store.state.modalNotification.visible
           "
@@ -29,7 +30,7 @@
         <app-sidebar
           class="menu-block"
           :key="$route.name"
-          v-show="['Home', 'Manual'].includes($route.name)"
+          v-show="['Home', 'KnowledgeBase'].includes($route.name)"
         />
         <router-view class="router-block" @show-modal="openModal"></router-view>
         <scroll-to-top-button />

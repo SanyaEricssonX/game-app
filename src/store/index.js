@@ -33,16 +33,22 @@ export default createStore({
     professionIsChosen: false,
     modalNotification: { visible: false, text: "", from: "", resources: { gold: 0, wood: 0, stone: 0, iron: 0 } },
     menuContent: 1,
+    actionType: false,
     accountId: "TBD",
     accountStatus: "Стандарт+",
     playerBp: "TBD",
   },
-  getters: {},
+  getters: {
+    currentActionType: state => state.actionType
+  },
   mutations: {
     setTriggerMethod(state, value) {
       state.triggerSortEnemies = value;
       state.triggerUpdateInventory = value;
       state.triggerUpdateShop = value;
+    },
+    setActionType(state, type) {
+      state.actionType = type;
     },
   },
   actions: {
@@ -57,6 +63,9 @@ export default createStore({
     triggerUpdateShop({ commit }) {
       commit("setTriggerMethod", true);
       setTimeout(() => commit("setTriggerMethod", false), 1000);
+    },
+    updateActionType({ commit }, type) {
+      commit("setActionType", type);
     }
   },
   modules: {},

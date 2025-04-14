@@ -159,15 +159,35 @@
     </div>
 
     <div
-      class="shop-block"
+      class="basic-block"
       v-else-if="
         $store.state.modalNotification.visible &&
-        $store.state.modalNotification.from == 'shop'
+        $store.state.modalNotification.from == 'basic'
       "
     >
-      <h4 class="shop__header">
+      <h4 class="basic__header">
         {{ $store.state.modalNotification.text }}
       </h4>
+    </div>
+
+    <div
+      class="main-block"
+      v-else-if="
+        $store.state.modalNotification.visible &&
+        $store.state.modalNotification.from == 'main'
+      "
+    >
+      <h4 class="main__header">
+        {{ $store.state.modalNotification.text }}
+      </h4>
+      <div class="main-box">
+        <base-button class="main__btn--yes" @click="setAction(true)"
+          >Подтвердить</base-button
+        >
+        <base-button class="main__btn--no" @click="setAction(false)"
+          >Отменить</base-button
+        >
+      </div>
     </div>
 
     <div
@@ -199,6 +219,7 @@
 <script type="text/javascript">
 import player from "@/services/player";
 import items from "@/services/items";
+import { mapActions } from "vuex";
 
 export default {
   name: "notification-info",
@@ -215,6 +236,12 @@ export default {
   components: {},
   watch: {},
   methods: {
+    ...mapActions(["updateActionType"]),
+    setAction(type) {
+      this.updateActionType(type);
+      this.$emit("hide-modal");
+    },
+
     craftItemName(itemId) {
       return items.findAllCraftItems(itemId).name;
     },
@@ -299,5 +326,12 @@ export default {
   margin-bottom: 10px;
   line-height: 1.2;
   font-size: 18px;
+}
+.update__btn {
+  padding: 7px 10px;
+}
+.update__btn:hover {
+  background-color: var(--color-dark);
+  color: var(--color-light);
 }
 </style>

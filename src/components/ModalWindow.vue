@@ -80,9 +80,14 @@ export default {
 }
 .close_btn {
   position: absolute;
-  right: 0;
+  right: 15px;
   top: 0;
   cursor: pointer;
+}
+.close_btn:hover {
+  transition: none;
+  background-color: var(--color-red);
+  border-color: var(--color-red);
 }
 svg {
   fill: var(--color-dark);
