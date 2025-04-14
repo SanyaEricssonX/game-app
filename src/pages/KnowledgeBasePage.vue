@@ -10,7 +10,7 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 export default {
-  name: "ManualPage",
+  name: "KnowledgeBasePage",
   data() {
     return {
       isDataLoaded: false,

@@ -127,10 +127,6 @@ ul {
   padding-left: 20px;
 }
 
-li:not(:last-child) {
-  margin-bottom: 7px;
-}
-
 p {
   margin-bottom: 10px;
 }
