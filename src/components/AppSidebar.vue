@@ -110,6 +110,7 @@ export default {
   padding: 5px;
   border: 1px solid var(--color-dark);
   cursor: pointer;
+  line-height: 1;
 }
 .menu__item:not(:last-child) {
   margin-bottom: 15px;

@@ -100,6 +100,7 @@ export default {
 .nav__item {
   padding: 5px 10px;
   cursor: pointer;
+  line-height: 1;
 }
 .nav__item:not(:last-child) {
   margin-right: 50px;

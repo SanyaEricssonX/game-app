@@ -102,7 +102,10 @@ export default {
   methods: {
     async loadUpdates() {
       try {
-        const response = await fetch("/updates.json");
+        // Используем VUE_APP_CACHE_BUSTER для запроса
+        const response = await fetch(
+          `/updates.json?v=${process.env.VUE_APP_CACHE_BUSTER}`
+        );
         this.updates = (await response.json()).sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
@@ -150,7 +153,8 @@ export default {
 
           break;
         case "testerGOD":
-          this.$store.state.modalNotification.text = "Код успешно активирован. Выданы права тестировщика.";
+          this.$store.state.modalNotification.text =
+            "Код успешно активирован. Выданы права тестировщика.";
           this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
