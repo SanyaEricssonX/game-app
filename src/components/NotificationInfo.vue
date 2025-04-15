@@ -165,9 +165,26 @@
         $store.state.modalNotification.from == 'basic'
       "
     >
-      <h4 class="basic__header">
-        {{ $store.state.modalNotification.text }}
-      </h4>
+      <div
+        class="basic-block--main"
+        v-if="typeof $store.state.modalNotification.text == 'string'"
+      >
+        <h4 class="basic__header">
+          {{ $store.state.modalNotification.text }}
+        </h4>
+      </div>
+      <div
+        class="basic-block--array"
+        v-else-if="typeof $store.state.modalNotification.text == 'object'"
+      >
+        <h4
+          class="basic__header basic-block__header--array"
+          v-for="paragraph in $store.state.modalNotification.text"
+          :key="paragraph"
+        >
+          {{ paragraph }}
+        </h4>
+      </div>
     </div>
 
     <div
@@ -313,6 +330,9 @@ export default {
 .craft__characteristic:not(:last-child) {
   margin-bottom: 5px;
 }
+.basic-block__header--array:not(:last-child) {
+  margin-bottom: 10px;
+}
 .main__heading {
   margin-bottom: 20px;
   text-align: center;
@@ -326,7 +346,6 @@ export default {
 }
 .main__btn--yes {
   margin-right: 30px;
-
 }
 .main__btn--yes:hover {
   background-color: var(--color-green);
