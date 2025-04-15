@@ -47,50 +47,51 @@ class enemies {
       { id: 42, name: "Насмешник", level: 15, hp: 100, damage: 200, armor: 150, evasion: 90, critChance: 30, critPower: 100, experience: 890, time: 1000 },
       { id: 43, name: "Энт", level: 15, hp: 700, damage: 180, armor: 90, evasion: 10, critChance: 20, critPower: 70, experience: 890, time: 1000 },
       { id: 44, name: "Сумеречный жнец", level: 15, hp: 550, damage: 170, armor: 30, evasion: 30, critChance: 40, critPower: 200, experience: 890, time: 1000 },
-      { id: -1, name: "Тестовый", level: -4, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 500, time: 1000 },
-      { id: -2, name: "Тестовый", level: -10, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3200, time: 1000 },
-      { id: -3, name: "Тестовый", level: -13, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 6000, time: 1000 },
-      { id: -4, name: "Тестовый", level: -17, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 17000, time: 1000 },
-      { id: -5, name: "Тестовый", level: -19, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 25800, time: 1000 },
-      { id: -6, name: "Тестовый", level: -20, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 32000, time: 1000 },
-      { id: -7, name: "Тестовый", level: -200, hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 32000, time: 1000 },
+      { id: 45, name: "Тестовый(4)", level: 1, type: "test", hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 300, time: 1000 },
+      { id: 46, name: "Тестовый(7)", level: 1, type: "test", hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 1200, time: 1000 },
+      { id: 47, name: "Тестовый(10)", level: 1, type: "test", hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 3200, time: 1000 },
+      { id: 48, name: "Тестовый(13)", level: 1, type: "test", hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 6500, time: 1000 },
+      { id: 49, name: "Тестовый(17)", level: 1, type: "test", hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 17000, time: 1000 },
+      { id: 50, name: "Тестовый(20)", level: 1, type: "test", hp: 1, damage: 0, armor: 0, evasion: 10, critChance: 0, critPower: 0, experience: 32000, time: 1000 },
     ]
   }
 
   randomDrop(enemyId) {
     for (let i = 0; i < this.list.length; i++) {
-      if (i == enemyId && this.list[i].level == 1) {
-        return { gold: 3, wood: 0, stone: 0, iron: 0 };
-      } else if (i == enemyId && this.list[i].level == 2) {
-        return { gold: 9, wood: 2, stone: 2, iron: 0 };
-      } else if (i == enemyId && this.list[i].level == 3) {
-        return { gold: 20, wood: 3, stone: 3, iron: 2 };
-      } else if (i == enemyId && this.list[i].level == 4) {
-        return { gold: 32, wood: 4, stone: 4, iron: 3 };
-      } else if (i == enemyId && this.list[i].level == 5) {
-        return { gold: 45, wood: 5, stone: 5, iron: 5 };
-      } else if (i == enemyId && this.list[i].level == 6) {
-        return { gold: 56, wood: 5, stone: 5, iron: 5 };
-      } else if (i == enemyId && this.list[i].level == 7) {
-        return { gold: 64, wood: 5, stone: 5, iron: 5 };
-      } else if (i == enemyId && this.list[i].level == 8) {
-        return { gold: 78, wood: 5, stone: 5, iron: 5 };
-      } else if (i == enemyId && this.list[i].level == 9) {
-        return { gold: 90, wood: 7, stone: 7, iron: 5 };
-      } else if (i == enemyId && this.list[i].level == 10) {
-        return { gold: 110, wood: 8, stone: 8, iron: 6 };
-      } else if (i == enemyId && this.list[i].level == 11) {
-        return { gold: 124, wood: 9, stone: 9, iron: 7 };
-      } else if (i == enemyId && this.list[i].level == 12) {
-        return { gold: 140, wood: 9, stone: 9, iron: 7 };
-      } else if (i == enemyId && this.list[i].level == 13) {
-        return { gold: 160, wood: 10, stone: 10, iron: 8 };
-      } else if (i == enemyId && this.list[i].level == 14) {
-        return { gold: 178, wood: 10, stone: 10, iron: 8 };
-      } else if (i == enemyId && this.list[i].level == 15) {
-        return { gold: 195, wood: 12, stone: 12, iron: 10 };
-      } else if (this.list[i].level < 0) {
-        return { gold: 100000, wood: 100000, stone: 100000, iron: 100000 };
+      if (this.list[i].id == enemyId) {
+        if (this.list[i].level == 1 && !this.list[i].type) {
+          return { gold: 3, wood: 0, stone: 0, iron: 0 };
+        } else if (this.list[i].level == 2) {
+          return { gold: 9, wood: 2, stone: 2, iron: 0 };
+        } else if (this.list[i].level == 3) {
+          return { gold: 20, wood: 3, stone: 3, iron: 2 };
+        } else if (this.list[i].level == 4) {
+          return { gold: 32, wood: 4, stone: 4, iron: 3 };
+        } else if (this.list[i].level == 5) {
+          return { gold: 45, wood: 5, stone: 5, iron: 5 };
+        } else if (this.list[i].level == 6) {
+          return { gold: 56, wood: 5, stone: 5, iron: 5 };
+        } else if (this.list[i].level == 7) {
+          return { gold: 64, wood: 5, stone: 5, iron: 5 };
+        } else if (this.list[i].level == 8) {
+          return { gold: 78, wood: 5, stone: 5, iron: 5 };
+        } else if (this.list[i].level == 9) {
+          return { gold: 90, wood: 7, stone: 7, iron: 5 };
+        } else if (this.list[i].level == 10) {
+          return { gold: 110, wood: 8, stone: 8, iron: 6 };
+        } else if (this.list[i].level == 11) {
+          return { gold: 124, wood: 9, stone: 9, iron: 7 };
+        } else if (this.list[i].level == 12) {
+          return { gold: 140, wood: 9, stone: 9, iron: 7 };
+        } else if (this.list[i].level == 13) {
+          return { gold: 160, wood: 10, stone: 10, iron: 8 };
+        } else if (this.list[i].level == 14) {
+          return { gold: 178, wood: 10, stone: 10, iron: 8 };
+        } else if (this.list[i].level == 15) {
+          return { gold: 195, wood: 12, stone: 12, iron: 10 };
+        } else if (this.list[i].level == 1 && this.list[i].type) {
+          return { gold: 100000, wood: 100000, stone: 100000, iron: 100000 };
+        }
       }
     }
   }

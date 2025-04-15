@@ -434,21 +434,124 @@ export default {
       this.enemies = JSON.parse(JSON.stringify(enemies.list));
       this.currentLocation = this.$store.state.playerCurrentLocation;
       this.maps = JSON.parse(JSON.stringify(map.locationList));
+      const playerLevel = this.$store.state.playerLevel;
 
-      for (let i = 0; i < this.maps.length; i++) {
-        if (this.maps[i].id == this.currentLocation) {
-          for (let j = 0; j < this.enemies.length; j++) {
-            if (
-              this.enemies[j].level &&
-              this.enemies[j].level >= this.maps[i].minLevel &&
-              this.enemies[j].level <= this.maps[i].maxLevel
-            ) {
-              this.sortedEnemies.push(this.enemies[j]);
+      // Находим текущую локацию
+      const currentMap = this.maps.find(
+        (map) => map.id == this.currentLocation
+      );
+      if (!currentMap) return;
+
+      // Фильтруем врагов по уровню локации и отсутствию типа (кроме тестовых)
+      let availableEnemies = this.enemies.filter((enemy) => {
+        return (
+          enemy.level &&
+          enemy.level >= currentMap.minLevel &&
+          enemy.level <= currentMap.maxLevel &&
+          !enemy.type
+        );
+      });
+
+      // Дополнительно фильтруем по уровню игрока (+1 уровня)
+      const maxAllowedLevel = playerLevel + 1;
+      availableEnemies = availableEnemies.filter(
+        (enemy) => enemy.level <= maxAllowedLevel
+      );
+
+      // Если нет подходящих врагов, выходим
+      if (availableEnemies.length === 0) return;
+
+      // Определяем случайное количество врагов (от 3 до 6)
+      const enemyCount = Math.min(
+        Math.floor(Math.random() * 4) + 3,
+        availableEnemies.length * 2 // но не больше чем доступно с учетом дублирования
+      );
+
+      // Создаем пул врагов с возможностью дублирования (каждый может встречаться до 2 раз)
+      let enemyPool = [];
+      availableEnemies.forEach((enemy) => {
+        enemyPool.push(enemy);
+        enemyPool.push({ ...enemy }); // Добавляем копию для возможного дублирования
+      });
+
+      // Перемешиваем пул
+      enemyPool.sort(() => Math.random() - 0.5);
+
+      // Выбираем случайных врагов
+      for (let i = 0; i < enemyCount && enemyPool.length > 0; i++) {
+        // Если осталось 2 места и еще нет 2 врагов уровня игрока
+        const currentSameLevel = this.sortedEnemies.filter(
+          (e) => e.level === playerLevel
+        ).length;
+        if (enemyCount - i <= 2 && currentSameLevel < 2) {
+          // Ищем врагов с уровнем игрока
+          const sameLevelEnemies = enemyPool.filter(
+            (enemy) => enemy.level === playerLevel
+          );
+          if (sameLevelEnemies.length > 0) {
+            const enemyToAdd = sameLevelEnemies[0];
+            this.sortedEnemies.push(enemyToAdd);
+
+            // Удаляем добавленного врага из пула
+            const indexToRemove = enemyPool.findIndex(
+              (e) => e.id === enemyToAdd.id
+            );
+            if (indexToRemove !== -1) {
+              enemyPool.splice(indexToRemove, 1);
             }
+            continue;
           }
         }
+
+        // Обычный случайный выбор
+        const randomIndex = Math.floor(Math.random() * enemyPool.length);
+        this.sortedEnemies.push(enemyPool[randomIndex]);
+
+        // Удаляем дубликаты этого врага, если уже добавили 2 раза
+        const addedEnemyId = enemyPool[randomIndex].id;
+        let addedCount = this.sortedEnemies.filter(
+          (e) => e.id === addedEnemyId
+        ).length;
+
+        if (addedCount >= 2) {
+          enemyPool = enemyPool.filter((enemy) => enemy.id !== addedEnemyId);
+        } else {
+          // Удаляем только один экземпляр
+          enemyPool.splice(randomIndex, 1);
+        }
       }
-      this.sortedEnemies.push(this.enemies[this.enemies.length - 1]);
+
+      // Проверяем, что есть минимум 2 врага уровня игрока
+      const sameLevelCount = this.sortedEnemies.filter(
+        (e) => e.level === playerLevel
+      ).length;
+      if (sameLevelCount < 2) {
+        // Добавляем недостающих врагов уровня игрока
+        const sameLevelAvailable = availableEnemies.filter(
+          (e) => e.level === playerLevel
+        );
+        let added = 0;
+
+        while (added < 2 - sameLevelCount && sameLevelAvailable.length > 0) {
+          // Берем врагов по порядку (можно добавить случайность)
+          const enemyToAdd = {
+            ...sameLevelAvailable[added % sameLevelAvailable.length],
+          };
+          this.sortedEnemies.push(enemyToAdd);
+          added++;
+        }
+      }
+
+      // Сортируем врагов по уровню (от меньшего к большему)
+      this.sortedEnemies.sort((a, b) => a.level - b.level);
+
+      // Добавляем тестовых врагов, если статус аккаунта Тестовый
+      if (this.$store.state.accountStatus == "Тестовый") {
+        const testEnemies = this.enemies.filter(
+          (enemy) => enemy.type === "test"
+        );
+        this.sortedEnemies.push(...testEnemies);
+      }
     },
     goToLocation(locationId) {
       this.$store.state.playerCurrentLocation = locationId;

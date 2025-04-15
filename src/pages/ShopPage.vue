@@ -464,6 +464,19 @@ export default {
       this.weaponList = JSON.parse(JSON.stringify(items.weaponList));
       this.armorList = JSON.parse(JSON.stringify(items.armorList));
       this.consumablesList = JSON.parse(JSON.stringify(items.consumablesList));
+
+      if (this.$store.state.accountStatus !== "Тестовый") {
+        // Функция для фильтрации элементов
+        const filterItems = (array) => {
+          return array.filter((item) => !["test", "craft"].includes(item.type));
+        };
+
+        // Применяем фильтрацию ко всем спискам
+        this.weaponList = filterItems(this.weaponList);
+        this.armorList = filterItems(this.armorList);
+        this.consumablesList = filterItems(this.consumablesList);
+      }
+
       this.allItems = JSON.parse(JSON.stringify(items.list()));
 
       this.playerInventory = JSON.parse(
@@ -680,21 +693,21 @@ export default {
           } else {
             this.$store.state.modalNotification.text =
               "Невозможно совершить покупку. Уровень предмета выше вашего.";
-              this.$store.state.modalNotification.from = "basic";
+            this.$store.state.modalNotification.from = "basic";
             this.$store.state.modalNotification.visible = true;
             this.showModal();
           }
         } else {
           this.$store.state.modalNotification.text =
             "Невозможно совершить покупку. Не хватает золота.";
-            this.$store.state.modalNotification.from = "basic";
+          this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
           this.showModal();
         }
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Инвентарь полон.";
-          this.$store.state.modalNotification.from = "basic";
+        this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -755,7 +768,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Не зватает золота.";
-          this.$store.state.modalNotification.from = "basic";
+        this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -789,7 +802,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Не зватает золота.";
-          this.$store.state.modalNotification.from = "basic";
+        this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -862,7 +875,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Не зватает золота.";
-          this.$store.state.modalNotification.from = "basic";
+        this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
