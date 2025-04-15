@@ -8,15 +8,21 @@
       >
         <notification-info
           @click.stop
+          @hide-modal="closeModal"
           v-if="
             $store.state.levelIsUp || $store.state.modalNotification.visible
           "
-        ></notification-info>
+        />
         <profession-desc
           @hide-modal="closeModal"
           @click.stop
           v-else-if="$store.state.professionIsChosen"
-        ></profession-desc>
+        />
+        <chest-opener
+          @hide-modal="closeModal"
+          @click.stop
+          v-else-if="$store.state.chestIsOpen"
+        />
       </modal-window>
 
       <app-header class="header"></app-header>
@@ -29,7 +35,7 @@
         <app-sidebar
           class="menu-block"
           :key="$route.name"
-          v-show="['Home', 'Manual'].includes($route.name)"
+          v-show="['Home', 'KnowledgeBase'].includes($route.name)"
         />
         <router-view class="router-block" @show-modal="openModal"></router-view>
         <scroll-to-top-button />
@@ -47,6 +53,7 @@ import ModalWindow from "@/components/ModalWindow";
 import NotificationInfo from "@/components/NotificationInfo";
 import ProfessionDesc from "@/components/ProfessionDesc";
 import AppSidebar from "@/components/AppSidebar";
+import ChestOpener from "@/components/ChestOpener";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 export default {
@@ -69,6 +76,7 @@ export default {
     NotificationInfo,
     ProfessionDesc,
     AppSidebar,
+    ChestOpener,
     ScrollToTopButton,
   },
   watch: {},
@@ -81,7 +89,6 @@ export default {
       this.isModalOpen = false;
 
       this.$store.state.levelIsUp = false;
-      this.$store.state.professionIsChosen = false;
       this.$store.state.modalNotification.visible = false;
       this.$store.state.modalNotification.from = "";
       this.$store.state.modalNotification.resources = {
@@ -90,6 +97,11 @@ export default {
         stone: 0,
         iron: 0,
       };
+
+      this.$store.state.professionIsChosen = false;
+
+      this.$store.state.chestIsOpen.visible = false;
+      this.$store.state.chestIsOpen.drop = [];
 
       document.querySelector("body").classList.remove("scroll-lock");
     },

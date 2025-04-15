@@ -605,7 +605,12 @@ export default {
 
       // Текст для кнопки
       if (this.tooltip.position == "bottom") {
-        if (this.itemCategory(item.id) == "102") {
+        if (
+          this.itemCategory(item.id) == "102" &&
+          (item.id == 10217 || item.id == 10218 || item.id == 10219)
+        ) {
+          this.tooltip.btnText = "Открыть";
+        } else if (this.itemCategory(item.id) == "102") {
           this.tooltip.btnText = "Использовать";
         } else {
           this.tooltip.btnText = "Надеть";
@@ -878,6 +883,81 @@ export default {
               this.$store.state.playerBuffCharacteristics.dropBuffDuration =
                 item.duration;
               break;
+            case "magicChest": {
+              const playerCraftInventory = JSON.parse(
+                JSON.stringify(this.$store.state.playerCraftInventory)
+              );
+              let keyCount = 0;
+
+              // Смотрим есть ли у нас ключи
+              for (let i = 0; i < playerCraftInventory.length; i++) {
+                if (playerCraftInventory[i].craftItemId == 10316) {
+                  keyCount = playerCraftInventory[i].count;
+                  break;
+                }
+              }
+              // Если ключи есть
+              if (keyCount > 0) {
+                // Находим индекс элемента с нужным craftItemId
+                const index = playerCraftInventory.findIndex(
+                  (item) => item.craftItemId === 10316
+                );
+
+                if (index !== -1) {
+                  // Если элемент найден
+                  playerCraftInventory[index].count -= 1;
+
+                  if (playerCraftInventory[index].count <= 0) {
+                    // Если count стал 0 или меньше, удаляем элемент из массива
+                    playerCraftInventory.splice(index, 1);
+                  }
+                }
+
+                const drop = items.magicChestRandomDrop(item.id, item.amount);
+                this.$store.state.chestIsOpen.drop = drop;
+                this.$store.state.chestIsOpen.visible = true;
+                this.showModal();
+
+                // Сохраняем дроп крафт предметов игрока
+                drop.forEach((dropItem) => {
+                  // Ищем соответствующий элемент в инвентаре
+                  const existingItem = playerCraftInventory.find(
+                    (invItem) => invItem.craftItemId === dropItem.craftItemId
+                  );
+
+                  if (existingItem) {
+                    // Если элемент найден, увеличиваем count
+                    existingItem.count += dropItem.count;
+                  } else {
+                    // Если элемент не найден, добавляем новый
+                    playerCraftInventory.push({
+                      craftItemId: dropItem.craftItemId,
+                      count: dropItem.count,
+                    });
+                  }
+                });
+
+                // Сохраняем предметы с сундука в инвентаре
+                this.$store.state.playerCraftInventory = playerCraftInventory;
+                localStorage.setItem(
+                  "playerCraftInventory",
+                  JSON.stringify(this.$store.state.playerCraftInventory)
+                );
+
+                this.updateCraftInventory();
+                // Если ключей нет
+              } else {
+                this.$store.state.modalNotification.text =
+                  "Невозможно открыть сундук. Нет магических ключей.";
+                this.$store.state.modalNotification.from = "basic";
+                this.$store.state.modalNotification.visible = true;
+                this.showModal();
+                this.hideTooltip();
+
+                return;
+              }
+              break;
+            }
             default:
               break;
           }
@@ -1214,7 +1294,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 30px;
+  padding-top: 50px;
   max-height: 50vh;
   overflow: auto;
 }

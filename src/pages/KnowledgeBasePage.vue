@@ -2,7 +2,6 @@
   <div class="container help-container">
     <base-loader v-if="!isDataLoaded" />
     <div class="help-section" v-html="compiledMarkdown" v-else></div>
-    <!-- Испытываем временные трудности с этим контентом. Скоро починим! -->
   </div>
 </template>
 
@@ -11,7 +10,7 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 export default {
-  name: "ManualPage",
+  name: "KnowledgeBasePage",
   data() {
     return {
       isDataLoaded: false,

@@ -17,8 +17,8 @@
         <li class="nav__item" @click="goToMapPage()">
           <span class="nav__link">Карта</span>
         </li>
-        <li class="nav__item" @click="goToManualPage()">
-          <span class="nav__link">Помощь</span>
+        <li class="nav__item" @click="goToKnowledgeBasePage()">
+          <span class="nav__link">База знаний</span>
         </li>
       </ul>
     </div>
@@ -57,8 +57,8 @@ export default {
         location.reload();
       });
     },
-    goToManualPage() {
-      this.$router.push({ name: "Manual" }).then(() => {
+    goToKnowledgeBasePage() {
+      this.$router.push({ name: "KnowledgeBase" }).then(() => {
         location.reload();
       });
     },
@@ -103,6 +103,8 @@ export default {
 }
 .nav__item:not(:last-child) {
   margin-right: 50px;
+  margin-bottom: 0;
+  line-height: 1;
 }
 .nav__item:hover {
   transform: translateY(1px);

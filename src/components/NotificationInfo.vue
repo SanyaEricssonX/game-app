@@ -159,15 +159,35 @@
     </div>
 
     <div
-      class="shop-block"
+      class="basic-block"
       v-else-if="
         $store.state.modalNotification.visible &&
-        $store.state.modalNotification.from == 'shop'
+        $store.state.modalNotification.from == 'basic'
       "
     >
-      <h4 class="shop__header">
+      <h4 class="basic__header">
         {{ $store.state.modalNotification.text }}
       </h4>
+    </div>
+
+    <div
+      class="main-block"
+      v-else-if="
+        $store.state.modalNotification.visible &&
+        $store.state.modalNotification.from == 'main'
+      "
+    >
+      <h4 class="main__heading">
+        {{ $store.state.modalNotification.text }}
+      </h4>
+      <div class="main-box">
+        <base-button class="main__btn main__btn--yes" @click="setAction(true)"
+          >Подтвердить</base-button
+        >
+        <base-button class="main__btn main__btn--no" @click="setAction(false)"
+          >Отменить</base-button
+        >
+      </div>
     </div>
 
     <div
@@ -199,6 +219,7 @@
 <script type="text/javascript">
 import player from "@/services/player";
 import items from "@/services/items";
+import { mapActions } from "vuex";
 
 export default {
   name: "notification-info",
@@ -215,6 +236,12 @@ export default {
   components: {},
   watch: {},
   methods: {
+    ...mapActions(["updateActionType"]),
+    setAction(type) {
+      this.updateActionType(type);
+      this.$emit("hide-modal");
+    },
+
     craftItemName(itemId) {
       return items.findAllCraftItems(itemId).name;
     },
@@ -286,6 +313,31 @@ export default {
 .craft__characteristic:not(:last-child) {
   margin-bottom: 5px;
 }
+.main__heading {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.main-box {
+  display: flex;
+  justify-content: center;
+}
+.main__btn {
+  padding: 7px 10px;
+}
+.main__btn--yes {
+  margin-right: 30px;
+
+}
+.main__btn--yes:hover {
+  background-color: var(--color-green);
+  color: var(--color-light);
+  font-weight: 900;
+}
+.main__btn--no:hover {
+  background-color: var(--color-red);
+  color: var(--color-light);
+  font-weight: 900;
+}
 .update__title {
   margin-bottom: 10px;
   font-size: 25px;
@@ -299,5 +351,12 @@ export default {
   margin-bottom: 10px;
   line-height: 1.2;
   font-size: 18px;
+}
+.update__btn {
+  padding: 7px 10px;
+}
+.update__btn:hover {
+  background-color: var(--color-dark);
+  color: var(--color-light);
 }
 </style>

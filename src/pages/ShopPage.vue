@@ -680,21 +680,21 @@ export default {
           } else {
             this.$store.state.modalNotification.text =
               "Невозможно совершить покупку. Уровень предмета выше вашего.";
-              this.$store.state.modalNotification.from = "shop";
+              this.$store.state.modalNotification.from = "basic";
             this.$store.state.modalNotification.visible = true;
             this.showModal();
           }
         } else {
           this.$store.state.modalNotification.text =
             "Невозможно совершить покупку. Не хватает золота.";
-            this.$store.state.modalNotification.from = "shop";
+            this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
           this.showModal();
         }
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Инвентарь полон.";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -755,7 +755,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Не зватает золота.";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -789,7 +789,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Не зватает золота.";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }
@@ -862,7 +862,7 @@ export default {
       } else {
         this.$store.state.modalNotification.text =
           "Невозможно совершить покупку. Не зватает золота.";
-          this.$store.state.modalNotification.from = "shop";
+          this.$store.state.modalNotification.from = "basic";
         this.$store.state.modalNotification.visible = true;
         this.showModal();
       }

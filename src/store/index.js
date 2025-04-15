@@ -31,18 +31,25 @@ export default createStore({
     playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 },
     levelIsUp: false,
     professionIsChosen: false,
+    chestIsOpen: { visible: false, drop: [] },
     modalNotification: { visible: false, text: "", from: "", resources: { gold: 0, wood: 0, stone: 0, iron: 0 } },
     menuContent: 1,
+    actionType: false,
     accountId: "TBD",
     accountStatus: "Стандарт+",
     playerBp: "TBD",
   },
-  getters: {},
+  getters: {
+    currentActionType: state => state.actionType
+  },
   mutations: {
     setTriggerMethod(state, value) {
       state.triggerSortEnemies = value;
       state.triggerUpdateInventory = value;
       state.triggerUpdateShop = value;
+    },
+    setActionType(state, type) {
+      state.actionType = type;
     },
   },
   actions: {
@@ -57,6 +64,9 @@ export default createStore({
     triggerUpdateShop({ commit }) {
       commit("setTriggerMethod", true);
       setTimeout(() => commit("setTriggerMethod", false), 1000);
+    },
+    updateActionType({ commit }, type) {
+      commit("setActionType", type);
     }
   },
   modules: {},

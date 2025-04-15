@@ -232,7 +232,19 @@ class items {
         amount: 2, duration: 5, requiredLevel: 1, price: 60, image: "elixir_of_wealth.webp"
       },
       {
-        id: 10217, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
+        id: 10217, name: "Запечатанный магией серебряный сундук", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта I уровня",
+        amount: 35, requiredLevel: 1, price: 50, image: "silver_chest.webp"
+      },
+      {
+        id: 10218, name: "Запечатанный магией золотой сундук богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта II уровня",
+        amount: 35, requiredLevel: 1, price: 100, image: "golden_chest.webp"
+      },
+      {
+        id: 10219, name: "Запечатанный магией платиновый сундук невообразимого богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта III уровня",
+        amount: 35, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
+      },
+      {
+        id: 10220, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
         amount: 3000, requiredLevel: 1, price: 1, image: "elixir_of_health.webp"
       },
     ];
@@ -253,6 +265,7 @@ class items {
       { id: 10313, name: "Гарда вершителя судеб", dropChance: 1 },
       { id: 10314, name: "Гарда душегуба", dropChance: 1 },
       { id: 10315, name: "Губительный кристалл", dropChance: 3 }, // будет выпадать с босса в подземелье
+      { id: 10316, name: "Магический ключ", dropChance: 5 },
     ];
     this.recipeList = [
       {
@@ -308,6 +321,7 @@ class items {
     return itemList;
   }
 
+  // Поиск всего объекта предмета по его id среди категорий Оружие, Броня, Расходные
   findItem(itemId) {
     const allItems = JSON.parse(JSON.stringify(this.list()));
     let foundItem;
@@ -320,6 +334,7 @@ class items {
     return foundItem;
   }
 
+  // Поиск всего объекта рецепта по его id
   findCraftRecipe(itemId) {
     const allRecipes = JSON.parse(JSON.stringify(this.recipeList));
     let foundRecipe;
@@ -332,6 +347,7 @@ class items {
     return foundRecipe;
   }
 
+  // Поиск всего объекта материала по его id
   findCraftIngredient(itemId) {
     const allIngredients = JSON.parse(JSON.stringify(this.craftIngredientList));
     let foundIngredient;
@@ -344,6 +360,7 @@ class items {
     return foundIngredient;
   }
 
+  // Поиск всего объекта по его id среди Рецептов и Материалов
   findAllCraftItems(itemId) {
     const allCraftItems = this.craftIngredientList.concat(this.recipeList);
     let foundItem;
@@ -354,6 +371,65 @@ class items {
       }
     }
     return foundItem;
+  }
+
+  magicChestRandomDrop(chestId, dropChance) {
+    let drop = [];
+    const silverDrop = [{ craftItemId: 1030, count: 3 }, { craftItemId: 1031, count: 5 }, { craftItemId: 1032, count: 2 }, { craftItemId: 1036, count: 3 },
+    { craftItemId: 1037, count: 2 }, { craftItemId: 1038, count: 2 }, { craftItemId: 1039, count: 5 }, { craftItemId: 1044, count: 1 }, { craftItemId: 1045, count: 1 }];
+    const goldenDrop = [{ craftItemId: 1030, count: 3 }, { craftItemId: 1031, count: 5 }, { craftItemId: 1032, count: 3 }, { craftItemId: 1036, count: 3 },
+    { craftItemId: 1037, count: 3 }, { craftItemId: 1038, count: 3 }, { craftItemId: 1039, count: 6 }, { craftItemId: 1033, count: 2 }, { craftItemId: 10310, count: 1 },
+    { craftItemId: 10311, count: 1 }, { craftItemId: 1046, count: 1 }, { craftItemId: 1047, count: 1 }];
+    const platinumDrop = [{ craftItemId: 1030, count: 3 }, { craftItemId: 1031, count: 5 }, { craftItemId: 1032, count: 4 }, { craftItemId: 1036, count: 3 },
+    { craftItemId: 1037, count: 4 }, { craftItemId: 1038, count: 4 }, { craftItemId: 1039, count: 7 }, { craftItemId: 1033, count: 3 }, { craftItemId: 10310, count: 1 },
+    { craftItemId: 10311, count: 1 }, { craftItemId: 1034, count: 2 }, { craftItemId: 10313, count: 1 }, { craftItemId: 10314, count: 1 }, { craftItemId: 10315, count: 2 },
+    { craftItemId: 1048, count: 1 }, { craftItemId: 1049, count: 1 }, { craftItemId: 10410, count: 1 }, { craftItemId: 10312, count: 1 }];
+
+    if (chestId == 10217) {
+      for (let i = 0; i < silverDrop.length; i++) {
+        // Шанс выпадения предмета с сундука
+        if (Math.random() <= dropChance / 100) {
+          // Количество выпавшего предмета
+          if (silverDrop[i].count > 1) {
+            const countDrop = Math.floor(Math.random() * (silverDrop[i].count - 1 + 1) + 1);
+            drop.push({ craftItemId: silverDrop[i].craftItemId, count: countDrop });
+          } else {
+            drop.push(silverDrop[i]);
+          }
+        }
+      }
+      return drop;
+    }
+    if (chestId == 10218) {
+      for (let i = 0; i < goldenDrop.length; i++) {
+        // Шанс выпадения предмета с сундука
+        if (Math.random() <= dropChance / 100) {
+          // Количество выпавшего предмета
+          if (goldenDrop[i].count > 1) {
+            const countDrop = Math.floor(Math.random() * (goldenDrop[i].count - 1 + 1) + 1);
+            drop.push({ craftItemId: goldenDrop[i].craftItemId, count: countDrop });
+          } else {
+            drop.push(goldenDrop[i]);
+          }
+        }
+      }
+      return drop;
+    }
+    if (chestId == 10219) {
+      for (let i = 0; i < platinumDrop.length; i++) {
+        // Шанс выпадения предмета с сундука
+        if (Math.random() <= dropChance / 100) {
+          // Количество выпавшего предмета
+          if (platinumDrop[i].count > 1) {
+            const countDrop = Math.floor(Math.random() * (platinumDrop[i].count - 1 + 1) + 1);
+            drop.push({ craftItemId: platinumDrop[i].craftItemId, count: countDrop });
+          } else {
+            drop.push(platinumDrop[i]);
+          }
+        }
+      }
+      return drop;
+    }
   }
 }
 
