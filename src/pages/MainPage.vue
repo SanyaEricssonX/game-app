@@ -123,7 +123,7 @@ export default {
 
       switch (code) {
         case "moneyKing":
-          this.$store.state.modalNotification.text = "Код успешно активирован";
+          this.$store.state.modalNotification.text = "Код успешно активирован.";
           this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
@@ -134,7 +134,7 @@ export default {
 
           break;
         case "resourcePrince":
-          this.$store.state.modalNotification.text = "Код успешно активирован";
+          this.$store.state.modalNotification.text = "Код успешно активирован.";
           this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
@@ -150,7 +150,7 @@ export default {
 
           break;
         case "testerGOD":
-          this.$store.state.modalNotification.text = "Код успешно активирован";
+          this.$store.state.modalNotification.text = "Код успешно активирован. Выданы права тестировщика.";
           this.$store.state.modalNotification.from = "basic";
           this.$store.state.modalNotification.visible = true;
 
