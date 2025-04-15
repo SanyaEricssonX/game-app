@@ -17,7 +17,9 @@
       </li>
     </ul>
     <div class="location-block" v-if="selectedTab == 1">
-      <div class="current_location"></div>
+      <!-- <div class="location-open">
+
+      </div> -->
       <ul class="location-list" v-if="!isLocationSelected">
         <li
           class="location__item"
@@ -79,13 +81,50 @@
             @click="toggleLocation"
             >Назад</base-button
           >
+
           <h3 class="enemy-block__header">Найдены противники:</h3>
-          <div class="enemy-box" v-for="enemy in sortedEnemies" :key="enemy.id">
-            <base-button class="enemy__btn" @click="startBattle(enemy)">
-              {{ enemy.name }}
-            </base-button>
-            <span class="enemy__level">{{ enemy.level }} Lvl</span>
-          </div>
+          <ul class="enemy-list">
+            <li
+              class="enemy__item"
+              v-for="enemy in sortedEnemies"
+              :key="enemy.id"
+            >
+              <div class="enemy-title_box">
+                <h4 class="enemy__name">{{ enemy.name }}</h4>
+                <span class="enemy__level">{{ enemy.level }} Ур.</span>
+              </div>
+              <div class="enemy-body_box">
+                <div class="enemy-characteristics">
+                  <span class="enemy__text">HP: {{ enemy.hp }}</span>
+                  <span class="enemy__text">Урон: {{ enemy.damage }}</span>
+                  <span class="enemy__text">Защита: {{ enemy.armor }}</span>
+                  <span class="enemy__text"
+                    >Уклонение: {{ enemy.evasion }}</span
+                  >
+                  <span class="enemy__text"
+                    >Шанс крита: {{ enemy.critChance }}</span
+                  >
+                  <span class="enemy__text"
+                    >Сила крита: {{ enemy.critPower }}</span
+                  >
+                  <span class="enemy__experience"
+                    >Опыт: {{ enemy.experience }}</span
+                  >
+                </div>
+                <img
+                  :src="getImage(enemy.image)"
+                  alt=""
+                  class="enemy__image"
+                  v-if="enemy.image"
+                />
+              </div>
+              <div class="enemy-bottom_box">
+                <base-button class="enemy__btn" @click="startBattle(enemy)">
+                  Атаковать
+                </base-button>
+              </div>
+            </li>
+          </ul>
         </div>
         <div class="battle-block" v-else-if="selectedEnemy && !isBattleEnd">
           Битва в разгаре
@@ -95,7 +134,7 @@
             <li class="result__item">{{ log }}</li>
           </ul>
           <base-button @click="resetSelection"
-            >Найти нового противника</base-button
+            >Найти новых противников</base-button
           >
         </div>
       </div>
@@ -145,6 +184,9 @@ export default {
     },
   },
   methods: {
+    getImage(key) {
+      return require(`@/assets/images/${key}`);
+    },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
     },
@@ -588,6 +630,10 @@ export default {
   padding: 5px 10px;
   cursor: pointer;
 }
+.location-block {
+  height: 70vh;
+  overflow: auto;
+}
 .location-list {
   display: flex;
   flex-direction: column;
@@ -635,19 +681,89 @@ export default {
 .enemy-block__header {
   margin-bottom: 30px;
 }
+.enemy-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.enemy__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-basis: 47%;
+  margin-right: 20px;
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 2px solid var(--color-light);
+  border-radius: 5px;
+}
+.enemy-title_box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+  min-height: 60px;
+  /* justify-content: space-between; */
+}
+.enemy__name {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  max-width: 200px;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+.enemy__level {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--color-dark);
+  line-height: 1;
+  font-weight: 900;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+.enemy-body_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+.enemy-characteristics {
+  display: flex;
+  flex-direction: column;
+}
+.enemy__text {
+  font-size: 16px;
+}
+.enemy__text:not(:last-child) {
+  margin-bottom: 7px;
+}
+.enemy__image {
+  left: 0;
+  top: 0;
+  width: 150px;
+  height: 230px;
+}
+.enemy-bottom_box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .enemy__btn {
   border: 1px solid var(--color-dark);
   border-radius: 5px;
 }
 .enemy__btn:hover {
-  background-color: var(--color-dark);
+  background-color: var(--color-green);
+  font-weight: 900;
   color: var(--color-light);
   border: 1px solid var(--color-light);
 }
-.enemy-box {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
+.enemy__experience {
+  margin-top: 15px;
+  font-weight: 900;
+  color: var(--color-green);
 }
 .result {
   max-width: 200px;
@@ -658,14 +774,6 @@ export default {
 .result-block {
   max-height: 60vh;
   overflow: auto;
-}
-.enemy__level {
-  margin-left: 3px;
-  padding: 10px 10px;
-  border-radius: 5px;
-  line-height: 1;
-  color: var(--color-dark);
-  background-color: var(--color-light);
 }
 .active {
   background-color: var(--color-light);
