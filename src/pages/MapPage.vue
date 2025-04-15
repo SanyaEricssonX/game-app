@@ -17,9 +17,6 @@
       </li>
     </ul>
     <div class="location-block" v-if="selectedTab == 1">
-      <!-- <div class="location-open">
-
-      </div> -->
       <ul class="location-list" v-if="!isLocationSelected">
         <li
           class="location__item"
@@ -29,6 +26,14 @@
           v-for="map in maps"
           :key="map.id"
         >
+          <div
+            class="location--closed"
+            v-if="$store.state.playerLevel + 1 < map.minLevel"
+          >
+            <h4 class="location--closed__heading">
+              Откроется на {{ map.minLevel - 1 }} уровне
+            </h4>
+          </div>
           <h4
             class="location__title"
             :class="{
@@ -222,6 +227,26 @@ export default {
           );
 
           this.sortEnemies();
+
+          if (
+            this.$store.state.playerEquipment.weapon == 0 &&
+            this.$store.state.playerEquipment.helmet == 0 &&
+            this.$store.state.playerEquipment.upper == 0 &&
+            this.$store.state.playerEquipment.lower == 0 &&
+            this.$store.state.playerEquipment.gloves == 0 &&
+            this.$store.state.playerEquipment.boots == 0
+          ) {
+            this.$store.state.modalNotification.text =
+              "Ваш персонаж погиб! Прогресс сброшен.";
+          } else {
+            this.$store.state.modalNotification.text = [
+              "Ваш персонаж погиб.",
+              "Прогресс сброшен, а надетая экипировка утратила свою эффективность и нуждается в починке!",
+            ];
+          }
+          this.$store.state.modalNotification.from = "basic";
+          this.$store.state.modalNotification.visible = true;
+          this.showModal();
 
           return;
         }
@@ -464,6 +489,7 @@ export default {
       }, enemy.time);
     },
     resetSelection() {
+      localStorage.removeItem("sortedEnemies");
       this.selectedEnemy = null;
       this.battleLog = [];
       this.isBattleEnd = false;
@@ -471,133 +497,136 @@ export default {
         this.isLocationSelected = false;
       }
     },
+
     sortEnemies() {
       this.sortedEnemies = [];
       this.enemies = JSON.parse(JSON.stringify(enemies.list));
       this.currentLocation = this.$store.state.playerCurrentLocation;
       this.maps = JSON.parse(JSON.stringify(map.locationList));
-      const playerLevel = this.$store.state.playerLevel;
 
-      // Находим текущую локацию
-      const currentMap = this.maps.find(
-        (map) => map.id == this.currentLocation
-      );
-      if (!currentMap) return;
+      // Если есть сохраненные враги, то просто их записываем, а иначе ищем новых врагов
+      if (localStorage.getItem("sortedEnemies")) {
+        this.sortedEnemies = JSON.parse(localStorage.getItem("sortedEnemies"));
+      } else {
+        const playerLevel = this.$store.state.playerLevel;
 
-      // Фильтруем врагов по уровню локации и отсутствию типа (кроме тестовых)
-      let availableEnemies = this.enemies.filter((enemy) => {
-        return (
-          enemy.level &&
-          enemy.level >= currentMap.minLevel &&
-          enemy.level <= currentMap.maxLevel &&
-          !enemy.type
+        // Находим текущую локацию
+        const currentMap = this.maps.find(
+          (map) => map.id == this.currentLocation
         );
-      });
+        if (!currentMap) return;
 
-      // Дополнительно фильтруем по уровню игрока (+1 уровня)
-      const maxAllowedLevel = playerLevel + 1;
-      availableEnemies = availableEnemies.filter(
-        (enemy) => enemy.level <= maxAllowedLevel
-      );
-
-      // Если нет подходящих врагов, выходим
-      if (availableEnemies.length === 0) return;
-
-      // Определяем случайное количество врагов (от 3 до 6)
-      const enemyCount = Math.min(
-        Math.floor(Math.random() * 4) + 3,
-        availableEnemies.length * 2 // но не больше чем доступно с учетом дублирования
-      );
-
-      // Создаем пул врагов с возможностью дублирования (каждый может встречаться до 2 раз)
-      let enemyPool = [];
-      availableEnemies.forEach((enemy) => {
-        enemyPool.push(enemy);
-        enemyPool.push({ ...enemy }); // Добавляем копию для возможного дублирования
-      });
-
-      // Перемешиваем пул
-      enemyPool.sort(() => Math.random() - 0.5);
-
-      // Выбираем случайных врагов
-      for (let i = 0; i < enemyCount && enemyPool.length > 0; i++) {
-        // Если осталось 2 места и еще нет 2 врагов уровня игрока
-        const currentSameLevel = this.sortedEnemies.filter(
-          (e) => e.level === playerLevel
-        ).length;
-        if (enemyCount - i <= 2 && currentSameLevel < 2) {
-          // Ищем врагов с уровнем игрока
-          const sameLevelEnemies = enemyPool.filter(
-            (enemy) => enemy.level === playerLevel
+        // Фильтруем врагов по уровню локации и отсутствию типа (кроме тестовых)
+        let availableEnemies = this.enemies.filter((enemy) => {
+          return (
+            enemy.level &&
+            enemy.level >= currentMap.minLevel &&
+            enemy.level <= currentMap.maxLevel &&
+            !enemy.type
           );
-          if (sameLevelEnemies.length > 0) {
-            const enemyToAdd = sameLevelEnemies[0];
-            this.sortedEnemies.push(enemyToAdd);
+        });
 
-            // Удаляем добавленного врага из пула
-            const indexToRemove = enemyPool.findIndex(
-              (e) => e.id === enemyToAdd.id
+        // Дополнительно фильтруем по уровню игрока (+1 уровня)
+        const maxAllowedLevel = playerLevel + 1;
+        availableEnemies = availableEnemies.filter(
+          (enemy) => enemy.level <= maxAllowedLevel
+        );
+
+        // Если нет подходящих врагов, выходим
+        if (availableEnemies.length === 0) return;
+
+        // Определяем случайное количество врагов (от 3 до 6)
+        const enemyCount = Math.min(
+          Math.floor(Math.random() * 4) + 3,
+          availableEnemies.length // теперь без дублирования, поэтому просто availableEnemies.length
+        );
+
+        // Создаем копию массива для работы
+        let remainingEnemies = [...availableEnemies];
+
+        // Гарантируем минимум 2 врага уровня игрока
+        const playerLevelEnemies = remainingEnemies.filter(
+          (e) => e.level === playerLevel
+        );
+
+        // Добавляем 2 врагов уровня игрока (если есть)
+        if (playerLevelEnemies.length >= 2) {
+          // Выбираем случайных 2 врагов уровня игрока
+          const shuffled = [...playerLevelEnemies].sort(
+            () => 0.5 - Math.random()
+          );
+          this.sortedEnemies.push(shuffled[0], shuffled[1]);
+
+          // Удаляем их из оставшихся врагов
+          remainingEnemies = remainingEnemies.filter(
+            (e) => e.id !== shuffled[0].id && e.id !== shuffled[1].id
+          );
+        } else if (playerLevelEnemies.length === 1) {
+          // Если только 1 враг уровня игрока
+          this.sortedEnemies.push(playerLevelEnemies[0]);
+          remainingEnemies = remainingEnemies.filter(
+            (e) => e.id !== playerLevelEnemies[0].id
+          );
+        }
+
+        // Добавляем оставшихся врагов до нужного количества
+        while (
+          this.sortedEnemies.length < enemyCount &&
+          remainingEnemies.length > 0
+        ) {
+          // Случайный индекс
+          const randomIndex = Math.floor(
+            Math.random() * remainingEnemies.length
+          );
+          this.sortedEnemies.push(remainingEnemies[randomIndex]);
+
+          // Удаляем добавленного врага из оставшихся
+          remainingEnemies.splice(randomIndex, 1);
+        }
+
+        // Если после этого у нас меньше врагов, чем нужно (из-за требования по уровню)
+        // Добавляем любых подходящих врагов
+        if (this.sortedEnemies.length < enemyCount) {
+          const additionalEnemies = availableEnemies.filter(
+            (e) => !this.sortedEnemies.some((se) => se.id === e.id)
+          );
+
+          while (
+            this.sortedEnemies.length < enemyCount &&
+            additionalEnemies.length > 0
+          ) {
+            const randomIndex = Math.floor(
+              Math.random() * additionalEnemies.length
             );
-            if (indexToRemove !== -1) {
-              enemyPool.splice(indexToRemove, 1);
-            }
-            continue;
+            this.sortedEnemies.push(additionalEnemies[randomIndex]);
+            additionalEnemies.splice(randomIndex, 1);
           }
         }
 
-        // Обычный случайный выбор
-        const randomIndex = Math.floor(Math.random() * enemyPool.length);
-        this.sortedEnemies.push(enemyPool[randomIndex]);
+        // Сортируем врагов по уровню (от меньшего к большему)
+        this.sortedEnemies.sort((a, b) => a.level - b.level);
 
-        // Удаляем дубликаты этого врага, если уже добавили 2 раза
-        const addedEnemyId = enemyPool[randomIndex].id;
-        let addedCount = this.sortedEnemies.filter(
-          (e) => e.id === addedEnemyId
-        ).length;
-
-        if (addedCount >= 2) {
-          enemyPool = enemyPool.filter((enemy) => enemy.id !== addedEnemyId);
-        } else {
-          // Удаляем только один экземпляр
-          enemyPool.splice(randomIndex, 1);
+        // Добавляем тестовых врагов, если статус аккаунта Тестовый
+        if (this.$store.state.accountStatus == "Тестовый") {
+          const testEnemies = this.enemies.filter(
+            (enemy) =>
+              enemy.type === "test" &&
+              !this.sortedEnemies.some((e) => e.id === enemy.id)
+          );
+          this.sortedEnemies.push(...testEnemies);
         }
-      }
-
-      // Проверяем, что есть минимум 2 врага уровня игрока
-      const sameLevelCount = this.sortedEnemies.filter(
-        (e) => e.level === playerLevel
-      ).length;
-      if (sameLevelCount < 2) {
-        // Добавляем недостающих врагов уровня игрока
-        const sameLevelAvailable = availableEnemies.filter(
-          (e) => e.level === playerLevel
+        // Сохраняем врагов в local storage
+        localStorage.setItem(
+          "sortedEnemies",
+          JSON.stringify(this.sortedEnemies)
         );
-        let added = 0;
-
-        while (added < 2 - sameLevelCount && sameLevelAvailable.length > 0) {
-          // Берем врагов по порядку (можно добавить случайность)
-          const enemyToAdd = {
-            ...sameLevelAvailable[added % sameLevelAvailable.length],
-          };
-          this.sortedEnemies.push(enemyToAdd);
-          added++;
-        }
-      }
-
-      // Сортируем врагов по уровню (от меньшего к большему)
-      this.sortedEnemies.sort((a, b) => a.level - b.level);
-
-      // Добавляем тестовых врагов, если статус аккаунта Тестовый
-      if (this.$store.state.accountStatus == "Тестовый") {
-        const testEnemies = this.enemies.filter(
-          (enemy) => enemy.type === "test"
-        );
-        this.sortedEnemies.push(...testEnemies);
       }
     },
     goToLocation(locationId) {
       this.$store.state.playerCurrentLocation = locationId;
       localStorage.setItem("playerCurrentLocation", locationId);
+
+      localStorage.removeItem("sortedEnemies");
 
       this.sortEnemies();
     },
@@ -639,6 +668,7 @@ export default {
   flex-direction: column;
 }
 .location__item {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 10px 15px;
@@ -647,6 +677,23 @@ export default {
 }
 .location__item:not(:last-child) {
   margin-bottom: 15px;
+}
+.location--closed {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.7);
+}
+.location--closed__heading {
+  padding: 10px 15px;
+  background-color: var(--color-dark);
+  border-radius: 7px;
+  color: var(--color-red);
 }
 .location__title {
   margin-right: 10px;
@@ -703,13 +750,13 @@ export default {
   margin-bottom: 15px;
   width: 100%;
   min-height: 60px;
-  /* justify-content: space-between; */
 }
 .enemy__name {
   margin-right: 10px;
   padding: 5px 10px;
   border-radius: 5px;
   max-width: 200px;
+  font-size: 20px;
   color: var(--color-dark);
   background-color: var(--color-light);
 }
@@ -772,7 +819,7 @@ export default {
   margin-bottom: 15px;
 }
 .result-block {
-  max-height: 60vh;
+  max-height: 70vh;
   overflow: auto;
 }
 .active {
