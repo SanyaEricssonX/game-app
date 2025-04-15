@@ -761,11 +761,10 @@ export default {
   background-color: var(--color-light);
 }
 .enemy__level {
-  padding: 5px 10px;
+  padding: 6px 10px;
   border-radius: 5px;
   border: 1px solid var(--color-dark);
   line-height: 1;
-  font-weight: 900;
   color: var(--color-dark);
   background-color: var(--color-light);
 }
