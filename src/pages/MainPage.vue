@@ -167,6 +167,40 @@ export default {
           );
 
           break;
+        case "keyMaster": {
+          this.$store.state.modalNotification.text = "Код успешно активирован.";
+          this.$store.state.modalNotification.from = "basic";
+          this.$store.state.modalNotification.visible = true;
+
+          this.showModal();
+
+          let playerCraftInventory = JSON.parse(
+            localStorage.getItem("playerCraftInventory")
+          );
+
+          // Ищем ключ в крафт инвентаре
+          const existingItem = playerCraftInventory.find(
+            (invItem) => invItem.craftItemId == 10316
+          );
+
+          if (existingItem) {
+            existingItem.count += 10;
+          } else {
+            // Если элемент не найден, добавляем новый
+            playerCraftInventory.push({
+              craftItemId: 10316,
+              count: 10,
+            });
+          }
+
+          this.$store.state.playerCraftInventory = playerCraftInventory;
+          localStorage.setItem(
+            "playerCraftInventory",
+            JSON.stringify(this.$store.state.playerCraftInventory)
+          );
+
+          break;
+        }
         default:
           // Аналогично для неправильного кода
           this.inputError = false;

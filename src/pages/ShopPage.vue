@@ -933,7 +933,7 @@ export default {
 .shop-block {
   display: flex;
   flex-direction: column;
-  padding-right: 30px;
+  padding-right: 20px;
   max-height: 65vh;
   overflow: auto;
 }

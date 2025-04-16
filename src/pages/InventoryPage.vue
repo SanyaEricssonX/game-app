@@ -335,21 +335,80 @@
         >У вас пока еще нет материалов для крафта.<br />Их можно получить убивая
         врагов.</span
       >
-      <ul
-        class="material-list"
+      <div
+        class="material-block"
         v-else-if="selectedTab == 2 && playerCraftResources.length > 0"
       >
-        <li
-          class="material__item"
-          v-for="material in playerCraftResources"
-          :key="material.id"
+        <div class="material-box" v-if="playerCraftResourcesSpecial.length > 0">
+          <h4 class="material-box__title">Особые:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesSpecial"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="material-box"
+          v-if="playerCraftResourcesUniversal.length > 0"
         >
-          <h4 class="material__title">
-            {{ materialName(material.craftItemId) }} :
-          </h4>
-          <span class="material__count">{{ material.count }}</span>
-        </li>
-      </ul>
+          <h4 class="material-box__title">Универсальные:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesUniversal"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="material-box"
+          v-if="playerCraftResourcesConsumables.length > 0"
+        >
+          <h4 class="material-box__title">Для расходных:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesConsumables"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="material-box" v-if="playerCraftResourcesWeapon.length > 0">
+          <h4 class="material-box__title">Для оружия:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesWeapon"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
       <span
         class="block__title"
         v-else-if="selectedTab == 3 && playerCraftRecipes.length == 0"
@@ -450,12 +509,16 @@ export default {
   props: {},
   data() {
     return {
-      selectedTab: 1,
+      selectedTab: 2,
       inventoryCells: [], // Основная переменная ячеек инвентаря
       playerEquipment: {},
       playerInventory: [],
       playerCraftResources: [],
       playerCraftRecipes: [],
+      playerCraftResourcesSpecial: [],
+      playerCraftResourcesUniversal: [],
+      playerCraftResourcesConsumables: [],
+      playerCraftResourcesWeapon: [],
       tooltip: {
         visible: false,
         text: "Предмет",
@@ -530,6 +593,11 @@ export default {
     },
     updateCraftInventory() {
       this.playerCraftResources = [];
+      this.playerCraftResourcesSpecial = [];
+      this.playerCraftResourcesUniversal = [];
+      this.playerCraftResourcesConsumables = [];
+      this.playerCraftResourcesWeapon = [];
+
       this.playerCraftRecipes = [];
       this.playerCraftInventory = [];
       const playerCraftInventory = JSON.parse(
@@ -550,8 +618,49 @@ export default {
             craftItemId: playerCraftInventory[i].craftItemId,
             count: playerCraftInventory[i].count,
           });
+
+          // Заполняем также массивы с материалами разбитыми по категории
+          let material = items.findCraftIngredient(
+            playerCraftInventory[i].craftItemId
+          );
+
+          if (material.category == "special") {
+            this.playerCraftResourcesSpecial.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          } else if (material.category == "universal") {
+            this.playerCraftResourcesUniversal.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          } else if (material.category == "consumables") {
+            this.playerCraftResourcesConsumables.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          } else if (material.category == "weapon") {
+            this.playerCraftResourcesWeapon.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          }
         }
       }
+      this.playerCraftResourcesSpecial.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+      this.playerCraftResourcesUniversal.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+      this.playerCraftResourcesConsumables.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+      this.playerCraftResourcesWeapon.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+
+      this.playerCraftRecipes.sort((a, b) => a.id - b.id);
     },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
@@ -1289,26 +1398,48 @@ export default {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--color-light);
 }
-.material-list {
+.material-block {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: flex-start; */
+  padding-right: 15px;
+  max-height: 50vh;
+  overflow: auto;
+}
+.material-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding-top: 50px;
-  max-height: 50vh;
-  overflow: auto;
+  flex-basis: 47%;
+  margin-bottom: 30px;
+  margin-right: 30px;
+  padding: 15px;
+  border: 1px solid var(--color-light);
+  border-radius: 5px;
+}
+.material-box:nth-child(2n) {
+  margin-right: 0;
+}
+.material-box__title {
+  margin-bottom: 15px;
+}
+.material-list {
+  display: flex;
+  flex-direction: column;
 }
 .material__item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 250px;
+  /* justify-content: space-between; */
 }
 .material__item:not(:last-child) {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .material__title {
   margin-right: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 400;
+  font-size: 16px;
 }
 .craft-list {
   display: flex;
