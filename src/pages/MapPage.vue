@@ -326,66 +326,18 @@ export default {
           JSON.stringify(this.$store.state.playerCraftInventory)
         );
 
-        // Выводим модальное окно с информацией о дропе и поднятому уровню
-        if (this.$store.state.levelIsUp && locationCraftDrop.length > 0) {
+        if (locationCraftDrop.length > 0) {
           this.$store.state.modalNotification.text = locationCraftDrop;
-          this.$store.state.modalNotification.resources = {
-            gold: dropGold,
-            wood: dropWood,
-            stone: dropStone,
-            iron: dropIron,
-          };
-          this.$store.state.modalNotification.from = "map";
-          this.$store.state.modalNotification.visible = true;
-          this.showModal();
-
-          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
-          localStorage.setItem(
-            "playerCurrentHp",
-            this.$store.state.playerCurrentHp
-          );
-        } else if (
-          this.$store.state.levelIsUp &&
-          locationCraftDrop.length == 0
-        ) {
-          this.$store.state.modalNotification.text = "";
-          this.$store.state.modalNotification.resources = {
-            gold: dropGold,
-            wood: dropWood,
-            stone: dropStone,
-            iron: dropIron,
-          };
-          this.$store.state.modalNotification.from = "map";
-          this.$store.state.modalNotification.visible = true;
-          this.showModal();
-
-          this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
-          localStorage.setItem(
-            "playerCurrentHp",
-            this.$store.state.playerCurrentHp
-          );
-        } else if (locationCraftDrop.length > 0) {
-          this.$store.state.modalNotification.text = locationCraftDrop;
-          this.$store.state.modalNotification.resources = {
-            gold: dropGold,
-            wood: dropWood,
-            stone: dropStone,
-            iron: dropIron,
-          };
-          this.$store.state.modalNotification.from = "map";
-          this.$store.state.modalNotification.visible = true;
-          this.showModal();
-        } else {
-          this.$store.state.modalNotification.resources = {
-            gold: dropGold,
-            wood: dropWood,
-            stone: dropStone,
-            iron: dropIron,
-          };
-          this.$store.state.modalNotification.from = "map";
-          this.$store.state.modalNotification.visible = true;
-          this.showModal();
         }
+        this.$store.state.modalNotification.resources = {
+          gold: dropGold,
+          wood: dropWood,
+          stone: dropStone,
+          iron: dropIron,
+        };
+        this.$store.state.modalNotification.from = "map";
+        this.$store.state.modalNotification.visible = true;
+        this.showModal();
 
         // Сохраняем дроп крафт предметов игрока
         locationCraftDrop.forEach((dropItem) => {

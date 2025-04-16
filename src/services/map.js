@@ -20,16 +20,16 @@ class map {
         dropItems = this.locationList[i].drop;
       }
     }
-    for (let i = 0; i < dropItems.length; i++) {
-      let item = items.findAllCraftItems(dropItems[i])
-      if (dropItems[i] == item.id) {
-        // Проверяем выпал предмет или нет
-        if (Math.random() <= item.dropChance / 100) {
-          drop.push({ craftItemId: item.id, count: 1 });
+
+    // Проверяем выпал предмет или нет
+    for (let j = 0; j < dropItems.length; j++) {
+      const dropItem = items.findAllCraftItems(dropItems[j]);
+      if (dropItem != 0 && dropItem != undefined && dropItem.id != undefined) {
+        if (Math.random() <= dropItem.dropChance / 100) {
+          drop.push({ craftItemId: dropItem.id, count: 1 });
         }
       }
     }
-
     return drop;
   }
 
