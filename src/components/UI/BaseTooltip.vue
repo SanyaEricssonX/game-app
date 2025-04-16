@@ -118,7 +118,7 @@ export default {
   width: 250px;
 }
 .desc:nth-child(1) {
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   font-weight: 900;
   font-size: 20px;
 }

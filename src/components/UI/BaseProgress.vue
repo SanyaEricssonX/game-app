@@ -63,7 +63,7 @@ export default {
   width: 100%;
   text-align: center;
   top: 0;
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   line-height: 20px;
   font-weight: 900;
 }

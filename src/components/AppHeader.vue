@@ -113,7 +113,7 @@ export default {
 }
 .nav__link {
   color: var(--color-light);
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   font-size: 18px;
 }
 .active {

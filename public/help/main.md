@@ -121,7 +121,7 @@ h3 {
 }
 
 strong {
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
 }
 ul {
   padding-left: 20px;

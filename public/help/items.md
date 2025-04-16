@@ -99,7 +99,7 @@ h3 {
 }
 
 strong {
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
 }
 
 ul {
