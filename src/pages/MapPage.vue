@@ -211,6 +211,7 @@ export default {
       );
 
       setTimeout(() => {
+        localStorage.removeItem("sortedEnemies");
         this.battleLog = battleResult.log;
 
         // Оставшееся ХП
@@ -489,7 +490,6 @@ export default {
       }, enemy.time);
     },
     resetSelection() {
-      localStorage.removeItem("sortedEnemies");
       this.selectedEnemy = null;
       this.battleLog = [];
       this.isBattleEnd = false;
