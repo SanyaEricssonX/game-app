@@ -1259,7 +1259,7 @@ export default {
   padding: 2px;
   background-color: var(--color-light);
   color: var(--color-dark);
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   font-weight: 900;
   font-size: 14px;
   z-index: 100;

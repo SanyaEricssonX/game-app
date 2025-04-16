@@ -27,7 +27,7 @@ export default {
   border-radius: 5px;
   color: var(--color-dark);
   background-color: var(--color-light);
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.2s linear;

@@ -260,10 +260,16 @@ export default {
     },
 
     craftItemName(itemId) {
-      return items.findAllCraftItems(itemId).name;
+      return items.findAllCraftItems(itemId)?.name || "";
     },
     checkBottom() {
-      if (this.$store.state.modalNotification.text == "") {
+      if (
+        this.$store.state.modalNotification.text == "" &&
+        this.$store.state.modalNotification.resources !=
+          { gold: 0, wood: 0, stone: 0, iron: 0 }
+      ) {
+        return "10px";
+      } else if (this.$store.state.modalNotification.text == "") {
         return "0";
       } else {
         return "10px";

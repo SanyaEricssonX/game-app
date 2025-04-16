@@ -1000,7 +1000,7 @@ export default {
   margin-bottom: 10px;
 }
 .repair__header {
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   font-size: 20px;
 }
 .repair-box__header {

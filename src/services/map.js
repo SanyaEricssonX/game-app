@@ -20,7 +20,6 @@ class map {
         dropItems = this.locationList[i].drop;
       }
     }
-
     for (let i = 0; i < dropItems.length; i++) {
       let item = items.findAllCraftItems(dropItems[i])
       if (dropItems[i] == item.id) {
@@ -40,7 +39,7 @@ class map {
 
     for (let i = 0; i < allMaps.length; i++) {
       if (allMaps[i].id == mapId) {
-        foundMap= allMaps[i];
+        foundMap = allMaps[i];
       }
     }
     return foundMap;

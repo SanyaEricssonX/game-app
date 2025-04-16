@@ -258,7 +258,7 @@ export default {
   padding: 7px;
   color: var(--color-light);
   border: 1px solid var(--color-light);
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
 }
 .contact__link:hover {
   background-color: var(--color-light);

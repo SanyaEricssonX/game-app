@@ -350,7 +350,7 @@ export default {
 }
 .profession__title {
   width: 100%;
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
 }
 .profile__header {
   margin-bottom: 20px;
@@ -395,7 +395,7 @@ export default {
   font-weight: 900;
 }
 .symbol {
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, sans-serif;
   font-weight: 300;
 }
 </style>
