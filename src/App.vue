@@ -89,8 +89,10 @@ export default {
       this.isModalOpen = false;
 
       this.$store.state.levelIsUp = false;
+
       this.$store.state.modalNotification.visible = false;
       this.$store.state.modalNotification.from = "";
+      this.$store.state.modalNotification.text = "",
       this.$store.state.modalNotification.resources = {
         gold: 0,
         wood: 0,

@@ -26,7 +26,7 @@ class items {
         durability: 40, requiredLevel: 13, price: 1020, image: "flaming_blade_of_war.webp"
       },
       {
-        id: 1006, name: "Ледяной кинжал войны", category: "dagger", damage: 80, critChance: 20, critPower: 40,
+        id: 1006, name: "Ледяной кинжал войны", category: "dagger", damage: 85, critChance: 20, critPower: 40,
         durability: 40, requiredLevel: 13, price: 1020, image: "ice_dagger_of_war.webp"
       },
       {
@@ -368,9 +368,10 @@ class items {
     for (let i = 0; i < allCraftItems.length; i++) {
       if (allCraftItems[i].id == itemId) {
         foundItem = allCraftItems[i];
+        return foundItem;
       }
     }
-    return foundItem;
+    return 0;
   }
 
   magicChestRandomDrop(chestId, dropChance) {

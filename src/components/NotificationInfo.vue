@@ -73,7 +73,11 @@
         </ul>
         <div
           class="material-block"
-          v-if="$store.state.modalNotification.text != ''"
+          v-if="
+            $store.state.modalNotification.text != '' &&
+            $store.state.modalNotification.text != undefined &&
+            $store.state.modalNotification.from == 'map'
+          "
         >
           <ul class="drop-list">
             <li
@@ -84,6 +88,12 @@
               {{ craftItemName(text.craftItemId) }}
             </li>
           </ul>
+        </div>
+        <div
+          class="material-block"
+          v-else-if="$store.state.modalNotification.text == undefined"
+        >
+          Ничего нет!
         </div>
       </div>
     </div>
