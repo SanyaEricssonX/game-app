@@ -47,6 +47,13 @@
             <span class="item__level" v-if="playerEquipment.weapon > 999"
               >Ур.{{ itemLevel(playerEquipment.weapon) }}</span
             >
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.weapon != 0 &&
+                levelIsSmall(playerEquipment.weapon)
+              "
+            ></div>
           </span>
           <div class="equipment-durability_block">
             <base-progress
@@ -56,10 +63,6 @@
               v-if="playerEquipment.weapon != 0"
             ></base-progress>
           </div>
-          <div
-            class="equipment--unsuitable"
-            v-if="levelIsSmall(playerEquipment.weapon)"
-          ></div>
         </li>
 
         <!-- Шлем -->
@@ -106,6 +109,13 @@
             <span class="item__level" v-if="playerEquipment.helmet > 999"
               >Ур.{{ itemLevel(playerEquipment.helmet) }}</span
             >
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.helmet != 0 &&
+                levelIsSmall(playerEquipment.helmet)
+              "
+            ></div>
           </span>
           <div class="equipment-durability_block">
             <base-progress
@@ -161,6 +171,13 @@
             <span class="item__level" v-if="playerEquipment.upper > 999"
               >Ур.{{ itemLevel(playerEquipment.upper) }}</span
             >
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.upper != 0 &&
+                levelIsSmall(playerEquipment.upper)
+              "
+            ></div>
           </span>
           <div class="equipment-durability_block">
             <base-progress
@@ -217,6 +234,12 @@
               >Ур.{{ itemLevel(playerEquipment.lower) }}</span
             ></span
           >
+          <div
+            class="equipment--unsuitable"
+            v-if="
+              playerEquipment.lower != 0 && levelIsSmall(playerEquipment.lower)
+            "
+          ></div>
           <div class="equipment-durability_block">
             <base-progress
               class="equipment__durability"
@@ -271,6 +294,13 @@
             <span class="item__level" v-if="playerEquipment.gloves > 999"
               >Ур.{{ itemLevel(playerEquipment.gloves) }}</span
             >
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.gloves != 0 &&
+                levelIsSmall(playerEquipment.gloves)
+              "
+            ></div>
           </span>
           <div class="equipment-durability_block">
             <base-progress
@@ -327,7 +357,10 @@
             >
             <div
               class="equipment--unsuitable"
-              v-if="playerEquipment.boots != 0 && levelIsSmall(playerEquipment.boots)"
+              v-if="
+                playerEquipment.boots != 0 &&
+                levelIsSmall(playerEquipment.boots)
+              "
             ></div>
           </span>
           <div class="equipment-durability_block">
