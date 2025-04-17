@@ -166,6 +166,8 @@ export default {
             this.$store.state.accountStatus
           );
 
+          localStorage.removeItem("sortedEnemies");
+
           break;
         case "keyMaster": {
           this.$store.state.modalNotification.text = "Код успешно активирован.";

@@ -248,7 +248,7 @@ class items {
         amount: 3000, requiredLevel: 1, price: 1, image: "elixir_of_health.webp"
       },
     ];
-    this.craftIngredientList = [
+    this.craftMaterialList = [
       { id: 1030, name: "Стеклянная колба", category: "consumables", dropChance: 15 },
       { id: 1031, name: "Кровь монстра", category: "consumables", dropChance: 25 },
       { id: 1032, name: "Магическая эссенция I", category: "consumables", dropChance: 10 },
@@ -348,8 +348,8 @@ class items {
   }
 
   // Поиск всего объекта материала по его id
-  findCraftIngredient(itemId) {
-    const allIngredients = JSON.parse(JSON.stringify(this.craftIngredientList));
+  findCraftMaterial(itemId) {
+    const allIngredients = JSON.parse(JSON.stringify(this.craftMaterialList));
     let foundIngredient;
 
     for (let i = 0; i < allIngredients.length; i++) {
@@ -362,7 +362,7 @@ class items {
 
   // Поиск всего объекта по его id среди Рецептов и Материалов
   findAllCraftItems(itemId) {
-    const allCraftItems = this.craftIngredientList.concat(this.recipeList);
+    const allCraftItems = this.craftMaterialList.concat(this.recipeList);
     let foundItem;
 
     for (let i = 0; i < allCraftItems.length; i++) {
