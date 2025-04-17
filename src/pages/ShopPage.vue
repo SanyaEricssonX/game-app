@@ -482,7 +482,6 @@ export default {
       this.playerInventory = JSON.parse(
         JSON.stringify(this.$store.state.playerInventory)
       );
-
       for (let index = 0; index < this.playerInventory.length; index++) {
         if (this.playerInventory[index].name) {
           this.playerInventoryCount += 1;
@@ -906,9 +905,34 @@ export default {
     showModal() {
       this.$emit("show-modal");
     },
+    updatePlayerInventory() {
+      this.playerInventory = JSON.parse(
+        JSON.stringify(this.$store.state.playerInventory)
+      );
+      for (let i = 0; i < this.playerInventory.length; i++) {
+        if (this.playerInventory[i].id) {
+          const itemDurability = this.playerInventory[i].durability;
+          const newItem = items.findItem(this.playerInventory[i].id);
+
+          this.playerInventory[i] = { ...this.playerInventory[i], ...newItem };
+
+          if (itemDurability < newItem.durability) {
+            this.playerInventory[i].durability = itemDurability;
+          } else {
+            this.playerInventory[i].durability = newItem.durability;
+          }
+        }
+      }
+      this.$store.state.playerInventory = this.playerInventory;
+      localStorage.setItem(
+        "playerInventory",
+        JSON.stringify(this.playerInventory)
+      );
+    },
   },
   beforeCreate() {},
   created() {
+    this.updatePlayerInventory();
     this.createEquipment();
   },
   mounted() {},
