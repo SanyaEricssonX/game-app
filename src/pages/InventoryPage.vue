@@ -512,12 +512,40 @@
       >
       <div
         class="craft-block"
+        :style="{
+          height: '45vh',
+          overflowY: filteredRecipes.length ? 'auto' : 'hidden',
+        }"
         v-else-if="selectedTab == 3 && playerCraftRecipes.length > 0"
       >
+        <div class="craft-filter_box">
+          <div class="craft-filter">
+            <label v-for="category in categories" :key="category">
+              <input
+                class="craft__radio_btn"
+                type="radio"
+                v-model="selectedCategory"
+                :value="category.name"
+                @change="showFilteredList(category.name)"
+              />
+              {{ category.label }}
+            </label>
+          </div>
+          <div class="craft-sort">
+            <div class="craft-sort_box">
+              <p class="craft-sort__title">Уровень:</p>
+              <select class="craft-sort__select" v-model="sortDirection">
+                <option value="asc">По возрастанию</option>
+                <option value="desc">По убыванию</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <ul class="craft-list">
           <li
             class="craft__item"
-            v-for="item in playerCraftRecipes"
+            v-for="item in filteredRecipes"
             :key="item.id"
           >
             <span
@@ -597,6 +625,12 @@
             </div>
           </li>
         </ul>
+        <p
+          class="craft__heading"
+          v-if="playerCraftRecipes.length > 0 && filteredRecipes.length == 0"
+        >
+          У вас нет рецептов в данной категории!
+        </p>
       </div>
     </div>
   </div>
@@ -631,11 +665,33 @@ export default {
         position: "bottom",
       },
       selectedItem: null,
+      categories: [
+        { name: "all", label: "Все" },
+        { name: "elixir", label: "Эликсиры" },
+        { name: "weapon", label: "Оружие" },
+      ],
+      selectedCategory: "all",
+      sortDirection: "asc",
     };
   },
   computed: {
     triggerUpdateInventory() {
       return this.$store.state.triggerUpdateInventory;
+    },
+    filteredRecipes() {
+      let recipes =
+        this.selectedCategory === "all"
+          ? [...this.playerCraftRecipes]
+          : this.playerCraftRecipes.filter(
+              (recipe) => recipe.category === this.selectedCategory
+            );
+
+      return recipes.sort((a, b) => {
+        const levelA = a.requiredLevel || 0; // Если undefined, считаем 0
+        const levelB = b.requiredLevel || 0;
+
+        return this.sortDirection === "asc" ? levelA - levelB : levelB - levelA;
+      });
     },
   },
   components: {},
@@ -649,6 +705,9 @@ export default {
     },
   },
   methods: {
+    showFilteredList(category) {
+      this.selectedCategory = category;
+    },
     levelIsSmall(itemId) {
       if (
         items.findItem(itemId).requiredLevel > this.$store.state.playerLevel
@@ -732,7 +791,6 @@ export default {
       this.playerCraftResourcesWeapon = [];
 
       this.playerCraftRecipes = [];
-      this.playerCraftInventory = [];
       const playerCraftInventory = JSON.parse(
         JSON.stringify(this.$store.state.playerCraftInventory)
       );
@@ -792,8 +850,6 @@ export default {
       this.playerCraftResourcesWeapon.sort(
         (a, b) => a.craftItemId - b.craftItemId
       );
-
-      this.playerCraftRecipes.sort((a, b) => a.id - b.id);
     },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
@@ -1536,7 +1592,7 @@ export default {
 .nav-list {
   display: flex;
   justify-content: space-evenly;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: 2px solid var(--color-light);
 }
 .nav__item {
@@ -1603,7 +1659,59 @@ export default {
   flex-direction: column;
   padding-right: 15px;
   max-height: 45vh;
-  overflow: auto;
+}
+.craft-filter_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 714px;
+}
+.craft-filter {
+  margin-bottom: 20px;
+}
+.craft-filter label {
+  margin-right: 15px;
+  cursor: pointer;
+}
+.craft__radio_btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid #999;
+  transition: 0.2s all linear;
+  outline: none;
+  margin-right: 2px;
+
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+}
+.craft__radio_btn:checked {
+  border: 6px solid var(--color-green);
+}
+.craft-sort_box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.craft-sort__select {
+  padding: 2px 5px;
+  border: 1px solid var(--color-light);
+  border-radius: 4px;
+}
+.craft-sort__select option:focus {
+  background-color: var(--color-green);
+}
+.craft__heading {
+  margin-top: 50px;
+  text-align: center;
 }
 .craft-list {
   display: flex;
@@ -1615,6 +1723,7 @@ export default {
   align-items: center;
   margin-bottom: 30px;
   padding: 15px;
+  max-width: 714px;
   border: 2px solid var(--color-light);
 }
 .craft__item__icon {
