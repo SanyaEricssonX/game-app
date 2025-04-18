@@ -1682,12 +1682,11 @@ export default {
 }
 .inventory-item_broken__icon {
   position: absolute;
-  left: 10%;
-  top: 55%;
-  color: red;
-  font-family: Bahnschrift;
+  left: 5%;
+  top: 60%;
+  color: rgb(224, 43, 43);
   font-weight: 900;
-  font-size: 30px;
+  font-size: 25px;
 }
 .material-block {
   display: flex;

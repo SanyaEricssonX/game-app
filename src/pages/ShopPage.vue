@@ -40,9 +40,40 @@
     </ul>
 
     <div class="shop-block">
+      <div
+        class="filter-box"
+        v-if="selectedTab == 1 || selectedTab == 2 || selectedTab == 3"
+      >
+        <div class="filter">
+          <label v-for="category in filterCategory" :key="category">
+            <input
+              class="filter__radio_btn"
+              type="radio"
+              v-model="selectedCategory"
+              :value="category.name"
+              @change="setFilter(category.name)"
+            />
+            {{ category.label }}
+          </label>
+        </div>
+        <div class="sort">
+          <div class="sort-box">
+            <p class="sort__title">Уровень:</p>
+            <select class="sort__select" v-model="sortDirection">
+              <option value="asc">По возрастанию</option>
+              <option value="desc">По убыванию</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="shop-box" v-if="selectedTab == 1">
         <ul class="item-list">
-          <li class="list__item" v-for="item in weaponList" :key="item.id">
+          <li
+            class="list__item"
+            v-for="item in filteredItemList"
+            :key="item.id"
+          >
             <span class="item__logo">
               <img
                 :src="getImage(item.image)"
@@ -104,7 +135,11 @@
 
       <div class="shop-box" v-if="selectedTab == 2">
         <ul class="item-list">
-          <li class="list__item" v-for="item in armorList" :key="item.id">
+          <li
+            class="list__item"
+            v-for="item in filteredItemList"
+            :key="item.id"
+          >
             <span class="item__logo">
               <img
                 :src="getImage(item.image)"
@@ -166,7 +201,11 @@
 
       <div class="shop-box" v-if="selectedTab == 3">
         <ul class="item-list">
-          <li class="list__item" v-for="item in consumablesList" :key="item.id">
+          <li
+            class="list__item"
+            v-for="item in filteredItemList"
+            :key="item.id"
+          >
             <span class="item__logo">
               <img
                 :src="getImage(item.image)"
@@ -423,11 +462,51 @@ export default {
       inventoryRepairCost: 0,
       playerInventoryCount: 0,
       selectedTab: 1,
+      selectedCategory: "all",
+      sortDirection: "asc",
+      weaponCategories: [
+        { name: "all", label: "Все" },
+        { name: "sword", label: "Мечи" },
+        { name: "dagger", label: "Кинжалы" },
+      ],
+      armorCategories: [
+        { name: "all", label: "Все" },
+        { name: "heavy", label: "Тяжелые доспехи" },
+        { name: "light", label: "Легкие доспехи" },
+      ],
+      consumablesCategories: [
+        { name: "all", label: "Все" },
+        { name: "health", label: "Эликсиры здоровья" },
+        { name: "buff", label: "Эликсиры усиления" },
+        { name: "other", label: "Другое" },
+      ],
     };
   },
   computed: {
     triggerUpdateShop() {
       return this.$store.state.triggerUpdateShop;
+    },
+
+    filterCategory() {
+      if (this.selectedTab == 1) {
+        return this.weaponCategories;
+      } else if (this.selectedTab == 2) {
+        return this.armorCategories;
+      } else if (this.selectedTab == 3) {
+        return this.consumablesCategories;
+      }
+      return false;
+    },
+
+    filteredItemList() {
+      if (this.selectedTab == 1) {
+        return this.filterAndSort(this.weaponList);
+      } else if (this.selectedTab == 2) {
+        return this.filterAndSort(this.armorList);
+      } else if (this.selectedTab == 3) {
+        return this.filterAndSort(this.consumablesList);
+      }
+      return false;
     },
   },
   components: {},
@@ -439,6 +518,53 @@ export default {
     },
   },
   methods: {
+    setFilter(category) {
+      this.selectedCategory = category;
+    },
+
+    filterAndSort(items) {
+      const category = this.selectedCategory;
+
+      const filtered =
+        category === "all"
+          ? [...items]
+          : items.filter((item) => {
+              // Для ID начинающихся с 101
+              if (item.id.toString().startsWith("101")) {
+                return item.secondCategory === category;
+              }
+
+              if (item.id.toString().startsWith("102")) {
+                if (category === "health") {
+                  return item.category === "restoreHp";
+                }
+                if (category === "buff") {
+                  return (
+                    item.category === "buffDamage" ||
+                    item.category === "buffArmor" ||
+                    item.category === "buffDrop" ||
+                    item.category === "buffEvasion" ||
+                    item.category === "buffCritPower"
+                  );
+                }
+                if (category === "other") {
+                  return item.category === "magicChest";
+                }
+                return item.category === category;
+              }
+
+              // Для всех остальных ID
+              return item.category === category;
+            });
+
+      // Сортировка по requiredLevel
+      return filtered.sort((a, b) => {
+        const levelA = a.requiredLevel || 0;
+        const levelB = b.requiredLevel || 0;
+        return this.sortDirection === "asc" ? levelA - levelB : levelB - levelA;
+      });
+    },
+
     getImage(key) {
       if (key != 0 && typeof key == "number") {
         const item = items.findItem(key);
@@ -639,6 +765,8 @@ export default {
     },
 
     activeContent(tabNumber) {
+      this.selectedCategory = "all";
+      this.sortDirection = "asc";
       this.selectedTab = tabNumber;
     },
     isActiveBtn(tabNumber) {
@@ -916,6 +1044,7 @@ export default {
 
           this.playerInventory[i] = { ...this.playerInventory[i], ...newItem };
 
+          // Записываем прочность, если она изменилась
           if (itemDurability < newItem.durability) {
             this.playerInventory[i].durability = itemDurability;
           } else {
@@ -923,6 +1052,7 @@ export default {
           }
         }
       }
+
       this.$store.state.playerInventory = this.playerInventory;
       localStorage.setItem(
         "playerInventory",
@@ -947,7 +1077,7 @@ export default {
 .nav-list {
   display: flex;
   justify-content: space-evenly;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: 2px solid var(--color-light);
 }
 .nav__item {
@@ -1043,5 +1173,53 @@ export default {
 .active {
   background-color: var(--color-light);
   color: var(--color-dark);
+}
+.filter-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 714px;
+}
+.filter {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.filter label {
+  margin-right: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.filter__radio_btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid #999;
+  transition: 0.2s all linear;
+  outline: none;
+
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+}
+.filter__radio_btn:checked {
+  border: 6px solid var(--color-green);
+}
+.sort-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.sort__select {
+  padding: 2px 5px;
+  border: 1px solid var(--color-light);
+  border-radius: 4px;
 }
 </style>
