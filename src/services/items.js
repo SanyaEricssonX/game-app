@@ -248,24 +248,24 @@ class items {
         amount: 3000, requiredLevel: 1, price: 1, image: "elixir_of_health.webp"
       },
     ];
-    this.craftIngredientList = [
-      { id: 1030, name: "Стеклянная колба", dropChance: 15 },
-      { id: 1031, name: "Кровь монстра", dropChance: 25 },
-      { id: 1032, name: "Магическая эссенция I", dropChance: 10 },
-      { id: 1033, name: "Магическая эссенция II", dropChance: 10 },
-      { id: 1034, name: "Магическая эссенция III", dropChance: 10 },
-      { id: 1035, name: "Магическая эссенция IV", dropChance: 10 },
-      { id: 1036, name: "Сломанная рукоять", dropChance: 20 },
-      { id: 1037, name: "Лезвие меча", dropChance: 5 },
-      { id: 1038, name: "Лезвие кинжала", dropChance: 5 },
-      { id: 1039, name: "Кристаллическая пыль", dropChance: 30 },
-      { id: 10310, name: "Гарда темного легиона", dropChance: 1 },
-      { id: 10311, name: "Гарда последнего вздоха", dropChance: 1 },
-      { id: 10312, name: "Частица благодати ангела", dropChance: 2 },
-      { id: 10313, name: "Гарда вершителя судеб", dropChance: 1 },
-      { id: 10314, name: "Гарда душегуба", dropChance: 1 },
-      { id: 10315, name: "Губительный кристалл", dropChance: 3 }, // будет выпадать с босса в подземелье
-      { id: 10316, name: "Магический ключ", dropChance: 5 },
+    this.craftMaterialList = [
+      { id: 1030, name: "Стеклянная колба", category: "consumables", dropChance: 15 },
+      { id: 1031, name: "Кровь монстра", category: "consumables", dropChance: 25 },
+      { id: 1032, name: "Магическая эссенция I", category: "consumables", dropChance: 10 },
+      { id: 1033, name: "Магическая эссенция II", category: "consumables", dropChance: 10 },
+      { id: 1034, name: "Магическая эссенция III", category: "consumables", dropChance: 10 },
+      { id: 1035, name: "Магическая эссенция IV", category: "consumables", dropChance: 10 },
+      { id: 1036, name: "Сломанная рукоять", category: "weapon", dropChance: 20 },
+      { id: 1037, name: "Лезвие меча", category: "weapon", dropChance: 5 },
+      { id: 1038, name: "Лезвие кинжала", category: "weapon", dropChance: 5 },
+      { id: 1039, name: "Кристаллическая пыль", category: "universal", dropChance: 30 },
+      { id: 10310, name: "Гарда темного легиона", category: "weapon", dropChance: 1 },
+      { id: 10311, name: "Гарда последнего вздоха", category: "weapon", dropChance: 1 },
+      { id: 10312, name: "Частица благодати ангела", category: "consumables", dropChance: 2 },
+      { id: 10313, name: "Гарда вершителя судеб", category: "weapon", dropChance: 1 },
+      { id: 10314, name: "Гарда душегуба", category: "weapon", dropChance: 1 },
+      { id: 10315, name: "Губительный кристалл", category: "universal", dropChance: 3 }, // будет выпадать с босса в подземелье
+      { id: 10316, name: "Магический ключ", category: "special", dropChance: 5 },
     ];
     this.recipeList = [
       {
@@ -348,8 +348,8 @@ class items {
   }
 
   // Поиск всего объекта материала по его id
-  findCraftIngredient(itemId) {
-    const allIngredients = JSON.parse(JSON.stringify(this.craftIngredientList));
+  findCraftMaterial(itemId) {
+    const allIngredients = JSON.parse(JSON.stringify(this.craftMaterialList));
     let foundIngredient;
 
     for (let i = 0; i < allIngredients.length; i++) {
@@ -362,7 +362,7 @@ class items {
 
   // Поиск всего объекта по его id среди Рецептов и Материалов
   findAllCraftItems(itemId) {
-    const allCraftItems = this.craftIngredientList.concat(this.recipeList);
+    const allCraftItems = this.craftMaterialList.concat(this.recipeList);
     let foundItem;
 
     for (let i = 0; i < allCraftItems.length; i++) {

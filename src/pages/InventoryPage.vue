@@ -18,6 +18,7 @@
             "
           >
             <img
+              class="equipment__image"
               :src="getImage(playerEquipment.weapon)"
               :alt="playerEquipment.weapon"
               v-if="getImage(playerEquipment.weapon) != 0"
@@ -46,7 +47,29 @@
             <span class="item__level" v-if="playerEquipment.weapon > 999"
               >Ур.{{ itemLevel(playerEquipment.weapon) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.weapon != 0 &&
+                playerEquipment.weaponDurability <= 0
+              "
+            ></div>
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.weapon != 0 &&
+                levelIsSmall(playerEquipment.weapon)
+              "
+            ></div>
           </span>
+          <div class="equipment-durability_block">
+            <base-progress
+              class="equipment__durability"
+              :currentValue="playerEquipment.weaponDurability"
+              :maxValue="itemDurabilityNumber(playerEquipment.weapon)"
+              v-if="playerEquipment.weapon != 0"
+            ></base-progress>
+          </div>
         </li>
 
         <!-- Шлем -->
@@ -64,6 +87,7 @@
             "
           >
             <img
+              class="equipment__image"
               :src="getImage(playerEquipment.helmet)"
               :alt="playerEquipment.helmet"
               v-if="getImage(playerEquipment.helmet) != 0"
@@ -92,7 +116,29 @@
             <span class="item__level" v-if="playerEquipment.helmet > 999"
               >Ур.{{ itemLevel(playerEquipment.helmet) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.helmet != 0 &&
+                playerEquipment.helmetDurability <= 0
+              "
+            ></div>
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.helmet != 0 &&
+                levelIsSmall(playerEquipment.helmet)
+              "
+            ></div>
           </span>
+          <div class="equipment-durability_block">
+            <base-progress
+              class="equipment__durability"
+              :currentValue="playerEquipment.helmetDurability"
+              :maxValue="itemDurabilityNumber(playerEquipment.helmet)"
+              v-if="playerEquipment.helmet != 0"
+            ></base-progress>
+          </div>
         </li>
 
         <!-- Верхний доспех -->
@@ -110,6 +156,7 @@
             "
           >
             <img
+              class="equipment__image"
               :src="getImage(playerEquipment.upper)"
               :alt="playerEquipment.upper"
               v-if="getImage(playerEquipment.upper) != 0"
@@ -138,7 +185,29 @@
             <span class="item__level" v-if="playerEquipment.upper > 999"
               >Ур.{{ itemLevel(playerEquipment.upper) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.upper != 0 &&
+                playerEquipment.upperDurability <= 0
+              "
+            ></div>
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.upper != 0 &&
+                levelIsSmall(playerEquipment.upper)
+              "
+            ></div>
           </span>
+          <div class="equipment-durability_block">
+            <base-progress
+              class="equipment__durability"
+              :currentValue="playerEquipment.upperDurability"
+              :maxValue="itemDurabilityNumber(playerEquipment.upper)"
+              v-if="playerEquipment.upper != 0"
+            ></base-progress>
+          </div>
         </li>
 
         <!-- Нижний доспех -->
@@ -156,6 +225,7 @@
             "
           >
             <img
+              class="equipment__image"
               :src="getImage(playerEquipment.lower)"
               :alt="playerEquipment.lower"
               v-if="getImage(playerEquipment.lower) != 0"
@@ -185,6 +255,26 @@
               >Ур.{{ itemLevel(playerEquipment.lower) }}</span
             ></span
           >
+          <div
+            class="inventory-item_broken"
+            v-if="
+              playerEquipment.lower != 0 && playerEquipment.lowerDurability <= 0
+            "
+          ></div>
+          <div
+            class="equipment--unsuitable"
+            v-if="
+              playerEquipment.lower != 0 && levelIsSmall(playerEquipment.lower)
+            "
+          ></div>
+          <div class="equipment-durability_block">
+            <base-progress
+              class="equipment__durability"
+              :currentValue="playerEquipment.lowerDurability"
+              :maxValue="itemDurabilityNumber(playerEquipment.lower)"
+              v-if="playerEquipment.lower != 0"
+            ></base-progress>
+          </div>
         </li>
 
         <!-- Перчатки -->
@@ -202,6 +292,7 @@
             "
           >
             <img
+              class="equipment__image"
               :src="getImage(playerEquipment.gloves)"
               :alt="playerEquipment.gloves"
               v-if="getImage(playerEquipment.gloves) != 0"
@@ -230,7 +321,29 @@
             <span class="item__level" v-if="playerEquipment.gloves > 999"
               >Ур.{{ itemLevel(playerEquipment.gloves) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.gloves != 0 &&
+                playerEquipment.glovesDurability <= 0
+              "
+            ></div>
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.gloves != 0 &&
+                levelIsSmall(playerEquipment.gloves)
+              "
+            ></div>
           </span>
+          <div class="equipment-durability_block">
+            <base-progress
+              class="equipment__durability"
+              :currentValue="playerEquipment.glovesDurability"
+              :maxValue="itemDurabilityNumber(playerEquipment.gloves)"
+              v-if="playerEquipment.gloves != 0"
+            ></base-progress>
+          </div>
         </li>
 
         <!-- Сапоги -->
@@ -248,6 +361,7 @@
             "
           >
             <img
+              class="equipment__image"
               :src="getImage(playerEquipment.boots)"
               :alt="playerEquipment.boots"
               v-if="getImage(playerEquipment.boots) != 0"
@@ -275,7 +389,29 @@
             <span class="item__level" v-if="playerEquipment.boots > 999"
               >Ур.{{ itemLevel(playerEquipment.boots) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.boots != 0 &&
+                playerEquipment.bootsDurability <= 0
+              "
+            ></div>
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.boots != 0 &&
+                levelIsSmall(playerEquipment.boots)
+              "
+            ></div>
           </span>
+          <div class="equipment-durability_block">
+            <base-progress
+              class="equipment__durability"
+              :currentValue="playerEquipment.bootsDurability"
+              :maxValue="itemDurabilityNumber(playerEquipment.boots)"
+              v-if="playerEquipment.boots != 0"
+            ></base-progress>
+          </div>
         </li>
       </ul>
     </div>
@@ -324,9 +460,13 @@
             "
             @use="useItem(item)"
           ></base-tooltip>
+          <div class="inventory-item_broken" v-if="item.durability <= 0"></div>
           <span class="item__level" v-if="item.id > 999"
             >Ур.{{ item.requiredLevel }}</span
           >
+          <div class="inventory-item_broken__icon" v-if="item.durability <= 0">
+            !
+          </div>
         </li>
       </ul>
       <span
@@ -335,106 +475,208 @@
         >У вас пока еще нет материалов для крафта.<br />Их можно получить убивая
         врагов.</span
       >
-      <ul
-        class="material-list"
+      <div
+        class="material-block"
         v-else-if="selectedTab == 2 && playerCraftResources.length > 0"
       >
-        <li
-          class="material__item"
-          v-for="material in playerCraftResources"
-          :key="material.id"
+        <div class="material-box" v-if="playerCraftResourcesSpecial.length > 0">
+          <h4 class="material-box__title">Особые:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesSpecial"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="material-box"
+          v-if="playerCraftResourcesUniversal.length > 0"
         >
-          <h4 class="material__title">
-            {{ materialName(material.craftItemId) }} :
-          </h4>
-          <span class="material__count">{{ material.count }}</span>
-        </li>
-      </ul>
+          <h4 class="material-box__title">Универсальные:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesUniversal"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="material-box"
+          v-if="playerCraftResourcesConsumables.length > 0"
+        >
+          <h4 class="material-box__title">Для расходных:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesConsumables"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="material-box" v-if="playerCraftResourcesWeapon.length > 0">
+          <h4 class="material-box__title">Для оружия:</h4>
+          <ul class="material-list">
+            <li
+              class="material__item"
+              v-for="material in playerCraftResourcesWeapon"
+              :key="material.id"
+            >
+              <h4 class="material__title">
+                {{ materialName(material.craftItemId) }}:
+              </h4>
+              <span class="material__count">{{ material.count }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
       <span
         class="block__title"
         v-else-if="selectedTab == 3 && playerCraftRecipes.length == 0"
         >У вас пока еще нет рецептов для крафта.<br />Их можно получить убивая
         врагов.</span
       >
-      <ul
-        class="craft-list"
+      <div
+        class="craft-block"
+        :style="{
+          height: '45vh',
+          overflowY: filteredRecipes.length ? 'auto' : 'hidden',
+        }"
         v-else-if="selectedTab == 3 && playerCraftRecipes.length > 0"
       >
-        <li
-          class="craft__item"
-          v-for="item in playerCraftRecipes"
-          :key="item.id"
-        >
-          <span
-            class="craft__item__icon"
-            @click="showCraftItemInfo(item.targetId)"
+        <div class="craft-filter_box">
+          <div class="craft-filter">
+            <label v-for="category in categories" :key="category">
+              <input
+                class="craft__radio_btn"
+                type="radio"
+                v-model="selectedCategory"
+                :value="category.name"
+                @change="showFilteredList(category.name)"
+              />
+              {{ category.label }}
+            </label>
+          </div>
+          <div class="craft-sort">
+            <div class="craft-sort_box">
+              <p class="craft-sort__title">Уровень:</p>
+              <select class="craft-sort__select" v-model="sortDirection">
+                <option value="asc">По возрастанию</option>
+                <option value="desc">По убыванию</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <ul class="craft-list">
+          <li
+            class="craft__item"
+            v-for="item in filteredRecipes"
+            :key="item.id"
           >
-            <img
-              class="craft_icon"
-              :src="getImage(item.targetId)"
-              :alt="item.targetId"
-              v-if="getImage(item.targetId) != 0"
-            />
-            <span class="craft__item__icon__text" v-else>
-              {{ item.targetId }}
+            <span
+              class="craft__item__icon"
+              @click="showCraftItemInfo(item.targetId)"
+            >
+              <img
+                class="craft_icon"
+                :src="getImage(item.targetId)"
+                :alt="item.targetId"
+                v-if="getImage(item.targetId) != 0"
+              />
+              <span class="craft__item__icon__text" v-else>
+                {{ item.targetId }}
+              </span>
             </span>
-          </span>
 
-          <div class="craft__item-box">
-            <h4 class="craft__item__title">{{ item.name }}</h4>
-            <div class="craft__item__desc-box">
-              <div class="craft__item__resources-box" v-if="item.resources">
-                <span
-                  class="resources-box__text"
-                  v-show="item.resources.wood && item.resources.wood > 0"
-                >
-                  Древесина: {{ item.resources.wood }}
-                </span>
-                <span
-                  class="resources-box__text"
-                  v-show="item.resources.stone && item.resources.stone > 0"
-                >
-                  Камень: {{ item.resources.stone }}
-                </span>
-                <span
-                  class="resources-box__text"
-                  v-show="item.resources.iron && item.resources.iron > 0"
-                >
-                  Железо: {{ item.resources.iron }}
-                </span>
-              </div>
+            <div class="craft__item-box">
+              <h4 class="craft__item__title">{{ item.name }}</h4>
+              <div class="craft__item__desc-box">
+                <div class="craft__item__resources-box" v-if="item.resources">
+                  <span
+                    class="resources-box__text"
+                    v-show="item.resources.wood && item.resources.wood > 0"
+                  >
+                    Древесина: {{ item.resources.wood }}
+                  </span>
+                  <span
+                    class="resources-box__text"
+                    v-show="item.resources.stone && item.resources.stone > 0"
+                  >
+                    Камень: {{ item.resources.stone }}
+                  </span>
+                  <span
+                    class="resources-box__text"
+                    v-show="item.resources.iron && item.resources.iron > 0"
+                  >
+                    Железо: {{ item.resources.iron }}
+                  </span>
+                </div>
 
-              <div
-                class="craft__item__desc-block"
-                v-for="ingredient in item.ingredients"
-                :key="ingredient.material"
-              >
-                <span class="block__desc__title">
-                  {{ ingredientName(ingredient.material) }}:
-                </span>
-                <div class="block__desc-box">
-                  <span class="craft__item__material_current">
-                    {{ currentResourceCount(ingredient.material) }}
+                <div
+                  class="craft__item__desc-block"
+                  v-for="ingredient in item.ingredients"
+                  :key="ingredient.material"
+                >
+                  <span class="block__desc__title">
+                    {{ materialName(ingredient.material) }}:
                   </span>
-                  /
-                  <span class="craft__item__material_max">
-                    {{ ingredient.count }}
-                  </span>
+                  <div class="block__desc-box">
+                    <span class="craft__item__material_current">
+                      {{ currentResourceCount(ingredient.material) }}
+                    </span>
+                    /
+                    <span class="craft__item__material_max">
+                      {{ ingredient.count }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <base-button
-            class="craft__item__btn"
-            :style="{
-              'background-color': checkCraftBtnColor(item),
-            }"
-            @click="craftItem(item)"
-            >Создать</base-button
-          >
-        </li>
-      </ul>
+            <div class="craft-item__btn_block">
+              <base-button
+                class="craft__item__btn"
+                @click="showCraftItemInfo(item.targetId)"
+                >Описание</base-button
+              >
+              <base-button
+                class="craft__item__btn"
+                :style="{
+                  'background-color': checkCraftBtnColor(item),
+                }"
+                @click="craftItem(item)"
+                >Создать</base-button
+              >
+            </div>
+          </li>
+        </ul>
+        <p
+          class="craft__heading"
+          v-if="playerCraftRecipes.length > 0 && filteredRecipes.length == 0"
+        >
+          У вас нет рецептов в данной категории!
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -456,6 +698,10 @@ export default {
       playerInventory: [],
       playerCraftResources: [],
       playerCraftRecipes: [],
+      playerCraftResourcesSpecial: [],
+      playerCraftResourcesUniversal: [],
+      playerCraftResourcesConsumables: [],
+      playerCraftResourcesWeapon: [],
       tooltip: {
         visible: false,
         text: "Предмет",
@@ -464,11 +710,33 @@ export default {
         position: "bottom",
       },
       selectedItem: null,
+      categories: [
+        { name: "all", label: "Все" },
+        { name: "elixir", label: "Эликсиры" },
+        { name: "weapon", label: "Оружие" },
+      ],
+      selectedCategory: "all",
+      sortDirection: "asc",
     };
   },
   computed: {
     triggerUpdateInventory() {
       return this.$store.state.triggerUpdateInventory;
+    },
+    filteredRecipes() {
+      let recipes =
+        this.selectedCategory === "all"
+          ? [...this.playerCraftRecipes]
+          : this.playerCraftRecipes.filter(
+              (recipe) => recipe.category === this.selectedCategory
+            );
+
+      return recipes.sort((a, b) => {
+        const levelA = a.requiredLevel || 0; // Если undefined, считаем 0
+        const levelB = b.requiredLevel || 0;
+
+        return this.sortDirection === "asc" ? levelA - levelB : levelB - levelA;
+      });
     },
   },
   components: {},
@@ -482,8 +750,23 @@ export default {
     },
   },
   methods: {
+    showFilteredList(category) {
+      this.selectedCategory = category;
+    },
+    levelIsSmall(itemId) {
+      if (
+        items.findItem(itemId).requiredLevel > this.$store.state.playerLevel
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    itemDurabilityNumber(itemId) {
+      return items.findItem(itemId).durability;
+    },
     materialName(materialId) {
-      return items.findCraftIngredient(materialId).name;
+      return items.findCraftMaterial(materialId).name;
     },
     currentResourceCount(id) {
       for (let i = 0; i < this.playerCraftResources.length; i++) {
@@ -492,10 +775,6 @@ export default {
         }
       }
       return 0;
-    },
-    ingredientName(id) {
-      const ingredient = items.findCraftIngredient(id);
-      return ingredient.name;
     },
     itemLevel(id) {
       const item = items.findItem(id);
@@ -522,6 +801,27 @@ export default {
       this.playerInventory = JSON.parse(
         JSON.stringify(this.$store.state.playerInventory)
       );
+
+      for (let i = 0; i < this.playerInventory.length; i++) {
+        if (this.playerInventory[i].id) {
+          const itemDurability = this.playerInventory[i].durability;
+          const newItem = items.findItem(this.playerInventory[i].id);
+
+          this.playerInventory[i] = { ...this.playerInventory[i], ...newItem };
+
+          if (itemDurability < newItem.durability) {
+            this.playerInventory[i].durability = itemDurability;
+          } else {
+            this.playerInventory[i].durability = newItem.durability;
+          }
+        }
+      }
+      this.$store.state.playerInventory = this.playerInventory;
+      localStorage.setItem(
+        "playerInventory",
+        JSON.stringify(this.playerInventory)
+      );
+      player.equipmentCharacteristics();
     },
     updateEquipment() {
       this.playerEquipment = JSON.parse(
@@ -530,8 +830,12 @@ export default {
     },
     updateCraftInventory() {
       this.playerCraftResources = [];
+      this.playerCraftResourcesSpecial = [];
+      this.playerCraftResourcesUniversal = [];
+      this.playerCraftResourcesConsumables = [];
+      this.playerCraftResourcesWeapon = [];
+
       this.playerCraftRecipes = [];
-      this.playerCraftInventory = [];
       const playerCraftInventory = JSON.parse(
         JSON.stringify(this.$store.state.playerCraftInventory)
       );
@@ -550,8 +854,47 @@ export default {
             craftItemId: playerCraftInventory[i].craftItemId,
             count: playerCraftInventory[i].count,
           });
+
+          // Заполняем также массивы с материалами разбитыми по категории
+          let material = items.findCraftMaterial(
+            playerCraftInventory[i].craftItemId
+          );
+
+          if (material.category == "special") {
+            this.playerCraftResourcesSpecial.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          } else if (material.category == "universal") {
+            this.playerCraftResourcesUniversal.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          } else if (material.category == "consumables") {
+            this.playerCraftResourcesConsumables.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          } else if (material.category == "weapon") {
+            this.playerCraftResourcesWeapon.push({
+              craftItemId: playerCraftInventory[i].craftItemId,
+              count: playerCraftInventory[i].count,
+            });
+          }
         }
       }
+      this.playerCraftResourcesSpecial.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+      this.playerCraftResourcesUniversal.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+      this.playerCraftResourcesConsumables.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
+      this.playerCraftResourcesWeapon.sort(
+        (a, b) => a.craftItemId - b.craftItemId
+      );
     },
     activeContent(tabNumber) {
       this.selectedTab = tabNumber;
@@ -660,6 +1003,16 @@ export default {
             break;
         }
       }
+
+      if (durability <= 0) {
+        contentForTooltip.push("Требуется починка");
+      }
+      if (item.requiredLevel > this.$store.state.playerLevel) {
+        contentForTooltip.push(
+          "Уровень персонажа ниже необходимого для этого предмета"
+        );
+      }
+
       return contentForTooltip;
     },
     hideTooltip() {
@@ -1233,24 +1586,33 @@ export default {
 .equipment-list {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .equipment__item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 94px;
 }
 .equipment__item__header {
   margin-bottom: 15px;
+  height: 35px;
   font-size: 16px;
+  align-content: center;
+  text-align: center;
 }
 .equipment__item__icon {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 74px;
-  height: 74px;
+  width: 94px;
+  height: 94px;
   border: 2px solid var(--color-light);
+}
+.equipment__image {
+  width: 90px;
+  height: 90px;
 }
 .item__level {
   position: absolute;
@@ -1264,10 +1626,28 @@ export default {
   font-size: 14px;
   z-index: 100;
 }
+.equipment-durability_block {
+  width: 100%;
+  height: 20px;
+}
+.equipment__durability {
+  font-size: 14px;
+}
+.equipment--unsuitable {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(212, 99, 93, 0.5);
+}
 .nav-list {
   display: flex;
   justify-content: space-evenly;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: 2px solid var(--color-light);
 }
 .nav__item {
@@ -1289,40 +1669,132 @@ export default {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--color-light);
 }
-.material-list {
+.inventory-item_broken {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.7);
+}
+.inventory-item_broken__icon {
+  position: absolute;
+  left: 5%;
+  top: 60%;
+  color: rgb(224, 43, 43);
+  font-weight: 900;
+  font-size: 25px;
+}
+.material-block {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 50vh;
+  overflow: auto;
+}
+.material-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding-top: 50px;
-  max-height: 50vh;
-  overflow: auto;
+  flex-basis: 47%;
+  margin-bottom: 30px;
+  margin-right: 30px;
+  padding: 15px;
+  border: 1px solid var(--color-light);
+  border-radius: 5px;
+}
+.material-box:nth-child(2n) {
+  margin-right: 0;
+}
+.material-box__title {
+  margin-bottom: 15px;
+}
+.material-list {
+  display: flex;
+  flex-direction: column;
 }
 .material__item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 250px;
 }
 .material__item:not(:last-child) {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .material__title {
   margin-right: 10px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 400;
+  font-size: 16px;
+}
+.craft-block {
+  display: flex;
+  flex-direction: column;
+  padding-right: 15px;
+  max-height: 45vh;
+}
+.craft-filter_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 714px;
+}
+.craft-filter {
+  margin-bottom: 20px;
+}
+.craft-filter label {
+  margin-right: 15px;
+  cursor: pointer;
+}
+.craft__radio_btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid #999;
+  transition: 0.2s all linear;
+  outline: none;
+  margin-right: 2px;
+
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+}
+.craft__radio_btn:checked {
+  border: 6px solid var(--color-green);
+}
+.craft-sort_box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.craft-sort__select {
+  padding: 2px 5px;
+  border: 1px solid var(--color-light);
+  border-radius: 4px;
+}
+.craft__heading {
+  margin-top: 50px;
+  text-align: center;
 }
 .craft-list {
   display: flex;
   flex-direction: column;
-  padding-right: 15px;
-  max-height: 50vh;
-  overflow: auto;
 }
 .craft__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
+  margin-bottom: 30px;
+  padding: 15px;
+  max-width: 714px;
   border: 2px solid var(--color-light);
 }
 .craft__item__icon {
@@ -1331,7 +1803,7 @@ export default {
   text-align: center;
   height: 74px;
   width: 74px;
-  border: 1px solid var(--color-dark);
+  border: 1px solid var(--color-light);
   cursor: pointer;
 }
 .craft__item__icon:hover {
@@ -1340,26 +1812,34 @@ export default {
   color: var(--color-dark);
 }
 .craft__item-box {
-  width: 500px;
+  width: 480px;
 }
 .craft__item__title {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .craft__item__desc-block {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .craft__item__desc-block:last-child {
   margin-bottom: 0;
 }
+.craft-item__btn_block {
+  display: flex;
+  flex-direction: column;
+}
 .craft__item__btn {
+  padding: 7px 10px;
   border: 1px solid var(--color-dark);
 }
 .craft__item__btn:hover {
   border: 1px solid var(--color-light);
   background-color: var(--color-dark);
   color: var(--color-light);
+}
+.craft__item__btn:not(:last-child) {
+  margin-bottom: 10px;
 }
 .block__desc__title {
   margin-right: 10px;

@@ -199,6 +199,8 @@ export default {
       return this.selectedTab == tabNumber;
     },
     async startBattle(enemy) {
+      player.equipmentCharacteristics();
+
       this.selectedEnemy = enemy;
       const battleResult = startBattle(
         this.$store.state.playerCurrentHp,

@@ -5,7 +5,12 @@
     :style="tooltipStyle"
     ref="tooltip"
   >
-    <p class="desc" v-for="paragraph in tooltip.text" :key="paragraph.id">
+    <p
+      class="desc"
+      :class="{ warning: textColor(paragraph) }"
+      v-for="paragraph in tooltip.text"
+      :key="paragraph.id"
+    >
       {{ paragraph }}
     </p>
     <base-button
@@ -40,6 +45,14 @@ export default {
   methods: {
     btnColor(color) {
       return this.tooltip.btnColor == color;
+    },
+    textColor(text) {
+      if (
+        text == "Требуется починка" ||
+        text == "Уровень персонажа ниже необходимого для этого предмета"
+      ) {
+        return true;
+      }
     },
     positionTooltip(position) {
       return this.tooltip.position == position;
@@ -153,6 +166,10 @@ export default {
   background-color: var(--color-red);
 }
 .active:hover {
+  font-weight: 900;
+}
+.warning {
+  color: var(--color-red);
   font-weight: 900;
 }
 </style>
