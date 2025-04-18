@@ -48,6 +48,13 @@
               >Ур.{{ itemLevel(playerEquipment.weapon) }}</span
             >
             <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.weapon != 0 &&
+                playerEquipment.weaponDurability <= 0
+              "
+            ></div>
+            <div
               class="equipment--unsuitable"
               v-if="
                 playerEquipment.weapon != 0 &&
@@ -110,6 +117,13 @@
               >Ур.{{ itemLevel(playerEquipment.helmet) }}</span
             >
             <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.helmet != 0 &&
+                playerEquipment.helmetDurability <= 0
+              "
+            ></div>
+            <div
               class="equipment--unsuitable"
               v-if="
                 playerEquipment.helmet != 0 &&
@@ -171,6 +185,13 @@
             <span class="item__level" v-if="playerEquipment.upper > 999"
               >Ур.{{ itemLevel(playerEquipment.upper) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.upper != 0 &&
+                playerEquipment.upperDurability <= 0
+              "
+            ></div>
             <div
               class="equipment--unsuitable"
               v-if="
@@ -235,6 +256,12 @@
             ></span
           >
           <div
+            class="inventory-item_broken"
+            v-if="
+              playerEquipment.lower != 0 && playerEquipment.lowerDurability <= 0
+            "
+          ></div>
+          <div
             class="equipment--unsuitable"
             v-if="
               playerEquipment.lower != 0 && levelIsSmall(playerEquipment.lower)
@@ -294,6 +321,13 @@
             <span class="item__level" v-if="playerEquipment.gloves > 999"
               >Ур.{{ itemLevel(playerEquipment.gloves) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.gloves != 0 &&
+                playerEquipment.glovesDurability <= 0
+              "
+            ></div>
             <div
               class="equipment--unsuitable"
               v-if="
@@ -355,6 +389,13 @@
             <span class="item__level" v-if="playerEquipment.boots > 999"
               >Ур.{{ itemLevel(playerEquipment.boots) }}</span
             >
+            <div
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.boots != 0 &&
+                playerEquipment.bootsDurability <= 0
+              "
+            ></div>
             <div
               class="equipment--unsuitable"
               v-if="
@@ -419,9 +460,13 @@
             "
             @use="useItem(item)"
           ></base-tooltip>
+          <div class="inventory-item_broken" v-if="item.durability <= 0"></div>
           <span class="item__level" v-if="item.id > 999"
             >Ур.{{ item.requiredLevel }}</span
           >
+          <div class="inventory-item_broken__icon" v-if="item.durability <= 0">
+            !
+          </div>
         </li>
       </ul>
       <span
@@ -647,7 +692,7 @@ export default {
   props: {},
   data() {
     return {
-      selectedTab: 3,
+      selectedTab: 1,
       inventoryCells: [], // Основная переменная ячеек инвентаря
       playerEquipment: {},
       playerInventory: [],
@@ -958,6 +1003,16 @@ export default {
             break;
         }
       }
+
+      if (durability <= 0) {
+        contentForTooltip.push("Требуется починка");
+      }
+      if (item.requiredLevel > this.$store.state.playerLevel) {
+        contentForTooltip.push(
+          "Уровень персонажа ниже необходимого для этого предмета"
+        );
+      }
+
       return contentForTooltip;
     },
     hideTooltip() {
@@ -1614,6 +1669,26 @@ export default {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--color-light);
 }
+.inventory-item_broken {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.7);
+}
+.inventory-item_broken__icon {
+  position: absolute;
+  left: 10%;
+  top: 55%;
+  color: red;
+  font-family: Bahnschrift;
+  font-weight: 900;
+  font-size: 30px;
+}
 .material-block {
   display: flex;
   flex-wrap: wrap;
@@ -1705,9 +1780,6 @@ export default {
   padding: 2px 5px;
   border: 1px solid var(--color-light);
   border-radius: 4px;
-}
-.craft-sort__select option:focus {
-  background-color: var(--color-green);
 }
 .craft__heading {
   margin-top: 50px;
