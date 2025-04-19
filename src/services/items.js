@@ -97,7 +97,7 @@ class items {
         armor: 10, hp: 50, durability: 25, requiredLevel: 4, price: 80, image: "steel_boots.webp"
       },
       {
-        id: 1018, name: "Кожаный легий шлем", category: "helmet", secondCategory: "light",
+        id: 1018, name: "Кожаный легкий шлем", category: "helmet", secondCategory: "light",
         armor: 5, hp: 30, evasion: 5, durability: 25, requiredLevel: 4, price: 80, image: "leather_light_helmet.webp"
       },
       {

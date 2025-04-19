@@ -253,9 +253,8 @@
             ></base-tooltip>
             <span class="item__level" v-if="playerEquipment.lower > 999"
               >Ур.{{ itemLevel(playerEquipment.lower) }}</span
-            ></span
-          >
-          <div
+            >
+            <div
             class="inventory-item_broken"
             v-if="
               playerEquipment.lower != 0 && playerEquipment.lowerDurability <= 0
@@ -267,6 +266,8 @@
               playerEquipment.lower != 0 && levelIsSmall(playerEquipment.lower)
             "
           ></div>
+          </span>
+
           <div class="equipment-durability_block">
             <base-progress
               class="equipment__durability"
