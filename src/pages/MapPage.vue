@@ -17,6 +17,12 @@
       </li>
     </ul>
     <div class="location-block" v-if="selectedTab == 1">
+      <base-button
+        class="location__btn enemies__btn"
+        v-if="isLocationSelected"
+        @click="toggleLocation"
+        >Назад</base-button
+      >
       <ul class="location-list" v-if="!isLocationSelected">
         <li
           class="location__item"
@@ -81,12 +87,6 @@
       </ul>
       <div class="enemies-block" v-else>
         <div class="enemy-block" v-if="!selectedEnemy && !isBattleEnd">
-          <base-button
-            class="location__btn enemies__btn"
-            @click="toggleLocation"
-            >Назад</base-button
-          >
-
           <h3 class="enemy-block__header">Найдены противники:</h3>
           <ul class="enemy-list">
             <li
@@ -613,13 +613,11 @@ export default {
   padding: 5px 10px;
   cursor: pointer;
 }
-.location-block {
-  height: 70vh;
-  overflow: auto;
-}
 .location-list {
   display: flex;
   flex-direction: column;
+  height: 70vh;
+  overflow: auto;
 }
 .location__item {
   position: relative;
@@ -678,6 +676,10 @@ export default {
 }
 .enemies__btn {
   margin-bottom: 30px;
+}
+.enemy-block {
+  height: 65vh;
+  overflow: auto;
 }
 .enemy-block__header {
   margin-bottom: 30px;
