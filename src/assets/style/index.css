@@ -18,7 +18,7 @@ html {
 html,
 body {
   height: 100%;
-  background-color: var(--color-dark);
+  background: linear-gradient(to bottom, #042b33 0%, #191919 23%, #191919 100%) fixed no-repeat;
   line-height: 1;
   color: var(--color-light);
   user-select: none;

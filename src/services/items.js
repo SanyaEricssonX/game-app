@@ -22,12 +22,12 @@ class items {
         durability: 40, requiredLevel: 9, price: 650, image: "tempered_light_knife.webp"
       },
       {
-        id: 1005, name: "Пламенный клинок войны", category: "sword", damage: 100, critChance: 10, critPower: 20,
-        durability: 40, requiredLevel: 13, price: 1020, image: "flaming_blade_of_war.webp"
+        id: 1005, name: "Усиленный меч превосходства", category: "sword", damage: 100, critChance: 10, critPower: 20,
+        durability: 40, requiredLevel: 13, price: 1020, image: "enhanced_sword_of_excellence.webp"
       },
       {
-        id: 1006, name: "Ледяной кинжал войны", category: "dagger", damage: 85, critChance: 20, critPower: 40,
-        durability: 40, requiredLevel: 13, price: 1020, image: "ice_dagger_of_war.webp"
+        id: 1006, name: "Заточенный нож убийцы", category: "dagger", damage: 85, critChance: 20, critPower: 40,
+        durability: 40, requiredLevel: 13, price: 1020, image: "killers_sharpened_knife.webp"
       },
       {
         id: 1007, name: "Меч благих намерений", category: "sword", type: "craft", damage: 25,
@@ -54,11 +54,47 @@ class items {
         durability: 50, requiredLevel: 9, price: 300, image: ""
       },
       {
-        id: 10013, name: "ТЕСТОВЫЙ обезоруживатель", category: "sword", type: "test", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200,
+        id: 10013, name: "Железный кинжал", category: "dagger", damage: 8, critChance: 5, critPower: 10,
+        durability: 10, requiredLevel: 1, price: 50, image: "iron_dagger.webp"
+      },
+      {
+        id: 10014, name: "Пламенный клинок войны", category: "sword", damage: 150, critChance: 10, critPower: 20,
+        durability: 50, requiredLevel: 17, price: 1890, image: "flaming_blade_of_war.webp"
+      },
+      {
+        id: 10015, name: "Ледяной кинжал войны", category: "dagger", damage: 130, critChance: 20, critPower: 60,
+        durability: 50, requiredLevel: 17, price: 1890, image: "ice_dagger_of_war.webp"
+      },
+      {
+        id: 10016, name: "Элизиум", category: "sword", type: "craft", damage: 120, critChance: 10, critPower: 30,
+        durability: 50, requiredLevel: 13, price: 1020, image: ""
+      },
+      {
+        id: 10017, name: "Тень рока", category: "dagger", type: "craft", damage: 100, critChance: 20, critPower: 50,
+        durability: 50, requiredLevel: 13, price: 1020, image: ""
+      },
+      {
+        id: 10018, name: "Гнев небес", category: "sword", type: "craft", damage: 180, critChance: 10, critPower: 30,
+        durability: 60, requiredLevel: 17, price: 1890, image: ""
+      },
+      {
+        id: 10019, name: "Коготь феникса", category: "dagger", type: "craft", damage: 160, critChance: 20, critPower: 70,
+        durability: 60, requiredLevel: 17, price: 1890, image: ""
+      },
+      {
+        id: 10020, name: "Последний аргумент королей", category: "sword", type: "craft", damage: 250, critChance: 15, critPower: 50,
+        durability: 80, requiredLevel: 20, price: 3000, image: ""
+      },
+      {
+        id: 10021, name: "Порыв смерти", category: "dagger", type: "craft", damage: 220, critChance: 25, critPower: 100,
+        durability: 80, requiredLevel: 20, price: 3000, image: ""
+      },
+      {
+        id: 10022, name: "ТЕСТОВЫЙ обезоруживатель", category: "sword", type: "test", damage: 100, armor: 100, hp: 1000, evasion: 10, critChance: 100, critPower: 200,
         durability: 100, requiredLevel: 1, price: 10000000, image: "test_item.webp"
       },
       {
-        id: 10014, name: "НЕВЕРОЯТНЫХ размеров меч", category: "sword", type: "test", damage: 5000,
+        id: 10023, name: "НЕВЕРОЯТНЫХ размеров меч", category: "sword", type: "test", damage: 5000,
         durability: 1000, requiredLevel: 3, price: 10000000, image: "test_item.webp"
       },
     ];
