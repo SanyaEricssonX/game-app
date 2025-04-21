@@ -193,7 +193,47 @@ class items {
         armor: 8, hp: 50, evasion: 5, durability: 40, requiredLevel: 13, price: 200, image: "light_boots_of_balance.webp"
       },
       {
-        id: 10123, name: "Cверхпрочные ультра сапоги высшего порядка", category: "boots", secondCategory: "heavy", type: "test",
+        id: 10123, name: "Тяжелый шлем превосходства", category: "helmet", secondCategory: "heavy",
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_helmet_of_immortality.webp"
+      },
+      {
+        id: 10124, name: "Тяжелая кираса превосходства", category: "upper", secondCategory: "heavy",
+        armor: 35, hp: 130, durability: 60, requiredLevel: 18, price: 400, image: "heavy_cuirass_of_immortality.webp"
+      },
+      {
+        id: 10125, name: "Тяжелые набедренники превосходства", category: "lower", secondCategory: "heavy",
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_pants_of_immortality.webp"
+      },
+      {
+        id: 10126, name: "Тяжелые перчатки превосходства", category: "gloves", secondCategory: "heavy",
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_gloves_of_immortality.webp"
+      },
+      {
+        id: 10127, name: "Тяжелые сапоги превосходства", category: "boots", secondCategory: "heavy",
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_boots_of_immortality.webp"
+      },
+      {
+        id: 10128, name: "Легкий шлем равновесия", category: "helmet", secondCategory: "light",
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_helmet_of_balance.webp"
+      },
+      {
+        id: 10129, name: "Легкая кираса равновесия", category: "upper", secondCategory: "light",
+        armor: 20, hp: 90, evasion: 10, durability: 60, requiredLevel: 18, price: 400, image: "light_cuirass_of_balance.webp"
+      },
+      {
+        id: 10130, name: "Легкие набедренники равновесия", category: "lower", secondCategory: "light",
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_pants_of_balance.webp"
+      },
+      {
+        id: 10131, name: "Легкие перчатки равновесия", category: "gloves", secondCategory: "light",
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_gloves_of_balance.webp"
+      },
+      {
+        id: 10132, name: "Легкие сапоги равновесия", category: "boots", secondCategory: "light",
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_boots_of_balance.webp"
+      },
+      {
+        id: 10133, name: "Cверхпрочные ультра сапоги высшего порядка", category: "boots", secondCategory: "heavy", type: "test",
         damage: 50, armor: 100, hp: 1000, evasion: 50, critChance: 100, critPower: 250, durability: 100, requiredLevel: 1, price: 10000000, image: "test_item.webp"
       },
     ];
@@ -240,7 +280,7 @@ class items {
         amount: 25, duration: 3, requiredLevel: 10, price: 100, image: "elixir_of_armor.webp"
       },
       {
-        id: 10210, name: "Малый эликсир проворности", category: "buffEvasion", desc: "При использовании на 1 бой увеличивает уклонение на 10",
+        id: 10210, name: "Эликсир проворности", category: "buffEvasion", desc: "При использовании на 1 бой увеличивает уклонение на 10",
         amount: 10, duration: 1, requiredLevel: 10, price: 100, image: "elixir_of_agility.webp"
       },
       {
@@ -249,19 +289,19 @@ class items {
       },
       {
         id: 10212, name: "Синтезированный эликсир здоровья I", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 50 HP",
-        amount: 50, requiredLevel: 1, price: 15, image: "elixir_of_health.webp"
+        amount: 50, requiredLevel: 1, price: 30, image: "elixir_of_health.webp"
       },
       {
         id: 10213, name: "Синтезированный эликсир здоровья II", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 120 HP",
-        amount: 120, requiredLevel: 1, price: 60, image: "elixir_of_health.webp"
+        amount: 120, requiredLevel: 1, price: 50, image: "elixir_of_health.webp"
       },
       {
         id: 10214, name: "Синтезированный эликсир здоровья III", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 250 HP",
-        amount: 250, requiredLevel: 1, price: 120, image: "elixir_of_health.webp"
+        amount: 250, requiredLevel: 1, price: 90, image: "elixir_of_health.webp"
       },
       {
-        id: 10215, name: "Синтезированный эликсир здоровья IV", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 500 HP",
-        amount: 500, requiredLevel: 1, price: 210, image: "elixir_of_health.webp"
+        id: 10215, name: "Синтезированный эликсир здоровья IV", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 600 HP",
+        amount: 500, requiredLevel: 1, price: 120, image: "elixir_of_health.webp"
       },
       {
         id: 10216, name: "Синтезированный эликсир богатства I", category: "buffDrop", type: "craft", desc: "При использовании на 5 боев увеличивает дроп золота и ресурсов в 2 раза",
@@ -280,7 +320,47 @@ class items {
         amount: 35, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
       },
       {
-        id: 10220, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
+        id: 10220, name: "Запечатанный магией рубиновый двойной сундук недостижимого богатства", category: "magicChest", type: "test", desc: "Древний магический сундук, наполненный случайными материалами для крафта IV уровня",
+        amount: 35, requiredLevel: 1, price: 300, image: "platinum_chest.webp"
+      },
+      {
+        id: 10221, name: "Запечатанный магией небесный сундук божественного богатства", category: "magicChest", type: "test", desc: "Древний магический сундук, наполненный случайными предметами и материалами для крафта высшего качества",
+        amount: 35, requiredLevel: 1, price: 600, image: "platinum_chest.webp"
+      },
+      {
+        id: 10222, name: "Синтезированный эликсир здоровья V", category: "restoreHp", type: "craft", desc: "При использовании восстанавливает 800 HP",
+        amount: 800, requiredLevel: 1, price: 150, image: "elixir_of_health.webp"
+      },
+      {
+        id: 10223, name: "Большой эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 250 HP",
+        amount: 250, requiredLevel: 9, price: 90, image: "elixir_of_health.webp"
+      },
+      {
+        id: 10223, name: "Огромный эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 450 HP",
+        amount: 450, requiredLevel: 13, price: 120, image: "elixir_of_health.webp"
+      },
+      {
+        id: 10224, name: "Невероятный эликсир здоровья", category: "restoreHp", desc: "При использовании восстанавливает 600 HP",
+        amount: 600, requiredLevel: 17, price: 150, image: "elixir_of_health.webp"
+      },
+      {
+        id: 10225, name: "Огромный эликсир атаки", category: "buffDamage", desc: "При использовании на 5 боев увеличивает урон на 50",
+        amount: 50, duration: 5, requiredLevel: 15, price: 150, image: "elixir_of_damage.webp"
+      },
+      {
+        id: 10226, name: "Огромный эликсир брони", category: "buffArmor", desc: "При использовании на 5 боев увеличивает защиту на 40",
+        amount: 40, duration: 5, requiredLevel: 15, price: 150, image: "elixir_of_armor.webp"
+      },
+      {
+        id: 10227, name: "Большой эликсир проворности", category: "buffEvasion", desc: "При использовании на 3 боя увеличивает уклонение на 10",
+        amount: 10, duration: 3, requiredLevel: 15, price: 150, image: "elixir_of_agility.webp"
+      },
+      {
+        id: 10228, name: "Большой эликсир кровожадности", category: "buffCritPower", desc: "При использовании на 3 боя увеличивает силу крита на 30",
+        amount: 30, duration: 3, requiredLevel: 15, price: 150, image: "elixir_of_bloodlust.webp"
+      },
+      {
+        id: 10229, name: "НЕВЕРОЯТНЫЙ эликсир здоровья", category: "restoreHp", type: "test", desc: "При использовании восстанавливает 3000 HP",
         amount: 3000, requiredLevel: 1, price: 1, image: "elixir_of_health.webp"
       },
     ];
