@@ -181,14 +181,21 @@ export default {
           );
 
           // Ищем ключ в крафт инвентаре
-          const existingItem = playerCraftInventory.find(
-            (invItem) => invItem.craftItemId == 10316
-          );
+          if (playerCraftInventory.length > 0) {
+            const existingItem = playerCraftInventory.find(
+              (invItem) => invItem.craftItemId == 10316
+            );
 
-          if (existingItem) {
-            existingItem.count += 10;
+            if (existingItem) {
+              existingItem.count += 10;
+            } else {
+              // Если элемент не найден, добавляем новый
+              playerCraftInventory.push({
+                craftItemId: 10316,
+                count: 10,
+              });
+            }
           } else {
-            // Если элемент не найден, добавляем новый
             playerCraftInventory.push({
               craftItemId: 10316,
               count: 10,
