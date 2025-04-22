@@ -312,8 +312,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 50px;
-  max-width: 600px;
+  padding: 30px 80px;
+  max-width: 560px;
   background-color: var(--color-blue);
   border: 1px solid var(--color-dark);
 }
