@@ -194,43 +194,43 @@ class items {
       },
       {
         id: 10123, name: "Тяжелый Шлем Превосходства", category: "helmet", secondCategory: "heavy",
-        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_helmet_of_immortality.webp"
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_helmet_of_superiority.webp"
       },
       {
         id: 10124, name: "Тяжелая Кираса Превосходства", category: "upper", secondCategory: "heavy",
-        armor: 35, hp: 130, durability: 60, requiredLevel: 18, price: 400, image: "heavy_cuirass_of_immortality.webp"
+        armor: 35, hp: 130, durability: 60, requiredLevel: 18, price: 400, image: "heavy_cuirass_of_superiority.webp"
       },
       {
         id: 10125, name: "Тяжелые Набедренники Превосходства", category: "lower", secondCategory: "heavy",
-        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_pants_of_immortality.webp"
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_pants_of_superiority.webp"
       },
       {
         id: 10126, name: "Тяжелые Перчатки Превосходства", category: "gloves", secondCategory: "heavy",
-        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_gloves_of_immortality.webp"
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_gloves_of_superiority.webp"
       },
       {
         id: 10127, name: "Тяжелые сапоги превосходства", category: "boots", secondCategory: "heavy",
-        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_boots_of_immortality.webp"
+        armor: 25, hp: 130, durability: 60, requiredLevel: 18, price: 350, image: "heavy_boots_of_superiority.webp"
       },
       {
         id: 10128, name: "Легкий Шлем Стремительности", category: "helmet", secondCategory: "light",
-        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_helmet_of_balance.webp"
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_helmet_of_swiftness.webp"
       },
       {
         id: 10129, name: "Легкая Кираса Стремительности", category: "upper", secondCategory: "light",
-        armor: 20, hp: 90, evasion: 10, durability: 60, requiredLevel: 18, price: 400, image: "light_cuirass_of_balance.webp"
+        armor: 20, hp: 90, evasion: 10, durability: 60, requiredLevel: 18, price: 400, image: "light_cuirass_of_swiftness.webp"
       },
       {
         id: 10130, name: "Легкие Набедренники Стремительности", category: "lower", secondCategory: "light",
-        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_pants_of_balance.webp"
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_pants_of_swiftness.webp"
       },
       {
         id: 10131, name: "Легкие Перчатки Стремительности", category: "gloves", secondCategory: "light",
-        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_gloves_of_balance.webp"
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_gloves_of_swiftness.webp"
       },
       {
         id: 10132, name: "Легкие Сапоги Стремительности", category: "boots", secondCategory: "light",
-        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_boots_of_balance.webp"
+        armor: 15, hp: 90, evasion: 5, durability: 60, requiredLevel: 18, price: 350, image: "light_boots_of_swiftness.webp"
       },
       {
         id: 10133, name: "Cверхпрочные Ультра Сапоги Высшего Порядка", category: "boots", secondCategory: "heavy", type: "test",

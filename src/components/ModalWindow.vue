@@ -80,7 +80,7 @@ export default {
 }
 .close_btn {
   position: absolute;
-  right: 15px;
+  /* right: 15px; ПОМЕНЯТЬ */
   top: 0;
   cursor: pointer;
 }
