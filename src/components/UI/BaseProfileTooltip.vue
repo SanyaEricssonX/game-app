@@ -1,8 +1,12 @@
 <template>
-  <div class="tooltip">
-    <span class="tooltip__info"
-      >{{ $store.state.playerExperience }} / {{ nextLevelExperience }}</span
-    >
+  <div class="tooltip" v-if="visible">
+    <span class="tooltip__info" v-if="content === 'level'">
+      {{ $store.state.playerExperience - previousLevelExperience }} /
+      {{ nextLevelExperience - previousLevelExperience }}
+    </span>
+    <span class="tooltip__info" v-else-if="content === 'armor'">
+      Входящий урон снижен на {{ decreasePlayerDamage }}%
+    </span>
   </div>
 </template>
 
@@ -13,15 +17,21 @@ export default {
   name: "base-profile-tooltip",
   extends: {},
   props: {
-    tooltip: {
-      type: Object,
-      required: true,
-    },
+    content: { type: String, default: "" },
+    visible: { type: Boolean, default: false },
   },
   data() {
-    return { nextLevelExperience: 0 };
+    return {
+      nextLevelExperience: 0,
+      previousLevelExperience: 0,
+      decreaseDamage: 0,
+    };
   },
-  computed: {},
+  computed: {
+    decreasePlayerDamage() {
+      return Math.floor(player.decreaseDamage(this.$store.state.playerArmor));
+    },
+  },
   components: {},
   watch: {},
   methods: {},
@@ -30,12 +40,15 @@ export default {
     const experienceList = player.experienceForLevel;
 
     if (this.$store.state.playerLevel >= experienceList.length + 1) {
-      const lastLevel = experienceList.length - 1;
-      this.nextLevelExperience = experienceList[lastLevel];
+      this.nextLevelExperience = this.$store.state.playerExperience;
+      this.previousLevelExperience = this.$store.state.playerExperience;
     } else {
       for (let i = 0; i < experienceList.length; i++) {
         if (this.$store.state.playerLevel - 1 == i) {
           this.nextLevelExperience = experienceList[i];
+          if (this.$store.state.playerLevel > 1) {
+            this.previousLevelExperience = experienceList[i - 1];
+          }
         }
       }
     }
@@ -49,7 +62,7 @@ export default {
   position: absolute;
   display: flex;
   align-items: center;
-  top: -50%;
+  top: -15%;
   left: 0;
   padding: 10px 15px;
   width: 190px;

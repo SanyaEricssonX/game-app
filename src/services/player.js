@@ -13,26 +13,28 @@ class player {
     this.warriorProfessionCharacteristics = { damage: 30, critChance: 15, critPower: 20 };
     this.knightProfessionCharacteristics = { armor: 30, hp: 25, evasion: -1000 };
     this.assassinProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 25, critPower: 70 };
-    this.berserkProfessionCharacteristics = { damage: 100, armor: -20, hp: -20, evasion: 10, critChance: 15, critPower: 20 };
-    this.gladiatorProfessionCharacteristics = { damage: 30, hp: 10, evasion: 20, critChance: 25, critPower: 70 };
+    this.berserkProfessionCharacteristics = { damage: 100, armor: -20, hp: -20, critChance: 15, critPower: 20 };
+    this.gladiatorProfessionCharacteristics = { damage: 30, hp: 10, evasion: 10, critChance: 25, critPower: 70 };
     this.templarProfessionCharacteristics = { armor: 70, hp: 70, evasion: -1000 };
-    this.titanProfessionCharacteristics = { damage: 15, armor: 30, hp: 25, evasion: -1000, critChance: 15, critPower: 20 };
+    this.titanProfessionCharacteristics = { damage: 15, armor: 30, hp: 25, evasion: -1000, critChance: 10, critPower: 20 };
     this.reaperProfessionCharacteristics = { armor: -20, hp: -10, evasion: 10, critChance: 35, critPower: 150 };
-    this.pathfinderProfessionCharacteristics = { damage: 15, armor: 10, hp: 10, evasion: 30, critChance: 25, critPower: 70 };
+    this.pathfinderProfessionCharacteristics = { damage: 10, armor: 10, hp: 10, evasion: 20, critChance: 25, critPower: 70 };
     this.isLevelIncreased = false;
     this.infoByLevel = {
       2: ["Доступны новые товары в магазине"],
       3: ["Доступны новые товары в магазине"],
       4: ["Доступен выбор воплощения", "Доступна новая локация: Мертвые земли", "Доступны новые товары в магазине"],
-      5: ["Доступно строительство", "Доступны новые товары в магазине"],
-      7: ["Получен доступ в подземелья с рейдовыми боссами"],
+      5: ["Доступны новые товары в магазине"],
+      7: ["Получен доступ в подземелья с рейдовыми боссами (в разработке...)"],
       8: ["Доступна новая локация: Равнины древней магии"],
       9: ["Доступны новые товары в магазине"],
       10: ["Доступны новые товары в магазине"],
       12: ["Доступна новая локация: Туманный лес"],
       13: ["Доступен второй акт воплощения", "Доступны новые товары в магазине"],
       16: ["Доступна новая локация: Заснеженный перевал"],
+      17: ["Доступны новые товары в магазине"],
       18: ["Доступны новые товары в магазине"],
+      20: ["Достигнут максимальный уровень. Поздравляем!"],
     };
   }
 

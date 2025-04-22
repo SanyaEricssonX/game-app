@@ -489,9 +489,9 @@
               :key="material.id"
             >
               <h4 class="material__title">
-                {{ materialName(material.craftItemId) }}:
+                {{ materialName(material.craftItemId) }}
               </h4>
-              <span class="material__count">{{ material.count }}</span>
+              <span class="material__count">: {{ material.count }}</span>
             </li>
           </ul>
         </div>
@@ -508,9 +508,9 @@
               :key="material.id"
             >
               <h4 class="material__title">
-                {{ materialName(material.craftItemId) }}:
+                {{ materialName(material.craftItemId) }}
               </h4>
-              <span class="material__count">{{ material.count }}</span>
+              <span class="material__count">: {{ material.count }}</span>
             </li>
           </ul>
         </div>
@@ -527,9 +527,9 @@
               :key="material.id"
             >
               <h4 class="material__title">
-                {{ materialName(material.craftItemId) }}:
+                {{ materialName(material.craftItemId) }}
               </h4>
-              <span class="material__count">{{ material.count }}</span>
+              <span class="material__count">: {{ material.count }}</span>
             </li>
           </ul>
         </div>
@@ -543,9 +543,9 @@
               :key="material.id"
             >
               <h4 class="material__title">
-                {{ materialName(material.craftItemId) }}:
+                {{ materialName(material.craftItemId) }}
               </h4>
-              <span class="material__count">{{ material.count }}</span>
+              <span class="material__count">: {{ material.count }}</span>
             </li>
           </ul>
         </div>
@@ -1271,7 +1271,6 @@ export default {
                 this.$store.state.chestIsOpen.drop = drop;
                 this.$store.state.chestIsOpen.visible = true;
                 this.showModal();
-
                 // Сохраняем дроп крафт предметов игрока
                 drop.forEach((dropItem) => {
                   // Ищем соответствующий элемент в инвентаре
@@ -1725,6 +1724,7 @@ export default {
 }
 .material__title {
   margin-right: 10px;
+  max-width: 250px;
   font-family: "Courier New", Courier, monospace;
   font-weight: 400;
   font-size: 16px;

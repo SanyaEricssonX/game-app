@@ -42,14 +42,20 @@
       <ul class="list characteristics-list">
         <li
           class="item characteristics__item level__item"
-          @mouseenter="showTooltip"
+          @mouseenter="showTooltip('level')"
           @mouseleave="hideTooltip"
         >
-          <h4 class="item__title">Уровень :</h4>
-          {{ $store.state.playerLevel }}
+          <div class="experience-bar">
+            <div
+              class="progress"
+              :style="{ width: progressPercentage + '%' }"
+            ></div>
+            <h4 class="level-text">Уровень {{ $store.state.playerLevel }}</h4>
+          </div>
           <base-profile-tooltip
-            :tooltip="tooltip"
-            v-if="tooltip.visible"
+            :content="activeTooltip"
+            :visible="isTooltipVisible"
+            v-if="isTooltipVisible && activeTooltip == 'level'"
           ></base-profile-tooltip>
         </li>
         <li class="item hp__item">
@@ -64,9 +70,18 @@
           <h4 class="item__title">Урон :</h4>
           {{ $store.state.playerDamage }}
         </li>
-        <li class="item characteristics__item">
+        <li
+          class="item characteristics__item level__item"
+          @mouseenter="showTooltip('armor')"
+          @mouseleave="hideTooltip"
+        >
           <h4 class="item__title">Защита :</h4>
           {{ $store.state.playerArmor }}
+          <base-profile-tooltip
+            :content="activeTooltip"
+            :visible="isTooltipVisible"
+            v-if="isTooltipVisible && activeTooltip == 'armor'"
+          ></base-profile-tooltip>
         </li>
         <li class="item characteristics__item">
           <h4 class="item__title">Уклонение :</h4>
@@ -219,7 +234,10 @@
         </li>
       </ul>
     </div>
-    <base-button class="profile__btn" v-if="$store.state.accountStatus == 'Тестовый'" @click="resetData"
+    <base-button
+      class="profile__btn"
+      v-if="$store.state.accountStatus == 'Тестовый'"
+      @click="resetData"
       >Сброс данных</base-button
     >
   </div>
@@ -227,6 +245,7 @@
 
 <script type="text/javascript">
 import { downloadData } from "@/services/downloadData";
+import player from "@/services/player";
 
 export default {
   name: "user-profile",
@@ -235,25 +254,54 @@ export default {
   data() {
     return {
       playerProfession: "",
-      tooltip: {
-        visible: false,
-      },
+      activeTooltip: "",
+      isTooltipVisible: false,
       timeout: null,
     };
   },
-  computed: {},
+  computed: {
+    progressPercentage() {
+      let nextLevelExperience = 0;
+      let previousLevelExperience = 0;
+      const experienceList = player.experienceForLevel;
+
+      if (this.$store.state.playerLevel >= experienceList.length + 1) {
+        const lastLevel = experienceList.length - 1;
+        nextLevelExperience = experienceList[lastLevel];
+      } else {
+        for (let i = 0; i < experienceList.length; i++) {
+          if (this.$store.state.playerLevel - 1 == i) {
+            nextLevelExperience = experienceList[i];
+            if (this.$store.state.playerLevel > 1) {
+              previousLevelExperience = experienceList[i - 1];
+            }
+          }
+        }
+      }
+      return Math.min(
+        100,
+        ((this.$store.state.playerExperience - previousLevelExperience) /
+          (nextLevelExperience - previousLevelExperience)) *
+          100
+      );
+    },
+  },
   components: {},
   watch: {},
   methods: {
-    showTooltip() {
+    showTooltip(content) {
       this.timeout = setTimeout(() => {
-        this.tooltip.visible = true;
+        this.activeTooltip = content;
+        this.isTooltipVisible = true;
       }, 500);
     },
+
     hideTooltip() {
       clearTimeout(this.timeout);
-      this.tooltip.visible = false;
+      this.activeTooltip = "";
+      this.isTooltipVisible = false;
     },
+
     showModal() {
       this.$emit("show-modal");
     },
@@ -373,6 +421,9 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+.hp__bar {
+  width: 100%;
+}
 .hp__title {
   width: 40px;
 }
@@ -397,5 +448,35 @@ export default {
 .symbol {
   font-family: Bahnschrift, sans-serif;
   font-weight: 300;
+}
+.experience-bar {
+  position: relative;
+  margin-bottom: 14px;
+  width: 190px;
+  height: 25px;
+  background-color: var(--color-dark);
+  border: 1px solid var(--color-light);
+  overflow: hidden;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-blue), var(--color-green));
+  transition: width 1.5s ease;
+}
+
+.level-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-light);
+  font-size: 16px;
+  font-weight: 900;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
 }
 </style>
