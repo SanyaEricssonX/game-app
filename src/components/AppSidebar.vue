@@ -1,98 +1,88 @@
 <template>
   <div class="sidebar-container">
-    <ul class="sidebar-menu" v-if="'Home'.includes($route.name)">
+    <!-- Меню для главной страницы -->
+    <ul
+      class="sidebar-menu"
+      v-if="$route.path.startsWith('/home') || $route.path === '/'"
+    >
       <li
+        v-for="(tab, index) in mainTabs"
+        :key="index"
         class="menu__item"
         role="button"
-        :class="{ active: selectedTab == 1 }"
-        @click="selectContent(1)"
+        :class="{ active: isActive(tab) }"
+        @click="changeTab(tab)"
       >
-        <h6 class="menu__text">Основное</h6>
-      </li>
-      <li
-        class="menu__item"
-        role="button"
-        :class="{ active: selectedTab == 2 }"
-        @click="selectContent(2)"
-      >
-        <h6 class="menu__text">Настройки</h6>
-      </li>
-      <li
-        class="menu__item"
-        role="button"
-        :class="{ active: selectedTab == 3 }"
-        @click="selectContent(3)"
-      >
-        <h6 class="menu__text">История обновлений</h6>
+        <h6 class="menu__text">{{ getTabName(tab) }}</h6>
       </li>
     </ul>
 
-    <ul class="sidebar-menu" v-if="'KnowledgeBase'.includes($route.name)">
+    <!-- Меню для базы знаний -->
+    <ul
+      class="sidebar-menu"
+      v-else-if="$route.path.startsWith('/knowledge-base')"
+    >
       <li
+        v-for="(tab, index) in knowledgeBaseTabs"
+        :key="index"
         class="menu__item"
         role="button"
-        :class="{ active: selectedTab == 1 }"
-        @click="selectContent(1)"
+        :class="{ active: isActive(tab) }"
+        @click="changeTab(tab)"
       >
-        <h6 class="menu__text">Общая информация</h6>
-      </li>
-      <li
-        class="menu__item"
-        role="button"
-        :class="{ active: selectedTab == 2 }"
-        @click="selectContent(2)"
-      >
-        <h6 class="menu__text">Боевая система</h6>
-      </li>
-      <li
-        class="menu__item"
-        role="button"
-        :class="{ active: selectedTab == 3 }"
-        @click="selectContent(3)"
-      >
-        <h6 class="menu__text">Воплощения</h6>
-      </li>
-      <li
-        class="menu__item"
-        role="button"
-        :class="{ active: selectedTab == 4 }"
-        @click="selectContent(4)"
-      >
-        <h6 class="menu__text">Предметы</h6>
-      </li>
-      <li
-        class="menu__item"
-        role="button"
-        :class="{ active: selectedTab == 5 }"
-        @click="selectContent(5)"
-      >
-        <h6 class="menu__text">Крафт</h6>
+        <h6 class="menu__text">{{ getTabName(tab) }}</h6>
       </li>
     </ul>
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
 export default {
-  name: "app-sidebar",
-  extends: {},
-  props: {},
+  name: "AppSidebar",
   data() {
     return {
-      selectedTab: 1,
+      knowledgeBaseTabs: ["general", "combat", "profession", "items", "craft"],
+      mainTabs: ["general", "settings", "updates"],
     };
   },
-  computed: {},
-  components: {},
-  watch: {},
   methods: {
-    selectContent(tabNumber) {
-      this.selectedTab = tabNumber;
-      this.$store.state.menuContent = tabNumber;
+    changeTab(tabName) {
+      if (
+        this.$route.path.startsWith("/knowledge-base") ||
+        this.$route.name === "KnowledgeBase"
+      ) {
+        this.$router.push({
+          name: "KnowledgeBase",
+          query: { tab: tabName },
+        });
+      } else if (
+        this.$route.path.startsWith("/home") ||
+        this.$route.path === "/" ||
+        this.$route.name === "Home"
+      ) {
+        this.$router.push({
+          name: "Home",
+          query: { tab: tabName },
+        });
+      }
+    },
+    isActive(tabName) {
+      const currentTab = this.$route.query.tab || "general";
+      return currentTab === tabName;
+    },
+    getTabName(tab) {
+      const names = {
+        general: "Основное",
+        combat: "Боевая система",
+        profession: "Профессии",
+        items: "Предметы",
+        craft: "Крафт",
+        settings: "Настройки",
+        updates: "История обновлений",
+      };
+      return names[tab] || tab;
     },
   },
-  beforeCreate() {},
-  mounted() {},
 };
 </script>
 

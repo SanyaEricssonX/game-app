@@ -16,6 +16,15 @@ const routes = [
     path: "/",
     name: "Home",
     component: MainPage,
+    props: (route) => ({ tab: route.query.tab || 'general' }), // Query param с default
+    beforeEnter: (to, from, next) => {
+      const validTabs = ['general', 'settings', 'updates'];
+      if (to.query.tab && !validTabs.includes(to.query.tab)) {
+        next({ name: 'Home', query: { tab: 'general' } }); // Редирект с query
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/inventory",
@@ -36,15 +45,24 @@ const routes = [
     path: "/knowledge-base",
     name: "KnowledgeBase",
     component: KnowledgeBasePage,
+    props: (route) => ({ tab: route.query.tab || 'general' }), // Query param с default
+    beforeEnter: (to, from, next) => {
+      const validTabs = ['general', 'combat', 'profession', 'items', 'craft'];
+      if (to.query.tab && !validTabs.includes(to.query.tab)) {
+        next({ name: 'KnowledgeBase', query: { tab: 'general' } }); // Редирект с query
+      } else {
+        next();
+      }
+    }
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(/*to, from, savedPosition*/) {
+  scrollBehavior() {
     return { top: 0 };
   },
-})
+});
 
 export default router;

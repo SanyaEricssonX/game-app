@@ -5,27 +5,33 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 export default {
   name: "KnowledgeBasePage",
+  props: {
+    tab: {
+      type: String,
+      default: 'general'
+    }
+  },
   data() {
     return {
       isDataLoaded: false,
       markdownContent: "",
-      filename: "main",
-      files: ["main", "combat", "profession", "items", "craft"],
+      files: ["general", "combat", "profession", "items", "craft"],
     };
   },
   computed: {
     compiledMarkdown() {
       return DOMPurify.sanitize(marked(this.markdownContent));
     },
-    currentTab() {
-      return this.$store.state.menuContent;
-    },
+    currentFile() {
+      // Проверяем, что запрошенный таб существует
+      return this.files.includes(this.tab) ? this.tab : 'general';
+    }
   },
   methods: {
     async loadMarkdownFile(name) {
@@ -34,28 +40,20 @@ export default {
         this.markdownContent = await response.text();
       } catch (error) {
         console.error("Ошибка загрузки файла:", error);
-        this.markdownContent =
-          "## Ошибка загрузки статьи. Обратитесь к администратору!";
+        this.markdownContent = "## Ошибка загрузки статьи. Обратитесь к администратору!";
       }
-
       this.isDataLoaded = true;
     },
   },
   watch: {
-    currentTab(newTab) {
-      this.filename = this.files[newTab - 1];
-      this.loadMarkdownFile(this.filename);
-    },
+    // Отслеживаем изменения query-параметра tab
+    tab() {
+      this.loadMarkdownFile(this.currentFile);
+    }
   },
-  async created() {
-    await this.loadMarkdownFile(this.filename);
-  },
+  created() {
+    // Первоначальная загрузка
+    this.loadMarkdownFile(this.currentFile);
+  }
 };
 </script>
-
-<style scoped>
-.help-container {
-  display: flex;
-  flex-direction: column;
-}
-</style>
