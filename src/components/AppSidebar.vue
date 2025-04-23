@@ -74,7 +74,7 @@ export default {
       const names = {
         general: "Основное",
         combat: "Боевая система",
-        profession: "Профессии",
+        profession: "Воплощения",
         items: "Предметы",
         craft: "Крафт",
         settings: "Настройки",
