@@ -393,7 +393,7 @@ class items {
     ];
     this.recipeList = [
       {
-        id: 1040, name: "Рецепт: Синтезированный Эликсир Здоровья I", category: "elixir", dropChance: 5, targetId: 10212, requiredLevel: 1,
+        id: 1040, name: "Рецепт: Синтезированный Эликсир Здоровья I", category: "elixir", dropChance: 7, targetId: 10212, requiredLevel: 1,
         ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }]
       },
       {
@@ -457,11 +457,11 @@ class items {
         ingredients: [{ material: 1036, count: 15 }, { material: 1038, count: 5 }, { material: 1039, count: 30 }, { material: 10321, count: 2 }, { material: 10315, count: 5 }], resources: { wood: 40, iron: 60 }
       },
       {
-        id: 10416, name: "Рецепт: Последний Аргумент Королей", category: "weapon", dropChance: 1, targetId: 10020, requiredLevel: 20,
+        id: 10416, name: "Рецепт: Последний Аргумент Королей", category: "weapon", dropChance: 3, targetId: 10020, requiredLevel: 20,
         ingredients: [{ material: 1036, count: 30 }, { material: 1037, count: 10 }, { material: 1039, count: 50 }, { material: 10322, count: 2 }, { material: 10315, count: 10 }, { material: 10324, count: 1 }], resources: { wood: 50, iron: 100 }
       },
       {
-        id: 10417, name: "Рецепт: Порыв Смерти", category: "weapon", dropChance: 1, targetId: 10021, requiredLevel: 20,
+        id: 10417, name: "Рецепт: Порыв Смерти", category: "weapon", dropChance: 3, targetId: 10021, requiredLevel: 20,
         ingredients: [{ material: 1036, count: 30 }, { material: 1038, count: 10 }, { material: 1039, count: 50 }, { material: 10323, count: 2 }, { material: 10315, count: 10 }, { material: 10324, count: 1 }], resources: { wood: 50, iron: 100 }
       },
     ];

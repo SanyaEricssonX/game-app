@@ -101,7 +101,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in consumableList" :key="index">
+          <tr v-for="(item, index2) in consumableList" :key="index2">
             <td>
               <div class="item-main_box">
                 <h4 class="item__heading">{{ item.name }}</h4>
@@ -150,11 +150,107 @@
         </tbody>
       </table>
     </div>
+
+    <h3 class="heading">Рецепты</h3>
+
+    <div class="simple-table">
+      <table>
+        <thead>
+          <tr>
+            <th><h4 class="title">Рецепт</h4></th>
+            <th><h4 class="title">Где найти</h4></th>
+            <th><h4 class="title">Шанс дропа</h4></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index3) in recipeList" :key="index3">
+            <td>
+              <div class="item-main_box">
+                <h4 class="item__heading recipe__heading">{{ item.name }}</h4>
+                <span class="item__icon">
+                  <img
+                    loading="lazy"
+                    :src="getImage(item.image)"
+                    :alt="item.id"
+                    v-if="item.image"
+                  />
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="item-location_box">
+                <ul>
+                  <li
+                    class="item__desc location__name"
+                    v-for="location in getCraftItemLocation(item.id)"
+                    :key="location.index4"
+                  >
+                    {{ location }}
+                  </li>
+                </ul>
+              </div>
+            </td>
+            <td>
+              <div class="item-recipe_box">{{ item.dropChance }}%</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="heading">Материалы</h3>
+
+    <div class="simple-table">
+      <table>
+        <thead>
+          <tr>
+            <th><h4 class="title">Рецепт</h4></th>
+            <th><h4 class="title">Где найти</h4></th>
+            <th><h4 class="title">Шанс дропа</h4></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index4) in materialList" :key="index4">
+            <td>
+              <div class="item-main_box">
+                <h4 class="item__heading recipe__heading">{{ item.name }}</h4>
+                <span class="item__icon">
+                  <img
+                    loading="lazy"
+                    :src="getImage(item.image)"
+                    :alt="item.id"
+                    v-if="item.image"
+                  />
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="item-location_box">
+                <ul>
+                  <li
+                    class="item__desc location__name"
+                    v-for="location in getCraftItemLocation(item.id)"
+                    :key="location.index4"
+                  >
+                    {{ location }}
+                  </li>
+                </ul>
+              </div>
+            </td>
+            <td>
+              <div class="item-material_box">{{ item.dropChance }}%</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </template>
 
 <script type="text/javascript">
 import items from "@/services/items";
+import map from "@/services/map";
 
 export default {
   name: "craft-tab",
@@ -166,6 +262,9 @@ export default {
       itemList: [],
       weaponList: [],
       consumableList: [],
+      recipeList: [],
+      materialList: [],
+      maps: [],
     };
   },
   computed: {},
@@ -208,24 +307,44 @@ export default {
         return 0;
       }
     },
+
+    getCraftItemLocation(itemId) {
+      let locations = [];
+      for (let i = 0; i < this.maps.length; i++) {
+        let drop = this.maps[i].drop;
+        for (let j = 0; j < drop.length; j++) {
+          if (drop[j] == itemId) {
+            locations.push(this.maps[i].name);
+          }
+        }
+      }
+      return locations;
+    },
+
+    getData() {
+      this.craftItemList = JSON.parse(JSON.stringify(items.recipeList));
+      this.itemList = JSON.parse(JSON.stringify(items.list()));
+      this.weaponList = this.itemList.filter(
+        (item) =>
+          item.type == "craft" &&
+          (item.category == "sword" || item.category == "dagger")
+      );
+      this.weaponList.sort((a, b) => a.requiredLevel - b.requiredLevel);
+
+      this.consumableList = this.itemList.filter(
+        (item) =>
+          item.type == "craft" &&
+          (item.category == "restoreHp" || item.category == "buffDrop")
+      );
+      this.consumableList.sort((a, b) => a.requiredLevel - b.requiredLevel);
+      this.recipeList = JSON.parse(JSON.stringify(items.recipeList));
+      this.materialList = JSON.parse(JSON.stringify(items.craftMaterialList));
+      this.maps = JSON.parse(JSON.stringify(map.locationList));
+    },
   },
   beforeCreate() {},
   created() {
-    this.craftItemList = JSON.parse(JSON.stringify(items.recipeList));
-    this.itemList = JSON.parse(JSON.stringify(items.list()));
-    this.weaponList = this.itemList.filter(
-      (item) =>
-        item.type == "craft" &&
-        (item.category == "sword" || item.category == "dagger")
-    );
-    this.weaponList.sort((a, b) => a.requiredLevel - b.requiredLevel);
-
-    this.consumableList = this.itemList.filter(
-      (item) =>
-        item.type == "craft" &&
-        (item.category == "restoreHp" || item.category == "buffDrop")
-    );
-    this.consumableList.sort((a, b) => a.requiredLevel - b.requiredLevel);
+    this.getData();
   },
   mounted() {},
 };
@@ -251,8 +370,8 @@ strong {
   color: var(--color-green);
   border-bottom: 1px solid white;
   padding-bottom: 5px;
-  margin-bottom: 20px;
-  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-top: 60px;
 }
 
 .craft_tab__heading {
@@ -295,7 +414,7 @@ strong {
 .item__heading {
   color: var(--color-green);
   margin-bottom: 15px;
-  width: 200px;
+  width: 220px;
 }
 
 .item__icon img {
@@ -304,11 +423,16 @@ strong {
 }
 
 .item__desc {
-  width: 250px;
+  max-width: 230px;
+}
+.item__desc:last-child {
+  margin-bottom: 0;
 }
 
 .item-characteristics_box ul,
-.item-recipe_box ul {
+.item-recipe_box ul,
+.item-location_box ul,
+.item-material_box {
   padding-left: 0;
   list-style-type: none;
 }
@@ -330,5 +454,12 @@ strong {
 
 .material__name {
   width: 190px;
+}
+.location__name:not(:last-child) {
+  margin-bottom: 20px;
+}
+.recipe__heading,
+.material__heading {
+  margin-bottom: 0;
 }
 </style>
