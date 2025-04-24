@@ -26,7 +26,13 @@
           <tr v-for="(item, index) in weaponList" :key="index">
             <td>
               <div class="item-main_box">
-                <h4 class="item__heading">{{ item.name }}</h4>
+                <a
+                  class="item__link"
+                  role="button"
+                  @click="showMaterialInfo(item.id)"
+                >
+                  <h4 class="item__heading">{{ item.name }}</h4>
+                </a>
                 <span class="item__icon">
                   <img
                     loading="lazy"
@@ -40,6 +46,9 @@
             <td>
               <div class="item-characteristics_box">
                 <ul>
+                  <li class="item__desc" v-if="item.category">
+                    {{ categoryName(item.category) }}
+                  </li>
                   <li class="item__desc" v-if="item.requiredLevel">
                     Уровень: {{ item.requiredLevel }}
                   </li>
@@ -73,8 +82,13 @@
                     v-for="recipe in itemCraftMaterials(item.id)"
                     :key="recipe.id"
                   >
-                    {{ materialName(recipe.material) }}:
-                    {{ recipe.count }}
+                    <a
+                      class="material__name"
+                      role="button"
+                      @click="showMaterialInfo(recipe.material)"
+                      >{{ materialName(recipe.material) }}:</a
+                    >
+                    <span class="material__count">{{ recipe.count }}</span>
                   </li>
                 </ul>
               </div>
@@ -99,7 +113,13 @@
           <tr v-for="(item, index) in consumableList" :key="index">
             <td>
               <div class="item-main_box">
-                <h4 class="item__heading">{{ item.name }}</h4>
+                <a
+                  class="item__link"
+                  role="button"
+                  @click="showMaterialInfo(item.id)"
+                >
+                  <h4 class="item__heading">{{ item.name }}</h4>
+                </a>
                 <span class="item__icon">
                   <img
                     loading="lazy"
@@ -113,6 +133,9 @@
             <td>
               <div class="item-characteristics_box">
                 <ul>
+                  <li class="item__desc" v-if="item.requiredLevel">
+                    {{ categoryName(item.category) }}
+                  </li>
                   <li class="item__desc" v-if="item.requiredLevel">
                     Уровень: {{ item.requiredLevel }}
                   </li>
@@ -130,8 +153,14 @@
                     v-for="recipe in itemCraftMaterials(item.id)"
                     :key="recipe.id"
                   >
-                    {{ materialName(recipe.material) }}:
-                    {{ recipe.count }}
+                    <a
+                      class="material__name"
+                      role="button"
+                      @click="showMaterialInfo(recipe.material)"
+                      >{{ materialName(recipe.material) }}:</a
+                    >
+
+                    <span class="material__count">{{ recipe.count }}</span>
                   </li>
                 </ul>
               </div>
@@ -162,6 +191,19 @@ export default {
   components: {},
   watch: {},
   methods: {
+    showMaterialInfo(id) {
+      console.log(id);
+    },
+
+    categoryName(category) {
+      if (category == "sword") {
+        return "Меч";
+      } else if (category == "dagger") {
+        return "Кинжал";
+      }
+      return "Эликсир";
+    },
+
     itemCraftMaterials(itemId) {
       const recipe = JSON.parse(
         JSON.stringify(
@@ -268,14 +310,25 @@ strong {
   background-color: rgba(50, 177, 122, 0.1);
 }
 
+.item__link {
+  text-decoration: none;
+  cursor: default;
+}
+
 .item__heading {
-  color: var(--color-green);
+  color: var(--color-blue);
   margin-bottom: 15px;
+  width: 200px;
+  cursor: pointer;
 }
 
 .item__icon img {
   max-width: 100px;
   max-height: 100px;
+}
+
+.item__desc {
+  width: 250px;
 }
 
 .item-characteristics_box ul,
@@ -287,5 +340,21 @@ strong {
 .item-characteristics_box li,
 .item-recipe_box li {
   margin-bottom: 10px;
+}
+
+.material__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.material__name {
+  width: 190px;
+  color: var(--color-blue);
+}
+
+.item__heading:hover,
+.material__name:hover {
+  text-decoration: underline;
 }
 </style>
