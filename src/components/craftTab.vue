@@ -26,13 +26,7 @@
           <tr v-for="(item, index) in weaponList" :key="index">
             <td>
               <div class="item-main_box">
-                <a
-                  class="item__link"
-                  role="button"
-                  @click="showMaterialInfo(item.id)"
-                >
-                  <h4 class="item__heading">{{ item.name }}</h4>
-                </a>
+                <h4 class="item__heading">{{ item.name }}</h4>
                 <span class="item__icon">
                   <img
                     loading="lazy"
@@ -82,11 +76,8 @@
                     v-for="recipe in itemCraftMaterials(item.id)"
                     :key="recipe.id"
                   >
-                    <a
-                      class="material__name"
-                      role="button"
-                      @click="showMaterialInfo(recipe.material)"
-                      >{{ materialName(recipe.material) }}:</a
+                    <span class="material__name"
+                      >{{ materialName(recipe.material) }}:</span
                     >
                     <span class="material__count">{{ recipe.count }}</span>
                   </li>
@@ -113,13 +104,7 @@
           <tr v-for="(item, index) in consumableList" :key="index">
             <td>
               <div class="item-main_box">
-                <a
-                  class="item__link"
-                  role="button"
-                  @click="showMaterialInfo(item.id)"
-                >
-                  <h4 class="item__heading">{{ item.name }}</h4>
-                </a>
+                <h4 class="item__heading">{{ item.name }}</h4>
                 <span class="item__icon">
                   <img
                     loading="lazy"
@@ -153,13 +138,9 @@
                     v-for="recipe in itemCraftMaterials(item.id)"
                     :key="recipe.id"
                   >
-                    <a
-                      class="material__name"
-                      role="button"
-                      @click="showMaterialInfo(recipe.material)"
-                      >{{ materialName(recipe.material) }}:</a
+                    <span class="material__name"
+                      >{{ materialName(recipe.material) }}:</span
                     >
-
                     <span class="material__count">{{ recipe.count }}</span>
                   </li>
                 </ul>
@@ -191,10 +172,6 @@ export default {
   components: {},
   watch: {},
   methods: {
-    showMaterialInfo(id) {
-      console.log(id);
-    },
-
     categoryName(category) {
       if (category == "sword") {
         return "Меч";
@@ -279,7 +256,7 @@ strong {
 }
 
 .craft_tab__heading {
-  color: #32b17a;
+  color: var(--color-green);
   margin-bottom: 30px;
 }
 
@@ -297,7 +274,7 @@ strong {
 .simple-table th,
 .simple-table td {
   padding: 12px;
-  border: 1px solid #32b17a;
+  border: 1px solid var(--color-green);
   text-align: left;
   vertical-align: top;
 }
@@ -316,10 +293,9 @@ strong {
 }
 
 .item__heading {
-  color: var(--color-blue);
+  color: var(--color-green);
   margin-bottom: 15px;
   width: 200px;
-  cursor: pointer;
 }
 
 .item__icon img {
@@ -348,13 +324,11 @@ strong {
   align-items: center;
 }
 
-.material__name {
-  width: 190px;
-  color: var(--color-blue);
+.material__item:last-child {
+  margin-bottom: 0;
 }
 
-.item__heading:hover,
-.material__name:hover {
-  text-decoration: underline;
+.material__name {
+  width: 190px;
 }
 </style>
