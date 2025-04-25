@@ -2,7 +2,7 @@
   <div class="craft_tab-container">
     <h2 class="craft_tab__heading">Крафт</h2>
 
-    <div class="block">
+    <div class="block block--before_table">
       <strong>Крафт система</strong>
       позволяет создавать предметы, которые заметно превосходят те, что
       продаются в магазине. Для создания предмета необходим рецепт, а также
@@ -80,6 +80,14 @@
                       >{{ materialName(recipe.material) }}:</span
                     >
                     <span class="material__count">{{ recipe.count }}</span>
+                  </li>
+                  <li
+                    class="material__item"
+                    v-for="resource in resourcesForCraft(item.id)"
+                    :key="resource.id"
+                  >
+                    <span class="material__name">{{ resource.name }}:</span>
+                    <span class="material__count">{{ resource.count }}</span>
                   </li>
                 </ul>
               </div>
@@ -244,7 +252,6 @@
         </tbody>
       </table>
     </div>
-
   </div>
 </template>
 
@@ -289,8 +296,41 @@ export default {
       return recipe[0].ingredients;
     },
 
+    resourcesForCraft(itemId) {
+      const resourceTranslations = {
+        wood: "Древесина",
+        stone: "Камень",
+        iron: "Железо",
+      };
+
+      // Находим рецепт для указанного itemId
+      const recipes = this.recipeList.filter(
+        (recipe) => recipe.targetId == itemId
+      );
+
+      // Если рецепт не найден, возвращаем пустой массив
+      if (!recipes.length) return [];
+
+      // Получаем объект ресурсов из первого найденного рецепта
+      const resources = recipes[0].resources;
+
+      // Преобразуем объект ресурсов в массив объектов с переводом
+      const craftResources = Object.entries(resources).map(([key, value]) => {
+        return {
+          name: resourceTranslations[key] || key, // если перевода нет, используем оригинальный ключ
+          count: value,
+        };
+      });
+
+      return craftResources;
+    },
+
     materialName(materialId) {
       return items.findCraftMaterial(materialId).name;
+    },
+    resourceName(resource) {
+      // console.log(resource);
+      return resource;
     },
 
     getImage(key) {
@@ -364,6 +404,9 @@ strong {
 .block {
   margin-bottom: 20px;
   line-height: 1.4;
+}
+.block--before_table {
+  margin-bottom: 0;
 }
 
 .heading {
