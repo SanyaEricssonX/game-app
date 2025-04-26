@@ -461,8 +461,8 @@ strong {
 }
 
 .item__icon img {
-  max-width: 100px;
-  max-height: 100px;
+  width: 90px;
+  height: 90px;
 }
 
 .item__desc {

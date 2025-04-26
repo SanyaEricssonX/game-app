@@ -41,7 +41,7 @@ export default {
   name: "AppSidebar",
   data() {
     return {
-      knowledgeBaseTabs: ["general", "combat", "profession", "items", "craft"],
+      knowledgeBaseTabs: ["general", "combat", "profession", "items", "craft", "magicChests"],
       mainTabs: ["general", "settings", "updates"],
     };
   },
@@ -79,6 +79,7 @@ export default {
         craft: "Крафт",
         settings: "Настройки",
         updates: "История обновлений",
+        magicChests: "Магические сундуки",
       };
       return names[tab] || tab;
     },

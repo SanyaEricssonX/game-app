@@ -5,9 +5,10 @@
       <div
         class="help-section"
         v-html="compiledMarkdown"
-        v-if="tab !== 'craft'"
+        v-if="tab !== 'craft' && tab !== 'magicChests'"
       ></div>
       <craft-tab v-if="tab === 'craft'"></craft-tab>
+      <magic-chests-tab v-if="tab === 'magicChests'"></magic-chests-tab>
     </template>
   </div>
 </template>
@@ -16,12 +17,14 @@
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import CraftTab from "@/components/craftTab.vue";
+import MagicChestsTab from "@/components/MagicChestsTab";
 import imageLoader from "@/services/imageLoader";
 
 export default {
   name: "KnowledgeBasePage",
   components: {
     CraftTab,
+    MagicChestsTab,
   },
   props: {
     tab: {
@@ -33,7 +36,14 @@ export default {
     return {
       isDataLoaded: false,
       markdownContent: "",
-      files: ["general", "combat", "profession", "items", "craft"],
+      files: [
+        "general",
+        "combat",
+        "profession",
+        "items",
+        "craft",
+        "magicChests",
+      ],
     };
   },
   computed: {
@@ -51,7 +61,7 @@ export default {
     async loadContent() {
       this.isDataLoaded = false;
 
-      if (this.tab === "craft") {
+      if (this.tab === "craft" || this.tab === "magicChests") {
         // Для вкладки craft просто устанавливаем флаг загрузки
         this.isDataLoaded = true;
       } else {

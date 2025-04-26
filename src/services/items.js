@@ -309,19 +309,19 @@ class items {
       },
       {
         id: 10217, name: "Запечатанный Магией Серебряный Сундук", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта I уровня",
-        amount: 35, requiredLevel: 1, price: 50, image: "silver_chest.webp"
+        amount: 25, requiredLevel: 1, price: 50, image: "silver_chest.webp"
       },
       {
         id: 10218, name: "Запечатанный Магией Золотой Сундук Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта II уровня",
-        amount: 35, requiredLevel: 1, price: 100, image: "golden_chest.webp"
+        amount: 25, requiredLevel: 1, price: 100, image: "golden_chest.webp"
       },
       {
         id: 10219, name: "Запечатанный Магией Платиновый Сундук Невообразимого Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта III уровня",
-        amount: 35, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
+        amount: 25, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
       },
       {
         id: 10220, name: "Запечатанный Магией Рубиновый Двойной Сундук Недостижимого Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта IV уровня",
-        amount: 35, requiredLevel: 1, price: 300, image: "ruby_chest.webp"
+        amount: 30, requiredLevel: 1, price: 300, image: "ruby_chest.webp"
       },
       {
         id: 10221, name: "Запечатанный Магией Небесный Сундук Божественного Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными предметами и материалами для крафта высшего качества",
