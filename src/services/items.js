@@ -309,19 +309,19 @@ class items {
       },
       {
         id: 10217, name: "Запечатанный Магией Серебряный Сундук", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта I уровня",
-        amount: 35, requiredLevel: 1, price: 50, image: "silver_chest.webp"
+        amount: 25, requiredLevel: 1, price: 50, image: "silver_chest.webp"
       },
       {
         id: 10218, name: "Запечатанный Магией Золотой Сундук Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта II уровня",
-        amount: 35, requiredLevel: 1, price: 100, image: "golden_chest.webp"
+        amount: 25, requiredLevel: 1, price: 100, image: "golden_chest.webp"
       },
       {
         id: 10219, name: "Запечатанный Магией Платиновый Сундук Невообразимого Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта III уровня",
-        amount: 35, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
+        amount: 25, requiredLevel: 1, price: 200, image: "platinum_chest.webp"
       },
       {
         id: 10220, name: "Запечатанный Магией Рубиновый Двойной Сундук Недостижимого Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными материалами для крафта IV уровня",
-        amount: 35, requiredLevel: 1, price: 300, image: "ruby_chest.webp"
+        amount: 30, requiredLevel: 1, price: 300, image: "ruby_chest.webp"
       },
       {
         id: 10221, name: "Запечатанный Магией Небесный Сундук Божественного Богатства", category: "magicChest", desc: "Древний магический сундук, наполненный случайными предметами и материалами для крафта высшего качества",
@@ -393,7 +393,7 @@ class items {
     ];
     this.recipeList = [
       {
-        id: 1040, name: "Рецепт: Синтезированный Эликсир Здоровья I", category: "elixir", dropChance: 5, targetId: 10212, requiredLevel: 1,
+        id: 1040, name: "Рецепт: Синтезированный Эликсир Здоровья I", category: "elixir", dropChance: 7, targetId: 10212, requiredLevel: 1,
         ingredients: [{ material: 1030, count: 1 }, { material: 1031, count: 3 }, { material: 1032, count: 1 }]
       },
       {
@@ -457,11 +457,11 @@ class items {
         ingredients: [{ material: 1036, count: 15 }, { material: 1038, count: 5 }, { material: 1039, count: 30 }, { material: 10321, count: 2 }, { material: 10315, count: 5 }], resources: { wood: 40, iron: 60 }
       },
       {
-        id: 10416, name: "Рецепт: Последний Аргумент Королей", category: "weapon", dropChance: 1, targetId: 10020, requiredLevel: 20,
+        id: 10416, name: "Рецепт: Последний Аргумент Королей", category: "weapon", dropChance: 3, targetId: 10020, requiredLevel: 20,
         ingredients: [{ material: 1036, count: 30 }, { material: 1037, count: 10 }, { material: 1039, count: 50 }, { material: 10322, count: 2 }, { material: 10315, count: 10 }, { material: 10324, count: 1 }], resources: { wood: 50, iron: 100 }
       },
       {
-        id: 10417, name: "Рецепт: Порыв Смерти", category: "weapon", dropChance: 1, targetId: 10021, requiredLevel: 20,
+        id: 10417, name: "Рецепт: Порыв Смерти", category: "weapon", dropChance: 3, targetId: 10021, requiredLevel: 20,
         ingredients: [{ material: 1036, count: 30 }, { material: 1038, count: 10 }, { material: 1039, count: 50 }, { material: 10323, count: 2 }, { material: 10315, count: 10 }, { material: 10324, count: 1 }], resources: { wood: 50, iron: 100 }
       },
     ];

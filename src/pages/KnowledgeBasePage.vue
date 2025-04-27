@@ -1,33 +1,74 @@
 <template>
   <div class="container help-container">
     <base-loader v-if="!isDataLoaded" />
-    <div class="help-section" v-html="compiledMarkdown" v-else></div>
+    <template v-if="isDataLoaded">
+      <div
+        class="help-section"
+        v-html="compiledMarkdown"
+        v-if="tab !== 'craft' && tab !== 'magicChests'"
+      ></div>
+      <craft-tab v-if="tab === 'craft'"></craft-tab>
+      <magic-chests-tab v-if="tab === 'magicChests'"></magic-chests-tab>
+    </template>
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import CraftTab from "@/components/craftTab.vue";
+import MagicChestsTab from "@/components/MagicChestsTab";
+import imageLoader from "@/services/imageLoader";
 
 export default {
   name: "KnowledgeBasePage",
+  components: {
+    CraftTab,
+    MagicChestsTab,
+  },
+  props: {
+    tab: {
+      type: String,
+      default: "general",
+    },
+  },
   data() {
     return {
       isDataLoaded: false,
       markdownContent: "",
-      filename: "main",
-      files: ["main", "combat", "profession", "items", "craft"],
+      files: [
+        "general",
+        "combat",
+        "profession",
+        "items",
+        "craft",
+        "magicChests",
+      ],
     };
   },
   computed: {
     compiledMarkdown() {
       return DOMPurify.sanitize(marked(this.markdownContent));
     },
-    currentTab() {
-      return this.$store.state.menuContent;
+    currentFile() {
+      return this.files.includes(this.tab) ? this.tab : "general";
     },
   },
   methods: {
+    getImage(key) {
+      return imageLoader.getImage(key);
+    },
+    async loadContent() {
+      this.isDataLoaded = false;
+
+      if (this.tab === "craft" || this.tab === "magicChests") {
+        // Для вкладки craft просто устанавливаем флаг загрузки
+        this.isDataLoaded = true;
+      } else {
+        // Для остальных вкладок загружаем markdown
+        await this.loadMarkdownFile(this.currentFile);
+      }
+    },
     async loadMarkdownFile(name) {
       try {
         const response = await fetch(`/help/${name}.md`);
@@ -37,25 +78,17 @@ export default {
         this.markdownContent =
           "## Ошибка загрузки статьи. Обратитесь к администратору!";
       }
-
       this.isDataLoaded = true;
     },
   },
   watch: {
-    currentTab(newTab) {
-      this.filename = this.files[newTab - 1];
-      this.loadMarkdownFile(this.filename);
+    tab() {
+      this.loadContent();
     },
   },
-  async created() {
-    await this.loadMarkdownFile(this.filename);
+  created() {
+    imageLoader.preloadImages();
+    this.loadContent();
   },
 };
 </script>
-
-<style scoped>
-.help-container {
-  display: flex;
-  flex-direction: column;
-}
-</style>
