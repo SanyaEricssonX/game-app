@@ -457,7 +457,7 @@ strong {
 .item__heading {
   color: var(--color-green);
   margin-bottom: 15px;
-  width: 220px;
+  width: 200px;
 }
 
 .item__icon img {
@@ -466,7 +466,7 @@ strong {
 }
 
 .item__desc {
-  max-width: 230px;
+  width: 230px;
 }
 .item__desc:last-child {
   margin-bottom: 0;
