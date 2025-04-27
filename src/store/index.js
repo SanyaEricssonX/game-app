@@ -33,7 +33,6 @@ export default createStore({
     professionIsChosen: false,
     chestIsOpen: { visible: false, drop: [] },
     modalNotification: { visible: false, text: "", from: "", resources: { gold: 0, wood: 0, stone: 0, iron: 0 } },
-    menuContent: 1,
     actionType: false,
     accountId: "TBD",
     accountStatus: "Стандарт+",

@@ -1,6 +1,7 @@
 <template>
   <div class="container main-container">
-    <div class="main-block first" v-if="$store.state.menuContent == 1">
+    <!-- Основная вкладка -->
+    <div class="main-block first" v-if="activeTab === 'general'">
       <h1 class="main__heading">Project R</h1>
       <p class="main__version">Версия: {{ currentVersion }}</p>
 
@@ -40,7 +41,8 @@
       </ul>
     </div>
 
-    <div class="main-block" v-if="$store.state.menuContent == 2">
+    <!-- Вкладка настроек -->
+    <div class="main-block" v-if="activeTab === 'settings'">
       <h2 class="settings__heading">Настройки</h2>
 
       <h4 class="code__heading">Активационные коды</h4>
@@ -63,22 +65,28 @@
       </div>
     </div>
 
-    <div class="main-block" v-if="$store.state.menuContent == 3">
+    <!-- Вкладка обновлений -->
+    <div class="main-block" v-if="activeTab === 'updates'">
       <base-loader v-if="!isDataLoaded" />
       <updates-feed :updates="updates" v-else />
     </div>
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
 import { downloadData } from "@/services/downloadData";
 import UpdatesFeed from "@/components/UpdatesFeed";
 import { mapGetters } from "vuex";
 
 export default {
   name: "MainPage",
-  extends: {},
-  props: {},
+  components: { UpdatesFeed },
+  props: {
+    tab: {
+      type: String,
+      default: "general",
+    },
+  },
   data() {
     return {
       inputError: false,
@@ -86,23 +94,63 @@ export default {
       currentVersion: process.env.VUE_APP_VERSION || "1.0.0",
       updates: [],
       code: "",
+      // Соответствие между номерами вкладок и их query-названиями
+      tabMapping: {
+        1: "general",
+        2: "settings",
+        3: "updates",
+      },
     };
   },
   computed: {
     ...mapGetters(["currentActionType"]),
+    activeTab() {
+      // Определяем текущую вкладку
+      const tabFromQuery = this.tab;
+      const tabFromStore =
+        this.tabMapping[this.$store.state.menuContent] || "general";
+
+      // Приоритет у query-параметра
+      return ["general", "settings", "updates"].includes(tabFromQuery)
+        ? tabFromQuery
+        : tabFromStore;
+    },
   },
-  components: { UpdatesFeed },
   watch: {
     currentActionType(newVal, oldVal) {
       if (newVal !== oldVal) {
         this.handleActionChange(newVal);
       }
     },
+    // Следим за изменением вкладки в store
+    "$store.state.menuContent"(newVal) {
+      if (newVal in this.tabMapping) {
+        const tabName = this.tabMapping[newVal];
+        this.updateRoute(tabName);
+      }
+    },
+    // Следим за изменением query-параметра
+    tab(newTab) {
+      if (newTab in this.tabMapping) {
+        this.$store.state.menuContent = Number(
+          Object.keys(this.tabMapping).find(
+            (key) => this.tabMapping[key] === newTab
+          )
+        );
+      }
+    },
   },
   methods: {
+    updateRoute(tabName) {
+      if (this.$route.query.tab !== tabName) {
+        this.$router.replace({
+          query: { ...this.$route.query, tab: tabName },
+        });
+      }
+    },
+
     async loadUpdates() {
       try {
-        // Используем VUE_APP_CACHE_BUSTER для запроса
         const response = await fetch(
           `/updates.json?v=${process.env.VUE_APP_CACHE_BUSTER}`
         );
@@ -114,6 +162,7 @@ export default {
       }
       this.isDataLoaded = true;
     },
+
     enterCode(code) {
       if (!code.trim()) {
         // Сбрасываем ошибку и снова устанавливаем после небольшой задержки
@@ -176,12 +225,11 @@ export default {
 
           this.showModal();
 
-          let playerCraftInventory = JSON.parse(
-            localStorage.getItem("playerCraftInventory")
-          );
+          let playerCraftInventory =
+            JSON.parse(localStorage.getItem("playerCraftInventory")) || [];
 
           // Ищем ключ в крафт инвентаре
-          if (playerCraftInventory.length > 0) {
+          if (playerCraftInventory != null) {
             const existingItem = playerCraftInventory.find(
               (invItem) => invItem.craftItemId == 10316
             );
@@ -211,7 +259,6 @@ export default {
           break;
         }
         default:
-          // Аналогично для неправильного кода
           this.inputError = false;
           setTimeout(() => {
             this.inputError = true;
@@ -260,9 +307,17 @@ export default {
       this.showModal();
     },
   },
-  beforeCreate() {},
   async mounted() {
     await this.loadUpdates();
+
+    // Инициализация вкладки при загрузке
+    if (this.tab in this.tabMapping) {
+      this.$store.state.menuContent = Number(
+        Object.keys(this.tabMapping).find(
+          (key) => this.tabMapping[key] === this.tab
+        )
+      );
+    }
   },
 };
 </script>

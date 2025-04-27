@@ -255,17 +255,19 @@
               >Ур.{{ itemLevel(playerEquipment.lower) }}</span
             >
             <div
-            class="inventory-item_broken"
-            v-if="
-              playerEquipment.lower != 0 && playerEquipment.lowerDurability <= 0
-            "
-          ></div>
-          <div
-            class="equipment--unsuitable"
-            v-if="
-              playerEquipment.lower != 0 && levelIsSmall(playerEquipment.lower)
-            "
-          ></div>
+              class="inventory-item_broken"
+              v-if="
+                playerEquipment.lower != 0 &&
+                playerEquipment.lowerDurability <= 0
+              "
+            ></div>
+            <div
+              class="equipment--unsuitable"
+              v-if="
+                playerEquipment.lower != 0 &&
+                levelIsSmall(playerEquipment.lower)
+              "
+            ></div>
           </span>
 
           <div class="equipment-durability_block">
@@ -1268,36 +1270,45 @@ export default {
                 }
 
                 const drop = items.magicChestRandomDrop(item.id, item.amount);
-                this.$store.state.chestIsOpen.drop = drop;
-                this.$store.state.chestIsOpen.visible = true;
-                this.showModal();
-                // Сохраняем дроп крафт предметов игрока
-                drop.forEach((dropItem) => {
-                  // Ищем соответствующий элемент в инвентаре
-                  const existingItem = playerCraftInventory.find(
-                    (invItem) => invItem.craftItemId === dropItem.craftItemId
+                console.log(drop);
+                if (drop.length > 0) {
+                  this.$store.state.chestIsOpen.drop = drop;
+                  this.$store.state.chestIsOpen.visible = true;
+                  this.showModal();
+                  // Сохраняем дроп крафт предметов игрока
+                  drop.forEach((dropItem) => {
+                    // Ищем соответствующий элемент в инвентаре
+                    const existingItem = playerCraftInventory.find(
+                      (invItem) => invItem.craftItemId === dropItem.craftItemId
+                    );
+
+                    if (existingItem) {
+                      // Если элемент найден, увеличиваем count
+                      existingItem.count += dropItem.count;
+                    } else {
+                      // Если элемент не найден, добавляем новый
+                      playerCraftInventory.push({
+                        craftItemId: dropItem.craftItemId,
+                        count: dropItem.count,
+                      });
+                    }
+                  });
+
+                  // Сохраняем предметы с сундука в инвентаре
+                  this.$store.state.playerCraftInventory = playerCraftInventory;
+                  localStorage.setItem(
+                    "playerCraftInventory",
+                    JSON.stringify(this.$store.state.playerCraftInventory)
                   );
 
-                  if (existingItem) {
-                    // Если элемент найден, увеличиваем count
-                    existingItem.count += dropItem.count;
-                  } else {
-                    // Если элемент не найден, добавляем новый
-                    playerCraftInventory.push({
-                      craftItemId: dropItem.craftItemId,
-                      count: dropItem.count,
-                    });
-                  }
-                });
-
-                // Сохраняем предметы с сундука в инвентаре
-                this.$store.state.playerCraftInventory = playerCraftInventory;
-                localStorage.setItem(
-                  "playerCraftInventory",
-                  JSON.stringify(this.$store.state.playerCraftInventory)
-                );
-
-                this.updateCraftInventory();
+                  this.updateCraftInventory();
+                } else {
+                  this.$store.state.modalNotification.text =
+                    "Сундук оказался пуст.";
+                  this.$store.state.modalNotification.from = "basic";
+                  this.$store.state.modalNotification.visible = true;
+                  this.showModal();
+                }
                 // Если ключей нет
               } else {
                 this.$store.state.modalNotification.text =
