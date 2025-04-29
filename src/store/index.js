@@ -37,6 +37,7 @@ export default createStore({
     accountId: "TBD",
     accountStatus: "Стандарт+",
     playerBp: "TBD",
+    playerBuildings: { currentLevel0: 1, currentLevel1: 0, currentLevel2: 0, currentLevel3: 0, currentLevel4: 0, currentLevel5: 0 },
   },
   getters: {
     currentActionType: state => state.actionType

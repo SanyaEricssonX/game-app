@@ -102,14 +102,19 @@ export function downloadData() {
     store.state.playerBuffCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, evasionBuffDuration: 0, critChanceBuffDuration: 0, critPowerBuffDuration: 0, dropBuffDuration: 0 };
   }
   if (localStorage.getItem("playerProfessionCharacteristics") != null) {
-    store.state.playerProfessionCharacteristics = JSON.parse(localStorage.getItem("playerProfessionCharacteristics"))
+    store.state.playerProfessionCharacteristics = JSON.parse(localStorage.getItem("playerProfessionCharacteristics"));
   } else {
     store.state.playerProfessionCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
   }
   if (localStorage.getItem("accountStatus") != null) {
     store.state.accountStatus = localStorage.getItem("accountStatus");
   } else {
-    store.state.accountStatus = "Стандарт+"
+    store.state.accountStatus = "Стандарт+";
+  }
+  if (localStorage.getItem("playerBuildings") != null) {
+    store.state.playerBuildings = JSON.parse(localStorage.getItem("playerBuildings"));
+  } else {
+    store.state.playerBuildings = { currentLevel0: 1, currentLevel1: 0, currentLevel2: 0, currentLevel3: 0, currentLevel4: 0, currentLevel5: 0 };
   }
 
   // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов, бафов и профессии

@@ -8,14 +8,17 @@
         <li class="nav__item" @click="goToHomePage()">
           <span class="nav__link">Главная</span>
         </li>
+        <li class="nav__item" @click="goToMapPage()">
+          <span class="nav__link">Бои</span>
+        </li>
         <li class="nav__item" @click="goToInventoryPage()">
           <span class="nav__link">Инвентарь</span>
         </li>
+        <li class="nav__item" @click="goToCampPage()">
+          <span class="nav__link">Лагерь</span>
+        </li>
         <li class="nav__item" @click="goToShopPage()">
           <span class="nav__link">Магазин</span>
-        </li>
-        <li class="nav__item" @click="goToMapPage()">
-          <span class="nav__link">Карта</span>
         </li>
         <li class="nav__item" @click="goToKnowledgeBasePage()">
           <span class="nav__link">База знаний</span>
@@ -62,6 +65,11 @@ export default {
         location.reload();
       });
     },
+    goToCampPage() {
+      this.$router.push({ name: "Camp" }).then(() => {
+        location.reload();
+      });
+    },
   },
   beforeCreate() {},
   mounted() {},
@@ -103,7 +111,7 @@ export default {
   line-height: 1;
 }
 .nav__item:not(:last-child) {
-  margin-right: 50px;
+  margin-right: 48px;
   margin-bottom: 0;
   line-height: 1;
 }

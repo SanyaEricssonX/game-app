@@ -3,6 +3,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import InventoryPage from "@/pages/InventoryPage";
 import ShopPage from "@/pages/ShopPage";
 import MapPage from "@/pages/MapPage";
+import CampPage from "@/pages/CampPage";
 import KnowledgeBasePage from "@/pages/KnowledgeBasePage";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -40,6 +41,11 @@ const routes = [
     path: "/map",
     name: "Map",
     component: MapPage,
+  },
+  {
+    path: "/camp",
+    name: "Camp",
+    component: CampPage,
   },
   {
     path: "/knowledge-base",
