@@ -11,11 +11,11 @@
         <li class="nav__item" @click="goToMapPage()">
           <span class="nav__link">Бои</span>
         </li>
-        <li class="nav__item" @click="goToInventoryPage()">
-          <span class="nav__link">Инвентарь</span>
-        </li>
         <li class="nav__item" @click="goToCampPage()">
           <span class="nav__link">Лагерь</span>
+        </li>
+        <li class="nav__item" @click="goToInventoryPage()">
+          <span class="nav__link">Инвентарь</span>
         </li>
         <li class="nav__item" @click="goToShopPage()">
           <span class="nav__link">Магазин</span>

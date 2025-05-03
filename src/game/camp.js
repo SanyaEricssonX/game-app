@@ -3,22 +3,22 @@ class camp {
   constructor() {
     this.buildings = [
       {
-        id: 1060, name: "Штаб", desc: "Позволяет улучшать другие постройки, а также усиливает характеристики персонажа.", minLevel: 1, maxLevel: 3, currentLevel: 1, image: ""
+        id: 1060, name: "Штаб", desc: "Позволяет улучшать другие постройки, а также усиливает характеристики персонажа.", maxLevel: 3, currentLevel: 1, image: "bg_main.webp"
       },
       {
-        id: 1061, name: "Повозка целителя", desc: "Восстанавливает часть здоровья персонажа.", minLevel: 1, maxLevel: 3, currentLevel: 0, image: ""
+        id: 1061, name: "Повозка целителя", desc: "Восстанавливает часть здоровья персонажа.", maxLevel: 3, currentLevel: 0, image: ""
       },
       {
-        id: 1062, name: "Гильдия наемников", desc: "Позволяет нанимать наемников для рейдов в подземелья с боссами.", minLevel: 1, maxLevel: 1, currentLevel: 0, image: ""
+        id: 1062, name: "Гильдия наемников", desc: "Позволяет нанимать наемников для рейдов в подземелья с боссами.", maxLevel: 1, currentLevel: 0, image: ""
       },
       {
-        id: 1063, name: "Кузница", desc: "Позволяет чинить снаряжение за ресурсы.", minLevel: 1, maxLevel: 1, currentLevel: 0, image: ""
+        id: 1063, name: "Кузница", desc: "Позволяет чинить снаряжение за ресурсы.", maxLevel: 1, currentLevel: 0, image: ""
       },
       {
-        id: 1064, name: "Хранилище", desc: "Позволяет хранить предметы, освободив место в инвентаре.", minLevel: 1, maxLevel: 2, currentLevel: 0, image: ""
+        id: 1064, name: "Хранилище", desc: "Позволяет хранить предметы, освободив место в инвентаре.", maxLevel: 2, currentLevel: 0, image: ""
       },
       {
-        id: 1065, name: "Рынок", desc: "Позволяет обменивать ресурсы.", minLevel: 1, maxLevel: 1, currentLevel: 0, image: ""
+        id: 1065, name: "Рынок", desc: "Позволяет обменивать ресурсы.", maxLevel: 1, currentLevel: 0, image: ""
       },
     ]
   }
