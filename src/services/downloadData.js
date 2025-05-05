@@ -106,6 +106,11 @@ export function downloadData() {
   } else {
     store.state.playerProfessionCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
   }
+  if (localStorage.getItem("playerHeadquartesCharacteristics") != null) {
+    store.state.playerHeadquartesCharacteristics = JSON.parse(localStorage.getItem("playerHeadquartesCharacteristics"));
+  } else {
+    store.state.playerHeadquartesCharacteristics = { damage: 0, critPower: 0 };
+  }
   if (localStorage.getItem("accountStatus") != null) {
     store.state.accountStatus = localStorage.getItem("accountStatus");
   } else {
@@ -114,21 +119,32 @@ export function downloadData() {
   if (localStorage.getItem("playerBuildings") != null) {
     store.state.playerBuildings = JSON.parse(localStorage.getItem("playerBuildings"));
   } else {
-    store.state.playerBuildings = { currentLevel0: 1, currentLevel1: 0, currentLevel2: 0, currentLevel3: 0, currentLevel4: 0, currentLevel5: 0 };
+    store.state.playerBuildings = { currentLevel0: 0, currentLevel1: 0, currentLevel2: 0, currentLevel3: 0, currentLevel4: 0, currentLevel5: 0 };
   }
 
   // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов, бафов и профессии
   if (store.state.playerProfessionCharacteristics.damage) {
-    const damage = store.state.playerDamage +
+    let damage = store.state.playerDamage +
       store.state.playerLevelCharacteristics.damage +
       store.state.playerEquipmentCharacteristics.damage;
 
-    store.state.playerDamage = damage + Math.floor(damage / 100 * store.state.playerProfessionCharacteristics.damage) + store.state.playerBuffCharacteristics.damage;
+    if (store.state.playerHeadquartesCharacteristics.damage) {
+      damage = damage * (store.state.playerHeadquartesCharacteristics.damage / 100 + 1)
+    }
+    store.state.playerDamage = Math.floor(damage + (damage / 100 * store.state.playerProfessionCharacteristics.damage) + store.state.playerBuffCharacteristics.damage);
   } else {
-    store.state.playerDamage = store.state.playerDamage +
-      store.state.playerLevelCharacteristics.damage +
-      store.state.playerEquipmentCharacteristics.damage +
-      store.state.playerBuffCharacteristics.damage;
+    if (store.state.playerHeadquartesCharacteristics.damage) {
+      store.state.playerDamage = Math.floor((store.state.playerDamage +
+        store.state.playerLevelCharacteristics.damage +
+        store.state.playerEquipmentCharacteristics.damage) *
+        (store.state.playerHeadquartesCharacteristics.damage / 100 + 1) +
+        store.state.playerBuffCharacteristics.damage);
+    } else {
+      store.state.playerDamage = store.state.playerDamage +
+        store.state.playerLevelCharacteristics.damage +
+        store.state.playerEquipmentCharacteristics.damage +
+        store.state.playerBuffCharacteristics.damage;
+    }
   }
 
   if (store.state.playerProfessionCharacteristics.armor) {
@@ -183,10 +199,12 @@ export function downloadData() {
     store.state.playerCritPower = store.state.playerCritPower +
       store.state.playerEquipmentCharacteristics.critPower +
       store.state.playerProfessionCharacteristics.critPower +
+      store.state.playerHeadquartesCharacteristics.critPower +
       store.state.playerBuffCharacteristics.critPower;
   } else {
     store.state.playerCritPower = store.state.playerCritPower +
       store.state.playerEquipmentCharacteristics.critPower +
+      store.state.playerHeadquartesCharacteristics.critPower +
       store.state.playerBuffCharacteristics.critPower;
   }
 

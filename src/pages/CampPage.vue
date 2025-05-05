@@ -28,6 +28,7 @@
                 class="upgrade-box"
                 v-if="building.currentLevel < building.maxLevel"
               >
+                <h4 class="upgrade-box__heading">Улучшение</h4>
                 <div class="upgrade_box__desc" v-if="building.upgradeDesc">
                   <span class="building__upgrade_title"
                     >Ур. {{ building.currentLevel + 1 }}:</span
@@ -50,7 +51,10 @@
                   <div class="cost_box__resources">
                     <span
                       class="buildings__cost"
-                      v-if="building.currentLevel < building.maxLevel"
+                      v-if="
+                        buildingCost(building.id, building.currentLevel).gold !=
+                        0
+                      "
                       >Золото:
                       {{
                         buildingCost(building.id, building.currentLevel).gold
@@ -58,7 +62,10 @@
                     >
                     <span
                       class="buildings__cost"
-                      v-if="building.currentLevel < building.maxLevel"
+                      v-if="
+                        buildingCost(building.id, building.currentLevel).wood !=
+                        0
+                      "
                       >Древесина:
                       {{
                         buildingCost(building.id, building.currentLevel).wood
@@ -66,7 +73,10 @@
                     >
                     <span
                       class="buildings__cost"
-                      v-if="building.currentLevel < building.maxLevel"
+                      v-if="
+                        buildingCost(building.id, building.currentLevel)
+                          .stone != 0
+                      "
                       >Камень:
                       {{
                         buildingCost(building.id, building.currentLevel).stone
@@ -74,7 +84,10 @@
                     >
                     <span
                       class="buildings__cost"
-                      v-if="building.currentLevel < building.maxLevel"
+                      v-if="
+                        buildingCost(building.id, building.currentLevel).iron !=
+                        0
+                      "
                       >Железо:
                       {{
                         buildingCost(building.id, building.currentLevel).iron
@@ -118,7 +131,7 @@
       </ul>
     </div>
     <div class="building-block" v-else-if="currentPosition == 1060">
-      <building-headquartes/>
+      <building-headquartes />
     </div>
     <div class="building-block" v-else-if="currentPosition == 1061">
       Повозка целителя
@@ -137,6 +150,7 @@
 </template>
 
 <script type="text/javascript">
+import { downloadData } from "@/services/downloadData";
 import camp from "@/game/camp";
 import BuildingHeadquartes from "@/components/BuildingHeadquartes";
 
@@ -228,11 +242,13 @@ export default {
         default:
           break;
       }
-      console.log(this.playerBuildings);
       localStorage.setItem(
         "playerBuildings",
         JSON.stringify(this.$store.state.playerBuildings)
       );
+
+      camp.headquartesCharacteristics();
+      downloadData();
 
       this.updateCampData();
     },
@@ -292,7 +308,6 @@ export default {
 .buildings-title_box {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
   width: 100%;
   min-height: 50px;
 }
@@ -326,6 +341,9 @@ export default {
   line-height: 1.2;
   font-weight: 900;
   border-radius: 5px;
+}
+.upgrade-box__heading {
+  margin-bottom: 10px;
 }
 .upgrade_box__desc {
   margin-bottom: 15px;

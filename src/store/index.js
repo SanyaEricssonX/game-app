@@ -26,6 +26,7 @@ export default createStore({
     playerLevelCharacteristics: { damage: 0, armor: 0, hp: 0 },
     playerBuffCharacteristics: { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, evasionBuffDuration: 0, critChanceBuffDuration: 0, critPowerBuffDuration: 0, dropBuffDuration: 0 },
     playerProfessionCharacteristics: { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 },
+    playerHeadquartesCharacteristics: { damage: 0, critPower: 0 },
     playerInventory: [],
     playerCraftInventory: [],
     playerEquipment: { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 },
@@ -37,7 +38,7 @@ export default createStore({
     accountId: "TBD",
     accountStatus: "Стандарт+",
     playerBp: "TBD",
-    playerBuildings: { currentLevel0: 1, currentLevel1: 0, currentLevel2: 0, currentLevel3: 0, currentLevel4: 0, currentLevel5: 0 },
+    playerBuildings: { currentLevel0: 0, currentLevel1: 0, currentLevel2: 0, currentLevel3: 0, currentLevel4: 0, currentLevel5: 0 },
   },
   getters: {
     currentActionType: state => state.actionType

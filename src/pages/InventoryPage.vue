@@ -1270,7 +1270,6 @@ export default {
                 }
 
                 const drop = items.magicChestRandomDrop(item.id, item.amount);
-                console.log(drop);
                 if (drop.length > 0) {
                   this.$store.state.chestIsOpen.drop = drop;
                   this.$store.state.chestIsOpen.visible = true;

@@ -1,14 +1,18 @@
+import store from "../store";
+
 class camp {
 
   constructor() {
     this.buildings = [
       {
-        id: 1060, name: "Штаб", desc: "Увеличивает урон и крит силу персонажа",
-        upgradeDesc: ["Урон +20. Крит сила + 20%", "Урон: 15 -> 35. Крит сила 20% -> 50%", "Урон 35 -> 70. Крит сила 50% -> 75%"],
-        maxLevel: 3, currentLevel: 1, image: "headquartes.webp"
+        id: 1060, name: "Штаб", desc: "Увеличивает урон и крит силу персонажа.",
+        upgradeDesc: ["Урон +10%. Крит сила + 20%", "Урон: 10% -> 25%. Крит сила 20% -> 40%", "Урон 25% -> 40%. Крит сила 40% -> 70%"],
+        maxLevel: 3, currentLevel: 0, image: "headquartes.webp"
       },
       {
-        id: 1061, name: "Повозка целителя", desc: "Восстанавливает часть здоровья персонажа.", maxLevel: 3, currentLevel: 0, image: "healers_cart.webp"
+        id: 1061, name: "Повозка целителя", desc: "Восстанавливает часть здоровья персонажа. Имеет ограниченное количество зарядов, которые восстанавливаются со временем или при повышении уровня.",
+        upgradeDesc: ["Заряды: 100. Восстановление зарядов: 10 зарядов за 5 минут", "Заряды: 360. Восстановление зарядов: 15 зарядов за 5 минут", "Заряды: 1050. Восстановление зарядов: 35 зарядов за 5 минут"],
+        maxLevel: 3, currentLevel: 0, image: "healers_cart.webp"
       },
       {
         id: 1062, name: "Гильдия наемников", desc: "Позволяет нанимать наемников для рейдов в подземелья с боссами.", maxLevel: 1, currentLevel: 0, image: "mercenary_guild.webp"
@@ -30,7 +34,12 @@ class camp {
 
     switch (buildingId) {
       case 1060: {
-        if (buildingCurrentLevel == 1) {
+        if (buildingCurrentLevel == 0) {
+          upgradeCost.gold = 30;
+          upgradeCost.wood = 10;
+          upgradeCost.stone = 20;
+          upgradeCost.iron = 5;
+        } else if (buildingCurrentLevel == 1) {
           upgradeCost.gold = 100;
           upgradeCost.wood = 30;
           upgradeCost.stone = 50;
@@ -105,6 +114,22 @@ class camp {
       }
       default:
         return upgradeCost;
+    }
+  }
+
+  headquartesCharacteristics() {
+    if (store.state.playerBuildings.currentLevel0 == 1) {
+      store.state.playerHeadquartesCharacteristics.damage = 10;
+      store.state.playerHeadquartesCharacteristics.critPower = 20;
+      localStorage.setItem("playerHeadquartesCharacteristics", JSON.stringify(store.state.playerHeadquartesCharacteristics));
+    } else if (store.state.playerBuildings.currentLevel0 == 2) {
+      store.state.playerHeadquartesCharacteristics.damage = 25;
+      store.state.playerHeadquartesCharacteristics.critPower = 40;
+      localStorage.setItem("playerHeadquartesCharacteristics", JSON.stringify(store.state.playerHeadquartesCharacteristics));
+    } else if (store.state.playerBuildings.currentLevel0 == 3) {
+      store.state.playerHeadquartesCharacteristics.damage = 40;
+      store.state.playerHeadquartesCharacteristics.critPower = 70;
+      localStorage.setItem("playerHeadquartesCharacteristics", JSON.stringify(store.state.playerHeadquartesCharacteristics));
     }
   }
 }
