@@ -3,22 +3,24 @@ class camp {
   constructor() {
     this.buildings = [
       {
-        id: 1060, name: "Штаб", desc: "Позволяет улучшать другие постройки, а также усиливает характеристики персонажа.", maxLevel: 3, currentLevel: 1, image: "bg_main.webp"
+        id: 1060, name: "Штаб", desc: "Увеличивает урон и крит силу персонажа",
+        upgradeDesc: ["Урон +20. Крит сила + 20%", "Урон: 15 -> 35. Крит сила 20% -> 50%", "Урон 35 -> 70. Крит сила 50% -> 75%"],
+        maxLevel: 3, currentLevel: 1, image: "headquartes.webp"
       },
       {
-        id: 1061, name: "Повозка целителя", desc: "Восстанавливает часть здоровья персонажа.", maxLevel: 3, currentLevel: 0, image: ""
+        id: 1061, name: "Повозка целителя", desc: "Восстанавливает часть здоровья персонажа.", maxLevel: 3, currentLevel: 0, image: "healers_cart.webp"
       },
       {
-        id: 1062, name: "Гильдия наемников", desc: "Позволяет нанимать наемников для рейдов в подземелья с боссами.", maxLevel: 1, currentLevel: 0, image: ""
+        id: 1062, name: "Гильдия наемников", desc: "Позволяет нанимать наемников для рейдов в подземелья с боссами.", maxLevel: 1, currentLevel: 0, image: "mercenary_guild.webp"
       },
       {
-        id: 1063, name: "Кузница", desc: "Позволяет чинить снаряжение за ресурсы.", maxLevel: 1, currentLevel: 0, image: ""
+        id: 1063, name: "Кузница", desc: "Позволяет чинить снаряжение за ресурсы.", maxLevel: 1, currentLevel: 0, image: "forge.webp"
       },
       {
-        id: 1064, name: "Хранилище", desc: "Позволяет хранить предметы, освободив место в инвентаре.", maxLevel: 2, currentLevel: 0, image: ""
+        id: 1064, name: "Хранилище", desc: "Позволяет хранить предметы, освободив место в инвентаре.", maxLevel: 2, currentLevel: 0, image: "warehouse.webp"
       },
       {
-        id: 1065, name: "Рынок", desc: "Позволяет обменивать ресурсы.", maxLevel: 1, currentLevel: 0, image: ""
+        id: 1065, name: "Рынок", desc: "Позволяет обменивать ресурсы.", maxLevel: 1, currentLevel: 0, image: "market.webp"
       },
     ]
   }

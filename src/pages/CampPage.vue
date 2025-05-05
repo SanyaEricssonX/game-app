@@ -25,58 +25,78 @@
             <p class="buildings__desc">{{ building.desc }}</p>
             <div class="buildings-btn_box">
               <div
-                class="buildings-cost_box"
+                class="upgrade-box"
                 v-if="building.currentLevel < building.maxLevel"
               >
-                <div class="cost_box__resources">
-                  <span
-                    class="buildings__cost"
-                    v-if="building.currentLevel < building.maxLevel"
-                    >Золото:
-                    {{
-                      buildingCost(building.id, building.currentLevel).gold
-                    }}</span
+                <div class="upgrade_box__desc" v-if="building.upgradeDesc">
+                  <span class="building__upgrade_title"
+                    >Ур. {{ building.currentLevel + 1 }}:</span
                   >
-                  <span
-                    class="buildings__cost"
-                    v-if="building.currentLevel < building.maxLevel"
-                    >Древесина:
-                    {{
-                      buildingCost(building.id, building.currentLevel).wood
-                    }}</span
+                  <p
+                    class="building__upgrade_desc"
+                    v-for="(line, index) in buildingUpgradeDesc(
+                      building.upgradeDesc,
+                      building.currentLevel
+                    )"
+                    :key="index"
                   >
-                  <span
-                    class="buildings__cost"
-                    v-if="building.currentLevel < building.maxLevel"
-                    >Камень:
-                    {{
-                      buildingCost(building.id, building.currentLevel).stone
-                    }}</span
+                    {{ line }}
+                  </p>
+                </div>
+                <div
+                  class="buildings-cost_box"
+                  v-if="building.currentLevel < building.maxLevel"
+                >
+                  <div class="cost_box__resources">
+                    <span
+                      class="buildings__cost"
+                      v-if="building.currentLevel < building.maxLevel"
+                      >Золото:
+                      {{
+                        buildingCost(building.id, building.currentLevel).gold
+                      }}</span
+                    >
+                    <span
+                      class="buildings__cost"
+                      v-if="building.currentLevel < building.maxLevel"
+                      >Древесина:
+                      {{
+                        buildingCost(building.id, building.currentLevel).wood
+                      }}</span
+                    >
+                    <span
+                      class="buildings__cost"
+                      v-if="building.currentLevel < building.maxLevel"
+                      >Камень:
+                      {{
+                        buildingCost(building.id, building.currentLevel).stone
+                      }}</span
+                    >
+                    <span
+                      class="buildings__cost"
+                      v-if="building.currentLevel < building.maxLevel"
+                      >Железо:
+                      {{
+                        buildingCost(building.id, building.currentLevel).iron
+                      }}</span
+                    >
+                  </div>
+                  <base-button
+                    class="buildings__btn"
+                    v-if="building.currentLevel == 0"
+                    @click="upgradeThisBuilding(building.id)"
+                    >Построить</base-button
                   >
-                  <span
-                    class="buildings__cost"
-                    v-if="building.currentLevel < building.maxLevel"
-                    >Железо:
-                    {{
-                      buildingCost(building.id, building.currentLevel).iron
-                    }}</span
+                  <base-button
+                    class="buildings__btn"
+                    v-else-if="
+                      building.currentLevel > 0 &&
+                      building.currentLevel < building.maxLevel
+                    "
+                    @click="upgradeThisBuilding(building.id)"
+                    >Улучшить</base-button
                   >
                 </div>
-                <base-button
-                  class="buildings__btn"
-                  v-if="building.currentLevel == 0"
-                  @click="upgradeThisBuilding(building.id)"
-                  >Построить</base-button
-                >
-                <base-button
-                  class="buildings__btn"
-                  v-else-if="
-                    building.currentLevel > 0 &&
-                    building.currentLevel < building.maxLevel
-                  "
-                  @click="upgradeThisBuilding(building.id)"
-                  >Улучшить</base-button
-                >
               </div>
               <base-button
                 class="buildings__btn enter_btn"
@@ -97,25 +117,28 @@
         </li>
       </ul>
     </div>
-    <div class="buildings-block" v-else-if="currentPosition == 1060">Штаб</div>
-    <div class="buildings-block" v-else-if="currentPosition == 1061">
+    <div class="building-block" v-else-if="currentPosition == 1060">
+      <building-headquartes/>
+    </div>
+    <div class="building-block" v-else-if="currentPosition == 1061">
       Повозка целителя
     </div>
-    <div class="buildings-block" v-else-if="currentPosition == 1062">
+    <div class="building-block" v-else-if="currentPosition == 1062">
       Гильдия наемников
     </div>
-    <div class="buildings-block" v-else-if="currentPosition == 1063">
+    <div class="building-block" v-else-if="currentPosition == 1063">
       Кузница
     </div>
-    <div class="buildings-block" v-else-if="currentPosition == 1064">
+    <div class="building-block" v-else-if="currentPosition == 1064">
       Хранилище
     </div>
-    <div class="buildings-block" v-else-if="currentPosition == 1065">Рынок</div>
+    <div class="building-block" v-else-if="currentPosition == 1065">Рынок</div>
   </div>
 </template>
 
 <script type="text/javascript">
 import camp from "@/game/camp";
+import BuildingHeadquartes from "@/components/BuildingHeadquartes";
 
 export default {
   name: "CampPage",
@@ -130,7 +153,7 @@ export default {
     };
   },
   computed: {},
-  components: {},
+  components: { BuildingHeadquartes },
   watch: {},
   methods: {
     updateCampData() {
@@ -170,6 +193,18 @@ export default {
     buildingCost(buildingId, buildingCurrentLevel) {
       return camp.buildingUpgradeCost(buildingId, buildingCurrentLevel);
     },
+
+    buildingUpgradeDesc(buildingDescArray, buildingCurrentLevel) {
+      const text = buildingDescArray[buildingCurrentLevel];
+      if (!text) return []; // Если нет текста, возвращаем пустой массив
+
+      // Разбиваем по точке, убираем пустые строки, обрезаем пробелы
+      return text
+        .split(".")
+        .filter((line) => line.trim())
+        .map((line) => line.trim());
+    },
+
     upgradeThisBuilding(buildingId) {
       switch (buildingId) {
         case 1060:
@@ -216,6 +251,15 @@ export default {
 }
 .camp-nav {
   padding: 20px 30px;
+}
+.camp__btn {
+  padding: 7px 10px;
+  border: 1px solid var(--color-dark);
+}
+.camp__btn:hover {
+  background-color: var(--color-dark);
+  border: 1px solid var(--color-light);
+  color: var(--color-light);
 }
 .buildings-block {
   display: flex;
@@ -268,13 +312,27 @@ export default {
   color: var(--color-dark);
   background-color: var(--color-light);
 }
-.buildings__desc {
-  margin-bottom: 15px;
-}
 .buildings-btn_box {
   display: flex;
   justify-content: end;
   flex-direction: column;
+}
+.upgrade-box {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  line-height: 1.2;
+  font-weight: 900;
+  border-radius: 5px;
+}
+.upgrade_box__desc {
+  margin-bottom: 15px;
+}
+.building__upgrade_title {
+  font-family: Bahnschrift, sans-serif;
+  color: var(--color-green);
 }
 .buildings__btn {
   padding: 7px 10px;
@@ -291,17 +349,10 @@ export default {
 }
 .enter_btn {
   margin-top: 15px;
-  border: 2px solid var(--color-green);
 }
 .buildings-cost_box {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background-color: var(--color-light);
-  color: var(--color-dark);
-  line-height: 1.2;
-  font-weight: 900;
-  border-radius: 5px;
 }
 .cost_box__resources {
   display: flex;
@@ -311,5 +362,12 @@ export default {
 .buildings__img {
   width: 340px;
   height: 450px;
+}
+.building-block {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+  height: 75vh;
+  overflow: auto;
 }
 </style>
