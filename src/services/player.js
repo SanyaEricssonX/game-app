@@ -72,6 +72,10 @@ class player {
     if (store.state.playerLevel > localStorage.getItem("playerLevel")) {
       this.isLevelIncreased = true;
       store.state.levelIsUp = true;
+
+      // Для восстановления всех зарядов у повозки целителя
+      localStorage.setItem("levelIsUp", 1);
+
       localStorage.setItem("playerLevel", store.state.playerLevel);
     }
   }
@@ -121,6 +125,7 @@ class player {
       localStorage.removeItem("playerMaxEvasion");
       localStorage.removeItem("playerCurrentLocation");
       localStorage.removeItem("sortedEnemies");
+      localStorage.removeItem("healthFountain");
 
       store.state.playerEquipment.weaponDurability = 0;
       store.state.playerEquipment.helmetDurability = 0;
@@ -130,6 +135,10 @@ class player {
       store.state.playerEquipment.bootsDurability = 0;
 
       localStorage.setItem("playerEquipment", JSON.stringify(store.state.playerEquipment));
+
+      let playerBuildings = JSON.parse(localStorage.getItem("playerBuildings"));
+      playerBuildings.currentLevel1 = 0;
+      localStorage.setItem("playerBuildings", JSON.stringify(playerBuildings));
 
       downloadData();
       this.equipmentCharacteristics()

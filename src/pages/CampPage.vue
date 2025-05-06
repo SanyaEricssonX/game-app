@@ -134,18 +134,12 @@
       <building-headquartes />
     </div>
     <div class="building-block" v-else-if="currentPosition == 1061">
-      Повозка целителя
+      <building-healers-cart />
     </div>
     <div class="building-block" v-else-if="currentPosition == 1062">
-      Гильдия наемников
-    </div>
-    <div class="building-block" v-else-if="currentPosition == 1063">
       Кузница
     </div>
-    <div class="building-block" v-else-if="currentPosition == 1064">
-      Хранилище
-    </div>
-    <div class="building-block" v-else-if="currentPosition == 1065">Рынок</div>
+    <div class="building-block" v-else-if="currentPosition == 1063">Рынок</div>
   </div>
 </template>
 
@@ -153,6 +147,7 @@
 import { downloadData } from "@/services/downloadData";
 import camp from "@/game/camp";
 import BuildingHeadquartes from "@/components/BuildingHeadquartes";
+import BuildingHealersCart from "@/components/BuildingHealersCart";
 
 export default {
   name: "CampPage",
@@ -167,7 +162,7 @@ export default {
     };
   },
   computed: {},
-  components: { BuildingHeadquartes },
+  components: { BuildingHeadquartes, BuildingHealersCart, },
   watch: {},
   methods: {
     updateCampData() {
@@ -177,6 +172,7 @@ export default {
         this.$store.state.playerBuildings;
 
       this.currentBuildings = this.allBuildings;
+
       this.currentBuildings[0].currentLevel =
         this.playerBuildings.currentLevel0;
 
@@ -189,11 +185,11 @@ export default {
       this.currentBuildings[3].currentLevel =
         this.playerBuildings.currentLevel3;
 
-      this.currentBuildings[4].currentLevel =
-        this.playerBuildings.currentLevel4;
+      // this.currentBuildings[4].currentLevel =
+      //   this.playerBuildings.currentLevel4;
 
-      this.currentBuildings[5].currentLevel =
-        this.playerBuildings.currentLevel5;
+      // this.currentBuildings[5].currentLevel =
+      //   this.playerBuildings.currentLevel2;
     },
 
     getImage(key) {
@@ -226,6 +222,7 @@ export default {
           break;
         case 1061:
           this.$store.state.playerBuildings.currentLevel1 += 1;
+          localStorage.removeItem('healthFountain');
           break;
         case 1062:
           this.$store.state.playerBuildings.currentLevel2 += 1;
