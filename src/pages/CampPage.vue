@@ -1,9 +1,24 @@
 <template>
   <div class="container camp-container">
-    <div class="camp-nav" v-if="currentPosition != 0">
-      <base-button class="camp__btn" @click="currentPosition = 0"
+    <div class="camp-nav">
+      <base-button
+        class="camp__btn"
+        v-if="currentPosition != 0"
+        @click="currentPosition = 0"
         >Назад</base-button
       >
+      <div class="nav-block" v-else>
+        <div class="nav-box">
+          <h4 class="nav-box__title">Текущая локация:</h4>
+          <h4 class="nav-box__location">{{ currentLocationName }}</h4>
+        </div>
+        <base-button
+          class="nav-block__btn"
+          v-if="currentLocationName != 'Лагерь'"
+          @click="returnToCamp"
+          >Вернуться в лагерь</base-button
+        >
+      </div>
     </div>
 
     <div class="buildings-block" v-if="currentPosition == 0">
@@ -13,6 +28,16 @@
           v-for="(building, index) in currentBuildings"
           :key="index"
         >
+          <div
+            class="buildings--closed"
+            v-if="
+              building.id != 1061 && $store.state.playerCurrentLocation != 9990
+            "
+          >
+            <h4 class="buildings--closed__heading">
+              Недоступно пока вы не в лагере!
+            </h4>
+          </div>
           <div class="buildings-left_box">
             <div class="buildings-box">
               <div class="buildings-title_box">
@@ -146,6 +171,7 @@
 <script type="text/javascript">
 import { downloadData } from "@/services/downloadData";
 import camp from "@/game/camp";
+import map from "@/services/map";
 import BuildingHeadquartes from "@/components/BuildingHeadquartes";
 import BuildingHealersCart from "@/components/BuildingHealersCart";
 
@@ -161,8 +187,22 @@ export default {
       currentPosition: 0,
     };
   },
-  computed: {},
-  components: { BuildingHeadquartes, BuildingHealersCart, },
+  computed: {
+    currentLocationName() {
+      let playerCurrentLocation =
+        Number(localStorage.getItem("playerCurrentLocation")) ||
+        this.$store.state.playerCurrentLocation;
+
+      if (playerCurrentLocation != 9990) {
+        const currentLocation = map.locationList.filter(
+          (map) => map.id == playerCurrentLocation
+        );
+        return currentLocation[0].name;
+      }
+      return "Лагерь";
+    },
+  },
+  components: { BuildingHeadquartes, BuildingHealersCart },
   watch: {},
   methods: {
     updateCampData() {
@@ -222,7 +262,7 @@ export default {
           break;
         case 1061:
           this.$store.state.playerBuildings.currentLevel1 += 1;
-          localStorage.removeItem('healthFountain');
+          localStorage.removeItem("healthFountain");
           break;
         case 1062:
           this.$store.state.playerBuildings.currentLevel2 += 1;
@@ -249,6 +289,12 @@ export default {
 
       this.updateCampData();
     },
+
+    returnToCamp() {
+      this.$store.state.playerCurrentLocation = 9990;
+      localStorage.setItem("playerCurrentLocation", 9990);
+
+    }
   },
   beforeCreate() {},
   created() {
@@ -263,7 +309,7 @@ export default {
   padding: 0;
 }
 .camp-nav {
-  padding: 20px 30px;
+  padding: 20px 0 20px 30px;
 }
 .camp__btn {
   padding: 7px 10px;
@@ -274,11 +320,37 @@ export default {
   border: 1px solid var(--color-light);
   color: var(--color-light);
 }
+.nav-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-box {
+  display: flex;
+}
+.nav-box__title {
+  margin-right: 10px;
+}
+.nav-box__location {
+  color: var(--color-blue);
+}
+.nav-block__btn {
+  background-color: var(--color-green);
+  border: 2px solid var(--color-dark);
+  border-radius: 5px;
+  color: var(--color-light);
+  font-weight: 900;
+  font-size: 17px;
+}
+.nav-block__btn:hover {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
 .buildings-block {
   display: flex;
   flex-direction: column;
   padding: 20px 30px;
-  height: 80vh;
+  height: 72vh;
   overflow: auto;
 }
 .buildings-list {
@@ -286,6 +358,7 @@ export default {
   flex-direction: column;
 }
 .buildings__item {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -384,5 +457,22 @@ export default {
   padding: 20px 30px;
   height: 75vh;
   overflow: auto;
+}
+.buildings--closed {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.7);
+}
+.buildings--closed__heading {
+  padding: 10px 15px;
+  background-color: var(--color-dark);
+  border-radius: 7px;
+  color: var(--color-red);
 }
 </style>

@@ -1,10 +1,20 @@
 <template>
   <div class="healers_cart-container">
-    <h4 class="healers_cart__heading">Повозка целителя</h4>
-    <p class="healers_cart__info">Зарядов: {{ fountain.currentCharges }}/{{ fountain.maxCharges }}</p>
-    <p class="healers_cart__info">Восстановление: {{ fountain.rechargeRate }} зарядов каждые 5 минут</p>
+    <div class="healers_cart-desc_box">
+      <h4 class="healers_cart__heading">Повозка целителя</h4>
+      <p class="healers_cart__info">
+        Зарядов: {{ fountain.currentCharges }}/{{ fountain.maxCharges }}
+      </p>
+      <p class="healers_cart__info">
+        Восстановление: {{ fountain.rechargeRate }} зарядов каждые 5 минут
+      </p>
+    </div>
 
-    <base-button class="healers_cart__btn" @click="useCharge" :disabled="fountain.currentCharges <= 0">
+    <base-button
+      class="healers_cart__btn"
+      @click="useCharge"
+      :disabled="fountain.currentCharges <= 0"
+    >
       Восстановить здоровье
     </base-button>
   </div>
@@ -33,7 +43,8 @@ export default {
 
 <style scoped>
 .healers_cart-container {
-  width: max-content;
+  display: flex;
+  justify-content: space-between;
   padding: 15px;
   border: 2px solid var(--color-light);
   border-radius: 8px;

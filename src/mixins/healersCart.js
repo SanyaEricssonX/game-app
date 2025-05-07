@@ -1,4 +1,5 @@
 import { downloadData } from "@/services/downloadData";
+import store from "@/store";
 
 export default {
   data() {
@@ -96,7 +97,7 @@ export default {
     // Использовать заряд
     useCharge() {
       let playerCurrentHp = Number(localStorage.getItem("playerCurrentHp"));
-      const playerMaxHp = Number(localStorage.getItem("playerMaxHp"));
+      const playerMaxHp = Number(localStorage.getItem("playerMaxHp")) || store.state.playerMaxHp;
 
       if (this.fountain.currentCharges > 0 && playerCurrentHp < playerMaxHp) {
 
