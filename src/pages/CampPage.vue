@@ -162,7 +162,7 @@
       <building-healers-cart />
     </div>
     <div class="building-block" v-else-if="currentPosition == 1062">
-      Кузница
+      <building-forge />
     </div>
     <div class="building-block" v-else-if="currentPosition == 1063">Рынок</div>
   </div>
@@ -174,6 +174,7 @@ import camp from "@/game/camp";
 import map from "@/services/map";
 import BuildingHeadquartes from "@/components/BuildingHeadquartes";
 import BuildingHealersCart from "@/components/BuildingHealersCart";
+import BuildingForge from "@/components/BuildingForge";
 
 export default {
   name: "CampPage",
@@ -202,7 +203,7 @@ export default {
       return "Лагерь";
     },
   },
-  components: { BuildingHeadquartes, BuildingHealersCart },
+  components: { BuildingHeadquartes, BuildingHealersCart, BuildingForge },
   watch: {},
   methods: {
     updateCampData() {
@@ -293,8 +294,10 @@ export default {
     returnToCamp() {
       this.$store.state.playerCurrentLocation = 9990;
       localStorage.setItem("playerCurrentLocation", 9990);
-
-    }
+    },
+    showModal() {
+      this.$emit("show-modal");
+    },
   },
   beforeCreate() {},
   created() {
@@ -455,7 +458,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 20px 30px;
-  height: 75vh;
+  height: 70vh;
   overflow: auto;
 }
 .buildings--closed {

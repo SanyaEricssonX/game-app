@@ -1,7 +1,7 @@
 <template>
   <div class="healers_cart-container">
     <div class="healers_cart-desc_box">
-      <h4 class="healers_cart__heading">Повозка целителя</h4>
+      <h3 class="healers_cart__heading">Повозка целителя</h3>
       <p class="healers_cart__info">
         Зарядов: {{ fountain.currentCharges }}/{{ fountain.maxCharges }}
       </p>
