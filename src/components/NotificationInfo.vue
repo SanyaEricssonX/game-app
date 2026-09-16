@@ -366,12 +366,10 @@ export default {
 .main__btn--yes:hover {
   background-color: var(--color-green);
   color: var(--color-light);
-  font-weight: 900;
 }
 .main__btn--no:hover {
   background-color: var(--color-red);
   color: var(--color-light);
-  font-weight: 900;
 }
 .update__title {
   margin-bottom: 10px;

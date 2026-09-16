@@ -380,7 +380,6 @@ export default {
 .settings__btn--reset:hover {
   background-color: var(--color-red);
   color: var(--color-light);
-  font-weight: 900;
 }
 .code__heading {
   margin-bottom: 15px;
@@ -405,7 +404,6 @@ export default {
 }
 .code__btn:hover {
   background-color: var(--color-green);
-  font-weight: 900;
 }
 .error-animation {
   animation: shake 0.5s, glow-red 0.5s;

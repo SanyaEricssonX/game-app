@@ -572,7 +572,6 @@ export default {
 .profile__btn:hover {
   background-color: var(--color-red);
   color: var(--color-light);
-  font-weight: 900;
 }
 
 .symbol {
