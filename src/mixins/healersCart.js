@@ -35,15 +35,7 @@ export default {
 
   computed: {
     healerCartLevel() {
-      const savedBuildings = JSON.parse(
-        localStorage.getItem("playerBuildings") || "null",
-      );
-
-      return Number(
-        savedBuildings?.currentLevel1 ||
-          store.state.playerBuildings?.currentLevel1 ||
-          0,
-      );
+      return Number(store.state.playerBuildings?.currentLevel1 || 0);
     },
 
     healerCartConfig() {
@@ -51,30 +43,23 @@ export default {
     },
 
     playerCurrentHp() {
-      const savedHp = localStorage.getItem("playerCurrentHp");
-
-      return savedHp !== null
-        ? Number(savedHp)
-        : Number(store.state.playerCurrentHp || 0);
+      return Number(store.state.playerCurrentHp || 0);
     },
 
     playerMaxHp() {
-      const savedMaxHp = localStorage.getItem("playerMaxHp");
-
-      return savedMaxHp !== null
-        ? Number(savedMaxHp)
-        : Number(store.state.playerMaxHp || 0);
+      return Number(store.state.playerMaxHp || 0);
     },
 
     isPlayerFullHealth() {
-      return this.playerCurrentHp >= this.playerMaxHp;
+      return this.playerMaxHp > 0 && this.playerCurrentHp >= this.playerMaxHp;
     },
 
     canUseCharge() {
       return (
         this.healerCartLevel > 0 &&
         this.fountain.currentCharges > 0 &&
-        !this.isPlayerFullHealth
+        this.playerMaxHp > 0 &&
+        this.playerCurrentHp < this.playerMaxHp
       );
     },
 
@@ -86,15 +71,22 @@ export default {
         return 0;
       }
 
-      const passed = this.now - this.fountain.lastUpdateTime;
-      const rest =
-        this.fountain.rechargeInterval -
-        (passed % this.fountain.rechargeInterval);
+      const timePassed = Math.max(0, this.now - this.fountain.lastUpdateTime);
 
-      return rest === this.fountain.rechargeInterval ? 0 : rest;
+      const remainder = timePassed % this.fountain.rechargeInterval;
+
+      const nextRechargeIn = this.fountain.rechargeInterval - remainder;
+
+      return nextRechargeIn === this.fountain.rechargeInterval
+        ? 0
+        : nextRechargeIn;
     },
 
     nextRechargeText() {
+      if (!this.healerCartConfig) {
+        return "";
+      }
+
       if (this.fountain.currentCharges >= this.fountain.maxCharges) {
         return "Повозка полностью заряжена";
       }
@@ -129,9 +121,7 @@ export default {
     },
 
     loadFountainState() {
-      const config = this.healerCartConfig;
-
-      if (!config) {
+      if (!this.healerCartConfig) {
         this.fountain = {
           ...this.fountain,
           ...this.getDefaultFountainState(),
@@ -140,9 +130,17 @@ export default {
         return;
       }
 
-      const savedState = JSON.parse(
-        localStorage.getItem(FOUNTAIN_STORAGE_KEY) || "null",
-      );
+      const savedStateString = localStorage.getItem(FOUNTAIN_STORAGE_KEY);
+
+      let savedState = null;
+
+      if (savedStateString) {
+        try {
+          savedState = JSON.parse(savedStateString);
+        } catch (error) {
+          savedState = null;
+        }
+      }
 
       if (!savedState) {
         this.fountain = {
@@ -155,14 +153,21 @@ export default {
       }
 
       const previousMaxCharges = Number(savedState.maxCharges || 0);
-      const isUpgraded = config.maxCharges > previousMaxCharges;
 
-      this.fountain.currentCharges = isUpgraded
-        ? config.maxCharges
-        : Math.min(Number(savedState.currentCharges || 0), config.maxCharges);
+      const isCartUpgraded =
+        this.healerCartConfig.maxCharges > previousMaxCharges;
 
-      this.fountain.maxCharges = config.maxCharges;
-      this.fountain.rechargeRate = config.rechargeRate;
+      this.fountain.currentCharges = isCartUpgraded
+        ? this.healerCartConfig.maxCharges
+        : Math.min(
+            Math.max(0, Number(savedState.currentCharges || 0)),
+            this.healerCartConfig.maxCharges,
+          );
+
+      this.fountain.maxCharges = this.healerCartConfig.maxCharges;
+
+      this.fountain.rechargeRate = this.healerCartConfig.rechargeRate;
+
       this.fountain.lastUpdateTime =
         Number(savedState.lastUpdateTime) || Date.now();
 
@@ -171,6 +176,10 @@ export default {
     },
 
     saveFountainState() {
+      if (!this.healerCartConfig) {
+        return;
+      }
+
       localStorage.setItem(
         FOUNTAIN_STORAGE_KEY,
         JSON.stringify({
@@ -191,7 +200,9 @@ export default {
       }
 
       const now = Date.now();
+
       const timePassed = Math.max(0, now - this.fountain.lastUpdateTime);
+
       const intervalsPassed = Math.floor(
         timePassed / this.fountain.rechargeInterval,
       );
@@ -232,36 +243,55 @@ export default {
     useCharge() {
       this.checkRecharge();
 
-      if (!this.canUseCharge) {
+      const playerCurrentHp = Number(store.state.playerCurrentHp || 0);
+
+      const playerMaxHp = Number(store.state.playerMaxHp || 0);
+
+      if (
+        this.healerCartLevel <= 0 ||
+        this.fountain.currentCharges <= 0 ||
+        playerMaxHp <= 0 ||
+        playerCurrentHp >= playerMaxHp
+      ) {
         return false;
       }
 
       const hpToRestore = Math.min(
         this.fountain.currentCharges,
-        this.playerMaxHp - this.playerCurrentHp,
+        playerMaxHp - playerCurrentHp,
       );
 
-      const newHp = this.playerCurrentHp + hpToRestore;
+      if (hpToRestore <= 0) {
+        return false;
+      }
+
+      const newPlayerCurrentHp = playerCurrentHp + hpToRestore;
 
       this.fountain.currentCharges -= hpToRestore;
 
-      localStorage.setItem("playerCurrentHp", String(newHp));
+      /*
+        Store обновляется сразу.
+        Благодаря этому isPlayerFullHealth и canUseCharge
+        мгновенно перерисуют кнопку.
+      */
+      store.state.playerCurrentHp = newPlayerCurrentHp;
 
-      if ("playerCurrentHp" in store.state) {
-        store.state.playerCurrentHp = newHp;
-      }
+      localStorage.setItem("playerCurrentHp", String(newPlayerCurrentHp));
 
       this.saveFountainState();
+
       downloadData();
 
       return true;
     },
 
     breakHealerCart() {
-      this.fountain.currentCharges = 0;
-      this.fountain.lastUpdateTime = Date.now();
+      localStorage.removeItem(FOUNTAIN_STORAGE_KEY);
 
-      this.saveFountainState();
+      this.fountain = {
+        ...this.fountain,
+        ...this.getDefaultFountainState(),
+      };
     },
   },
 
