@@ -6,11 +6,11 @@ class Camp {
       {
         id: 1060,
         name: "Штаб",
-        desc: "Увеличивает урон и критическую силу персонажа.",
+        desc: "Увеличивает урон, защиту и критическую силу персонажа.",
         upgradeDesc: [
-          "Урон +10%. Критическая сила +20%.",
-          "Урон: +10% → +25%. Критическая сила: +20% → +40%.",
-          "Урон: +25% → +40%. Критическая сила: +40% → +70%.",
+          "Урон +10%. Защита +10%. Критическая сила +20%.",
+          "Урон: +10% → +25%. Защита: +10% → +20%. Критическая сила: +20% → +40%.",
+          "Урон: +25% → +40%. Защита: +20% → +30%. Критическая сила: +40% → +70%.",
         ],
         maxLevel: 3,
         currentLevel: 0,
@@ -50,18 +50,22 @@ class Camp {
     this.headquartersBonuses = {
       0: {
         damage: 0,
+        armor: 0,
         critPower: 0,
       },
       1: {
         damage: 10,
+        armor: 10,
         critPower: 20,
       },
       2: {
         damage: 25,
+        armor: 20,
         critPower: 40,
       },
       3: {
         damage: 40,
+        armor: 30,
         critPower: 70,
       },
     };
@@ -207,6 +211,7 @@ class Camp {
 
     store.state.playerHeadquartesCharacteristics = {
       damage: bonuses.damage,
+      armor: bonuses.armor,
       critPower: bonuses.critPower,
     };
 

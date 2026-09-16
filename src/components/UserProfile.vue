@@ -116,8 +116,11 @@
       </ul>
     </div>
 
-    <div class="profile-block" v-if="hasHeadquartersBonuses">
-      <h2 class="profile__header">Эффекты лагеря</h2>
+    <div
+      class="profile-block profile-block_camp-effects"
+      v-if="hasHeadquartersBonuses"
+    >
+      <h2 class="profile__header">Лагерь</h2>
 
       <ul class="list camp-effects-list">
         <li
@@ -126,6 +129,15 @@
         >
           <h4 class="item__title">Урон:</h4>
           +{{ $store.state.playerHeadquartesCharacteristics.damage }}
+          <span class="symbol">%</span>
+        </li>
+
+        <li
+          class="item camp-effects__item"
+          v-if="$store.state.playerHeadquartesCharacteristics.armor > 0"
+        >
+          <h4 class="item__title">Защита:</h4>
+          +{{ $store.state.playerHeadquartesCharacteristics.armor }}
           <span class="symbol">%</span>
         </li>
 
@@ -306,8 +318,8 @@ export default {
       const experienceList = player.experienceForLevel;
 
       if (this.$store.state.playerLevel >= experienceList.length + 1) {
-        const lastLevel = experienceList.length - 1;
-        nextLevelExperience = experienceList[lastLevel];
+        const lastLevelIndex = experienceList.length - 1;
+        nextLevelExperience = experienceList[lastLevelIndex];
       } else {
         for (let i = 0; i < experienceList.length; i += 1) {
           if (this.$store.state.playerLevel - 1 === i) {
@@ -316,6 +328,8 @@ export default {
             if (this.$store.state.playerLevel > 1) {
               previousLevelExperience = experienceList[i - 1];
             }
+
+            break;
           }
         }
       }
@@ -335,9 +349,12 @@ export default {
     },
 
     hasHeadquartersBonuses() {
+      const bonuses = this.$store.state.playerHeadquartesCharacteristics;
+
       return (
-        this.$store.state.playerHeadquartesCharacteristics.damage > 0 ||
-        this.$store.state.playerHeadquartesCharacteristics.critPower > 0
+        Number(bonuses.damage || 0) > 0 ||
+        Number(bonuses.armor || 0) > 0 ||
+        Number(bonuses.critPower || 0) > 0
       );
     },
 
@@ -398,10 +415,10 @@ export default {
     },
 
     correctEnding(number) {
-      const value = Math.abs(Number(number)) % 100;
+      const value = Math.abs(Number(number || 0)) % 100;
       const lastDigit = value % 10;
 
-      if (value > 10 && value < 20) {
+      if (value >= 11 && value <= 19) {
         return "боев";
       }
 
@@ -536,13 +553,6 @@ export default {
   margin-right: 5px;
   font-size: 15px;
   font-weight: 600;
-}
-
-.camp-effects-list {
-  padding: 8px;
-  border: 1px solid var(--color-green);
-  border-radius: 5px;
-  background-color: rgba(73, 165, 85, 0.12);
 }
 
 .camp-effects__item {

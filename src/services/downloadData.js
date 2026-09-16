@@ -15,7 +15,11 @@ function getObjectFromStorage(key, defaultValue) {
   const value = localStorage.getItem(key);
 
   if (value !== null) {
-    return JSON.parse(value);
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return defaultValue;
+    }
   }
 
   return defaultValue;
@@ -27,15 +31,21 @@ function clamp(value, min, max) {
 
 export function downloadData() {
   store.state.playerExperience = getNumberFromStorage("playerExperience", 0);
+
   store.state.playerLevel = getNumberFromStorage("playerLevel", 1);
 
   store.state.playerMaxHp = getNumberFromStorage("playerMaxHp", 100);
+
   store.state.playerCurrentHp = getNumberFromStorage("playerCurrentHp", 100);
 
   store.state.playerDamage = getNumberFromStorage("playerDamage", 10);
+
   store.state.playerArmor = getNumberFromStorage("playerArmor", 5);
+
   store.state.playerEvasion = getNumberFromStorage("playerEvasion", 10);
+
   store.state.playerCritChance = getNumberFromStorage("playerCritChance", 5);
+
   store.state.playerCritPower = getNumberFromStorage("playerCritPower", 30);
 
   store.state.playerProfession =
@@ -55,6 +65,7 @@ export function downloadData() {
   });
 
   store.state.playerInventory = getObjectFromStorage("playerInventory", []);
+
   store.state.playerCraftInventory = getObjectFromStorage(
     "playerCraftInventory",
     [],
@@ -133,9 +144,6 @@ export function downloadData() {
     },
   );
 
-  store.state.accountStatus =
-    localStorage.getItem("accountStatus") || "Стандарт+";
-
   store.state.playerBuildings = getObjectFromStorage("playerBuildings", {
     currentLevel0: 0,
     currentLevel1: 0,
@@ -145,14 +153,36 @@ export function downloadData() {
     currentLevel5: 0,
   });
 
+  store.state.playerHeadquartesCharacteristics = getObjectFromStorage(
+    "playerHeadquartesCharacteristics",
+    {
+      damage: 0,
+      armor: 0,
+      critPower: 0,
+    },
+  );
+
+  store.state.accountStatus =
+    localStorage.getItem("accountStatus") || "Стандарт+";
+
+  /*
+    Берём реальный уровень штаба из playerBuildings
+    и обновляем его бонусы.
+
+    Это важно после:
+    - перезагрузки страницы;
+    - смерти персонажа;
+    - сброса данных;
+    - улучшения штаба.
+  */
   camp.syncHeadquartersCharacteristics();
 
-  const baseDamage = store.state.playerDamage;
-  const baseArmor = store.state.playerArmor;
-  const baseMaxHp = store.state.playerMaxHp;
-  const baseEvasion = store.state.playerEvasion;
-  const baseCritChance = store.state.playerCritChance;
-  const baseCritPower = store.state.playerCritPower;
+  const baseDamage = Number(store.state.playerDamage || 0);
+  const baseArmor = Number(store.state.playerArmor || 0);
+  const baseMaxHp = Number(store.state.playerMaxHp || 0);
+  const baseEvasion = Number(store.state.playerEvasion || 0);
+  const baseCritChance = Number(store.state.playerCritChance || 0);
+  const baseCritPower = Number(store.state.playerCritPower || 0);
 
   const levelCharacteristics = store.state.playerLevelCharacteristics;
   const equipmentCharacteristics = store.state.playerEquipmentCharacteristics;
@@ -161,6 +191,13 @@ export function downloadData() {
   const headquartersCharacteristics =
     store.state.playerHeadquartesCharacteristics;
 
+  /*
+    Урон:
+    база + уровень + экипировка
+    × штаб
+    × профессия
+    + временный баф
+  */
   const damageBeforeMultipliers =
     baseDamage +
     Number(levelCharacteristics.damage || 0) +
@@ -179,19 +216,39 @@ export function downloadData() {
       Number(buffCharacteristics.damage || 0),
   );
 
-  const armorBeforeProfession =
+  /*
+    Защита:
+    база + уровень + экипировка
+    × штаб
+    × профессия
+    + временный баф
+  */
+  const armorBeforeMultipliers =
     baseArmor +
     Number(levelCharacteristics.armor || 0) +
     Number(equipmentCharacteristics.armor || 0);
+
+  const headquartersArmorMultiplier =
+    1 + Number(headquartersCharacteristics.armor || 0) / 100;
 
   const professionArmorMultiplier =
     1 + Number(professionCharacteristics.armor || 0) / 100;
 
   store.state.playerArmor = Math.floor(
-    armorBeforeProfession * professionArmorMultiplier +
+    armorBeforeMultipliers *
+      headquartersArmorMultiplier *
+      professionArmorMultiplier +
       Number(buffCharacteristics.armor || 0),
   );
 
+  /*
+    HP:
+    база + уровень + экипировка
+    × профессия
+    + временный баф
+
+    Штаб HP не увеличивает.
+  */
   const hpBeforeProfession =
     baseMaxHp +
     Number(levelCharacteristics.hp || 0) +
@@ -205,18 +262,30 @@ export function downloadData() {
       Number(buffCharacteristics.hp || 0),
   );
 
+  /*
+    Уклонение:
+    база + экипировка + профессия + баф.
+  */
   store.state.playerEvasion =
     baseEvasion +
     Number(equipmentCharacteristics.evasion || 0) +
     Number(professionCharacteristics.evasion || 0) +
     Number(buffCharacteristics.evasion || 0);
 
+  /*
+    Шанс крита:
+    база + экипировка + профессия + баф.
+  */
   store.state.playerCritChance =
     baseCritChance +
     Number(equipmentCharacteristics.critChance || 0) +
     Number(professionCharacteristics.critChance || 0) +
     Number(buffCharacteristics.critChance || 0);
 
+  /*
+    Критическая сила:
+    база + экипировка + профессия + штаб + баф.
+  */
   store.state.playerCritPower =
     baseCritPower +
     Number(equipmentCharacteristics.critPower || 0) +
@@ -224,6 +293,10 @@ export function downloadData() {
     Number(headquartersCharacteristics.critPower || 0) +
     Number(buffCharacteristics.critPower || 0);
 
+  /*
+    У ассасина, жнеца и следопыта максимум уклонения 60%.
+    У других классов берём сохранённое значение или 50%.
+  */
   if (
     store.state.playerProfession === "assassin" ||
     store.state.playerProfession === "reaper" ||
@@ -235,6 +308,9 @@ export function downloadData() {
     store.state.playerMaxEvasion = getNumberFromStorage("playerMaxEvasion", 50);
   }
 
+  /*
+    У рыцаря, храмовника и титана уклонение всегда ограничено 10%.
+  */
   if (
     store.state.playerProfession === "knight" ||
     store.state.playerProfession === "templar" ||
@@ -258,8 +334,12 @@ export function downloadData() {
     store.state.playerMaxCritPower,
   );
 
+  /*
+    Текущее HP не может быть больше итогового максимального HP.
+  */
   if (store.state.playerCurrentHp > store.state.playerMaxHp) {
     store.state.playerCurrentHp = store.state.playerMaxHp;
+
     localStorage.setItem(
       "playerCurrentHp",
       String(store.state.playerCurrentHp),

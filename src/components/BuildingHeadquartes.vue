@@ -3,6 +3,7 @@
     <div class="headquarters-header">
       <div>
         <h3 class="headquarters__heading">Штаб</h3>
+
         <p class="headquarters__description">
           Координирует отряд и постоянно усиливает боевые характеристики
           персонажа.
@@ -20,13 +21,23 @@
       <div class="headquarters-effects">
         <div class="headquarters-effect">
           <span class="headquarters-effect__title">Урон</span>
+
           <span class="headquarters-effect__value">
             +{{ headquartersBonuses.damage }}%
           </span>
         </div>
 
         <div class="headquarters-effect">
+          <span class="headquarters-effect__title">Защита</span>
+
+          <span class="headquarters-effect__value">
+            +{{ headquartersBonuses.armor }}%
+          </span>
+        </div>
+
+        <div class="headquarters-effect">
           <span class="headquarters-effect__title">Критическая сила</span>
+
           <span class="headquarters-effect__value">
             +{{ headquartersBonuses.critPower }}%
           </span>
@@ -37,7 +48,7 @@
     <div class="headquarters-empty" v-else>
       <p>
         Штаб ещё не построен. Постройте его в лагере, чтобы получить постоянные
-        бонусы к урону и критической силе.
+        бонусы к урону, защите и критической силе.
       </p>
     </div>
 
@@ -53,6 +64,7 @@
         >
           <span class="headquarters-levels__title">Уровень 1</span>
           <span>Урон +10%</span>
+          <span>Защита +10%</span>
           <span>Критическая сила +20%</span>
         </li>
 
@@ -64,6 +76,7 @@
         >
           <span class="headquarters-levels__title">Уровень 2</span>
           <span>Урон +25%</span>
+          <span>Защита +20%</span>
           <span>Критическая сила +40%</span>
         </li>
 
@@ -75,6 +88,7 @@
         >
           <span class="headquarters-levels__title">Уровень 3</span>
           <span>Урон +40%</span>
+          <span>Защита +30%</span>
           <span>Критическая сила +70%</span>
         </li>
       </ul>
@@ -153,13 +167,13 @@ export default {
 }
 
 .headquarters-effects {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 
 .headquarters-effect {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 7px;
   padding: 12px;
@@ -198,7 +212,7 @@ export default {
 
 .headquarters-levels__item {
   display: grid;
-  grid-template-columns: 130px 1fr 1fr;
+  grid-template-columns: 130px 1fr 1fr 1.3fr;
   gap: 15px;
   padding: 12px;
   border: 1px solid var(--color-light);
@@ -217,10 +231,13 @@ export default {
   font-weight: 900;
 }
 
-@media (max-width: 650px) {
-  .headquarters-header,
-  .headquarters-effects {
+@media (max-width: 750px) {
+  .headquarters-header {
     flex-direction: column;
+  }
+
+  .headquarters-effects {
+    grid-template-columns: 1fr;
   }
 
   .headquarters-levels__item {
