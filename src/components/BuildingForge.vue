@@ -1,6 +1,6 @@
 <template>
   <div class="forge-block">
-    <h3 class="forge__heading">Экипировка</h3>
+    <h3 class="forge__heading">Починка экипировки</h3>
     <ul class="item-list" v-if="playerFilteredEquipment.length > 0">
       <li
         class="list__item"
@@ -112,11 +112,6 @@ export default {
         downloadData();
 
         this.createEquipment();
-
-        this.$store.state.modalNotification.text = `Вы починили ${item.name}`;
-        this.$store.state.modalNotification.from = "basic";
-        this.$store.state.modalNotification.visible = true;
-        this.showModal();
       } else {
         this.$store.state.modalNotification.text =
           "Для починки не хватает железа!";
@@ -291,12 +286,6 @@ export default {
   font-size: 17px;
 }
 .btn__buy:hover {
-  font-weight: 900;
-  color: var(--color-light);
-}
-.btn__sell:hover {
-  font-weight: 900;
-  background-color: var(--color-green);
   color: var(--color-light);
 }
 .fix-desc {

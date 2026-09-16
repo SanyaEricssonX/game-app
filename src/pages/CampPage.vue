@@ -162,9 +162,11 @@
       <building-healers-cart />
     </div>
     <div class="building-block" v-else-if="currentPosition == 1062">
-      <building-forge />
+      <building-forge @show-modal="showModal" />
     </div>
-    <div class="building-block" v-else-if="currentPosition == 1063">Рынок</div>
+    <div class="building-block" v-else-if="currentPosition == 1063">
+      <building-market />
+    </div>
   </div>
 </template>
 
@@ -175,6 +177,7 @@ import map from "@/services/map";
 import BuildingHeadquartes from "@/components/BuildingHeadquartes";
 import BuildingHealersCart from "@/components/BuildingHealersCart";
 import BuildingForge from "@/components/BuildingForge";
+import BuildingMarket from "@/components/BuildingMarket.vue";
 
 export default {
   name: "CampPage",
@@ -203,7 +206,12 @@ export default {
       return "Лагерь";
     },
   },
-  components: { BuildingHeadquartes, BuildingHealersCart, BuildingForge },
+  components: {
+    BuildingHeadquartes,
+    BuildingHealersCart,
+    BuildingForge,
+    BuildingMarket,
+  },
   watch: {},
   methods: {
     updateCampData() {
