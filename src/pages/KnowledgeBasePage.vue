@@ -41,6 +41,7 @@ export default {
         "combat",
         "profession",
         "items",
+        "camp",
         "craft",
         "magicChests",
       ],
