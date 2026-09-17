@@ -474,7 +474,6 @@ export default {
 .btn:hover {
   background-color: var(--color-green);
   color: var(--color-light);
-  font-weight: 900;
 }
 .active {
   outline: 1px solid var(--color-dark);

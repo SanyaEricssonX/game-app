@@ -134,8 +134,8 @@ export default {
       if (newTab in this.tabMapping) {
         this.$store.state.menuContent = Number(
           Object.keys(this.tabMapping).find(
-            (key) => this.tabMapping[key] === newTab
-          )
+            (key) => this.tabMapping[key] === newTab,
+          ),
         );
       }
     },
@@ -152,10 +152,10 @@ export default {
     async loadUpdates() {
       try {
         const response = await fetch(
-          `/updates.json?v=${process.env.VUE_APP_CACHE_BUSTER}`
+          `/updates.json?v=${process.env.VUE_APP_CACHE_BUSTER}`,
         );
         this.updates = (await response.json()).sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+          (a, b) => new Date(b.date) - new Date(a.date),
         );
       } catch (error) {
         console.error("Ошибка загрузки обновлений:", error);
@@ -197,7 +197,7 @@ export default {
           this.$store.state.playerResources.iron += 50;
           localStorage.setItem(
             "playerResources",
-            JSON.stringify(this.$store.state.playerResources)
+            JSON.stringify(this.$store.state.playerResources),
           );
 
           break;
@@ -212,7 +212,7 @@ export default {
           this.$store.state.accountStatus = "Тестовый";
           localStorage.setItem(
             "accountStatus",
-            this.$store.state.accountStatus
+            this.$store.state.accountStatus,
           );
 
           localStorage.removeItem("sortedEnemies");
@@ -231,7 +231,7 @@ export default {
           // Ищем ключ в крафт инвентаре
           if (playerCraftInventory != null) {
             const existingItem = playerCraftInventory.find(
-              (invItem) => invItem.craftItemId == 10316
+              (invItem) => invItem.craftItemId == 10316,
             );
 
             if (existingItem) {
@@ -253,7 +253,7 @@ export default {
           this.$store.state.playerCraftInventory = playerCraftInventory;
           localStorage.setItem(
             "playerCraftInventory",
-            JSON.stringify(this.$store.state.playerCraftInventory)
+            JSON.stringify(this.$store.state.playerCraftInventory),
           );
 
           break;
@@ -314,8 +314,8 @@ export default {
     if (this.tab in this.tabMapping) {
       this.$store.state.menuContent = Number(
         Object.keys(this.tabMapping).find(
-          (key) => this.tabMapping[key] === this.tab
-        )
+          (key) => this.tabMapping[key] === this.tab,
+        ),
       );
     }
   },
@@ -380,7 +380,6 @@ export default {
 .settings__btn--reset:hover {
   background-color: var(--color-red);
   color: var(--color-light);
-  font-weight: 900;
 }
 .code__heading {
   margin-bottom: 15px;
@@ -405,7 +404,6 @@ export default {
 }
 .code__btn:hover {
   background-color: var(--color-green);
-  font-weight: 900;
 }
 .error-animation {
   animation: shake 0.5s, glow-red 0.5s;
@@ -444,4 +442,3 @@ export default {
   }
 }
 </style>
-

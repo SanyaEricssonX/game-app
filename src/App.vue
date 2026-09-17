@@ -29,7 +29,7 @@
       <main class="container main">
         <user-profile
           class="profile-block"
-          v-show="['Inventory', 'Shop', 'Map'].includes($route.name)"
+          v-show="['Inventory', 'Shop', 'Map', 'Camp'].includes($route.name)"
           @show-modal="openModal"
         />
         <app-sidebar

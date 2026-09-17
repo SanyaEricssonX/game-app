@@ -148,7 +148,6 @@ export default {
   background-color: var(--color-green);
 }
 .btn:hover {
-  font-weight: 900;
   color: var(--color-light);
 }
 .position {

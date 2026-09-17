@@ -758,7 +758,6 @@ export default {
 }
 .enemy__btn:hover {
   background-color: var(--color-green);
-  font-weight: 900;
   color: var(--color-light);
   border: 1px solid var(--color-light);
 }

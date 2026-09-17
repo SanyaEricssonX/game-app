@@ -41,7 +41,15 @@ export default {
   name: "AppSidebar",
   data() {
     return {
-      knowledgeBaseTabs: ["general", "combat", "profession", "items", "craft", "magicChests"],
+      knowledgeBaseTabs: [
+        "general",
+        "combat",
+        "profession",
+        "items",
+        "camp",
+        "craft",
+        "magicChests",
+      ],
       mainTabs: ["general", "settings", "updates"],
     };
   },
@@ -76,6 +84,7 @@ export default {
         combat: "Боевая система",
         profession: "Воплощения",
         items: "Предметы",
+        camp: "Лагерь",
         craft: "Крафт",
         settings: "Настройки",
         updates: "История обновлений",

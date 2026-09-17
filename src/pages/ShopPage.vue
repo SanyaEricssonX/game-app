@@ -122,7 +122,7 @@
                 :style="{
                   'background-color': checkBtnColor(
                     item.requiredLevel,
-                    item.price
+                    item.price,
                   ),
                 }"
                 @click="buyItem(item.id)"
@@ -188,7 +188,7 @@
                 :style="{
                   'background-color': checkBtnColor(
                     item.requiredLevel,
-                    item.price
+                    item.price,
                   ),
                 }"
                 @click="buyItem(item.id)"
@@ -230,7 +230,7 @@
                 :style="{
                   'background-color': checkBtnColor(
                     item.requiredLevel,
-                    item.price
+                    item.price,
                   ),
                 }"
                 @click="buyItem(item.id)"
@@ -292,7 +292,7 @@
                   class="btn btn__buy"
                   :style="{
                     'background-color': checkBtnRepairColor(
-                      lowCost(Math.floor(item.price / 3))
+                      lowCost(Math.floor(item.price / 3)),
                     ),
                   }"
                   @click="repairItem(item)"
@@ -350,7 +350,7 @@
                   class="btn btn__buy"
                   :style="{
                     'background-color': checkBtnRepairColor(
-                      lowCost(Math.floor(item.price / 3))
+                      lowCost(Math.floor(item.price / 3)),
                     ),
                   }"
                   @click="repairInventoryItem(item)"
@@ -606,7 +606,7 @@ export default {
       this.allItems = JSON.parse(JSON.stringify(items.list()));
 
       this.playerInventory = JSON.parse(
-        JSON.stringify(this.$store.state.playerInventory)
+        JSON.stringify(this.$store.state.playerInventory),
       );
       for (let index = 0; index < this.playerInventory.length; index++) {
         if (this.playerInventory[index].name) {
@@ -642,7 +642,7 @@ export default {
 
         Object.assign(item, {
           currentDurability: Number(
-            this.$store.state.playerEquipment.weaponDurability
+            this.$store.state.playerEquipment.weaponDurability,
           ),
         });
         this.playerEquipment.push(item);
@@ -663,7 +663,7 @@ export default {
 
         Object.assign(item, {
           currentDurability: Number(
-            this.$store.state.playerEquipment.helmetDurability
+            this.$store.state.playerEquipment.helmetDurability,
           ),
         });
         this.playerEquipment.push(item);
@@ -684,7 +684,7 @@ export default {
 
         Object.assign(item, {
           currentDurability: Number(
-            this.$store.state.playerEquipment.upperDurability
+            this.$store.state.playerEquipment.upperDurability,
           ),
         });
         this.playerEquipment.push(item);
@@ -705,7 +705,7 @@ export default {
 
         Object.assign(item, {
           currentDurability: Number(
-            this.$store.state.playerEquipment.lowerDurability
+            this.$store.state.playerEquipment.lowerDurability,
           ),
         });
         this.playerEquipment.push(item);
@@ -726,7 +726,7 @@ export default {
 
         Object.assign(item, {
           currentDurability: Number(
-            this.$store.state.playerEquipment.glovesDurability
+            this.$store.state.playerEquipment.glovesDurability,
           ),
         });
         this.playerEquipment.push(item);
@@ -747,7 +747,7 @@ export default {
 
         Object.assign(item, {
           currentDurability: Number(
-            this.$store.state.playerEquipment.bootsDurability
+            this.$store.state.playerEquipment.bootsDurability,
           ),
         });
         this.playerEquipment.push(item);
@@ -883,7 +883,7 @@ export default {
 
         localStorage.setItem(
           "playerEquipment",
-          JSON.stringify(this.$store.state.playerEquipment)
+          JSON.stringify(this.$store.state.playerEquipment),
         );
         localStorage.setItem("playerGold", this.$store.state.playerGold);
 
@@ -919,7 +919,7 @@ export default {
 
         localStorage.setItem(
           "playerInventory",
-          JSON.stringify(this.playerInventory)
+          JSON.stringify(this.playerInventory),
         );
         localStorage.setItem("playerGold", this.$store.state.playerGold);
 
@@ -973,7 +973,7 @@ export default {
 
           localStorage.setItem(
             "playerEquipment",
-            JSON.stringify(this.$store.state.playerEquipment)
+            JSON.stringify(this.$store.state.playerEquipment),
           );
 
           player.equipmentCharacteristics();
@@ -985,13 +985,13 @@ export default {
               items.findItem(this.playerInventory[index].id).durability
             ) {
               this.playerInventory[index].durability = items.findItem(
-                this.playerInventory[index].id
+                this.playerInventory[index].id,
               ).durability;
             }
           }
           localStorage.setItem(
             "playerInventory",
-            JSON.stringify(this.playerInventory)
+            JSON.stringify(this.playerInventory),
           );
         }
         localStorage.setItem("playerGold", this.$store.state.playerGold);
@@ -1022,7 +1022,7 @@ export default {
       this.$store.state.playerInventory = this.playerInventory;
       localStorage.setItem(
         "playerInventory",
-        JSON.stringify(this.$store.state.playerInventory)
+        JSON.stringify(this.$store.state.playerInventory),
       );
 
       downloadData();
@@ -1035,7 +1035,7 @@ export default {
     },
     updatePlayerInventory() {
       this.playerInventory = JSON.parse(
-        JSON.stringify(this.$store.state.playerInventory)
+        JSON.stringify(this.$store.state.playerInventory),
       );
       for (let i = 0; i < this.playerInventory.length; i++) {
         if (this.playerInventory[i].id) {
@@ -1056,7 +1056,7 @@ export default {
       this.$store.state.playerInventory = this.playerInventory;
       localStorage.setItem(
         "playerInventory",
-        JSON.stringify(this.playerInventory)
+        JSON.stringify(this.playerInventory),
       );
     },
   },
@@ -1140,11 +1140,9 @@ export default {
   font-size: 17px;
 }
 .btn__buy:hover {
-  font-weight: 900;
   color: var(--color-light);
 }
 .btn__sell:hover {
-  font-weight: 900;
   background-color: var(--color-green);
   color: var(--color-light);
 }

@@ -1,218 +1,348 @@
 import store from "../store";
+import camp from "../game/camp";
+
+function getNumberFromStorage(key, defaultValue) {
+  const value = localStorage.getItem(key);
+
+  if (value !== null) {
+    return Number(value);
+  }
+
+  return defaultValue;
+}
+
+function getObjectFromStorage(key, defaultValue) {
+  const value = localStorage.getItem(key);
+
+  if (value !== null) {
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return defaultValue;
+    }
+  }
+
+  return defaultValue;
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
 
 export function downloadData() {
-  if (localStorage.getItem("playerExperience") != null) {
-    store.state.playerExperience = Number(localStorage.getItem("playerExperience"));
-  } else {
-    store.state.playerExperience = 0;
-  }
-  if (localStorage.getItem("playerLevel") != null) {
-    store.state.playerLevel = Number(localStorage.getItem("playerLevel"));
-  } else {
-    store.state.playerLevel = 1;
-  }
-  if (localStorage.getItem("playerMaxHp") != null) {
-    store.state.playerMaxHp = Number(localStorage.getItem("playerMaxHp"));
-  } else {
-    store.state.playerMaxHp = 100;
-  }
-  if (localStorage.getItem("playerCurrentHp") != null) {
-    store.state.playerCurrentHp = Number(localStorage.getItem("playerCurrentHp"));
-  } else {
-    store.state.playerCurrentHp = 100;
-  }
-  if (localStorage.getItem("playerDamage") != null) {
-    store.state.playerDamage = Number(localStorage.getItem("playerDamage"));
-  } else {
-    store.state.playerDamage = 10;
-  }
-  if (localStorage.getItem("playerArmor") != null) {
-    store.state.playerArmor = Number(localStorage.getItem("playerArmor"));
-  } else {
-    store.state.playerArmor = 5;
-  }
-  if (localStorage.getItem("playerEvasion") != null) {
-    store.state.playerEvasion = Number(localStorage.getItem("playerEvasion"));
-  } else {
-    store.state.playerEvasion = 10;
-  }
-  if (localStorage.getItem("playerCritChance") != null) {
-    store.state.playerCritChance = Number(localStorage.getItem("playerCritChance"));
-  } else {
-    store.state.playerCritChance = 5;
-  }
-  if (localStorage.getItem("playerCritPower") != null) {
-    store.state.playerCritPower = Number(localStorage.getItem("playerCritPower"));
-  } else {
-    store.state.playerCritPower = 30;
-  }
-  if (localStorage.getItem("playerProfession") != null) {
-    store.state.playerProfession = localStorage.getItem("playerProfession");
-  } else {
-    store.state.playerProfession = "standart";
-  }
-  if (localStorage.getItem("playerCurrentLocation") != null) {
-    store.state.playerCurrentLocation = Number(localStorage.getItem("playerCurrentLocation"));
-  } else {
-    store.state.playerCurrentLocation = 9990;
-  }
-  if (localStorage.getItem("playerGold") != null) {
-    store.state.playerGold = Number(localStorage.getItem("playerGold"));
-  } else {
-    store.state.playerGold = 0;
-  }
-  if (localStorage.getItem("playerResources") != null) {
-    store.state.playerResources = JSON.parse(localStorage.getItem("playerResources"))
-  } else {
-    store.state.playerResources = { wood: 0, stone: 0, iron: 0 };
-  }
-  if (localStorage.getItem("playerInventory") != null) {
-    store.state.playerInventory = JSON.parse(localStorage.getItem("playerInventory"));
-  } else {
-    store.state.playerInventory = [];
-  }
-  if (localStorage.getItem("playerCraftInventory") != null) {
-    store.state.playerCraftInventory = JSON.parse(localStorage.getItem("playerCraftInventory"));
-  } else {
-    store.state.playerCraftInventory = [];
-  }
-  if (localStorage.getItem("playerInventorySize") != null) {
-    store.state.playerInventorySize = Number(localStorage.getItem("playerInventorySize"));
-  } else {
-    store.state.playerInventorySize = 50;
-  }
-  if (localStorage.getItem("playerEquipment") != null) {
-    store.state.playerEquipment = JSON.parse(localStorage.getItem("playerEquipment"));
-  } else {
-    store.state.playerEquipment = { weapon: 0, helmet: 0, upper: 0, lower: 0, gloves: 0, boots: 0, weaponDurability: 0, helmetDurability: 0, upperDurability: 0, lowerDurability: 0, glovesDurability: 0, bootsDurability: 0 };
-  }
-  if (localStorage.getItem("playerLevelCharacteristics") != null) {
-    store.state.playerLevelCharacteristics = JSON.parse(localStorage.getItem("playerLevelCharacteristics"));
-  } else {
-    store.state.playerLevelCharacteristics = { damage: 0, armor: 0, hp: 0 };
-  }
-  if (localStorage.getItem("playerEquipmentCharacteristics") != null) {
-    store.state.playerEquipmentCharacteristics = JSON.parse(localStorage.getItem("playerEquipmentCharacteristics"));
-  } else {
-    store.state.playerEquipmentCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
-  }
-  if (localStorage.getItem("playerBuffCharacteristics") != null) {
-    store.state.playerBuffCharacteristics = JSON.parse(localStorage.getItem("playerBuffCharacteristics"));
-  } else {
-    store.state.playerBuffCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0, drop: 0, damageBuffDuration: 0, armorBuffDuration: 0, hpBuffDuration: 0, evasionBuffDuration: 0, critChanceBuffDuration: 0, critPowerBuffDuration: 0, dropBuffDuration: 0 };
-  }
-  if (localStorage.getItem("playerProfessionCharacteristics") != null) {
-    store.state.playerProfessionCharacteristics = JSON.parse(localStorage.getItem("playerProfessionCharacteristics"))
-  } else {
-    store.state.playerProfessionCharacteristics = { damage: 0, armor: 0, hp: 0, evasion: 0, critChance: 0, critPower: 0 };
-  }
-  if (localStorage.getItem("accountStatus") != null) {
-    store.state.accountStatus = localStorage.getItem("accountStatus");
-  } else {
-    store.state.accountStatus = "Стандарт+"
-  }
+  store.state.playerExperience = getNumberFromStorage("playerExperience", 0);
 
-  // Высчитываем итоговые характеристики после увееличения засчет уровня и надетых предметов, бафов и профессии
-  if (store.state.playerProfessionCharacteristics.damage) {
-    const damage = store.state.playerDamage +
-      store.state.playerLevelCharacteristics.damage +
-      store.state.playerEquipmentCharacteristics.damage;
+  store.state.playerLevel = getNumberFromStorage("playerLevel", 1);
 
-    store.state.playerDamage = damage + Math.floor(damage / 100 * store.state.playerProfessionCharacteristics.damage) + store.state.playerBuffCharacteristics.damage;
-  } else {
-    store.state.playerDamage = store.state.playerDamage +
-      store.state.playerLevelCharacteristics.damage +
-      store.state.playerEquipmentCharacteristics.damage +
-      store.state.playerBuffCharacteristics.damage;
-  }
+  store.state.playerMaxHp = getNumberFromStorage("playerMaxHp", 100);
 
-  if (store.state.playerProfessionCharacteristics.armor) {
-    const armor = store.state.playerArmor +
-      store.state.playerLevelCharacteristics.armor +
-      store.state.playerEquipmentCharacteristics.armor;
+  store.state.playerCurrentHp = getNumberFromStorage("playerCurrentHp", 100);
 
-    store.state.playerArmor = armor + Math.floor(armor / 100 * store.state.playerProfessionCharacteristics.armor) + store.state.playerBuffCharacteristics.armor;
-  } else {
-    store.state.playerArmor = store.state.playerArmor +
-      store.state.playerLevelCharacteristics.armor +
-      store.state.playerEquipmentCharacteristics.armor +
-      store.state.playerBuffCharacteristics.armor;
-  }
+  store.state.playerDamage = getNumberFromStorage("playerDamage", 10);
 
-  if (store.state.playerProfessionCharacteristics.hp) {
-    const hp = store.state.playerMaxHp +
-      store.state.playerLevelCharacteristics.hp +
-      store.state.playerEquipmentCharacteristics.hp;
+  store.state.playerArmor = getNumberFromStorage("playerArmor", 5);
 
-    store.state.playerMaxHp = hp + Math.floor(hp / 100 * store.state.playerProfessionCharacteristics.hp) + store.state.playerBuffCharacteristics.hp;
-  } else {
-    store.state.playerMaxHp = store.state.playerMaxHp +
-      store.state.playerLevelCharacteristics.hp +
-      store.state.playerEquipmentCharacteristics.hp +
-      store.state.playerBuffCharacteristics.hp;
-  }
+  store.state.playerEvasion = getNumberFromStorage("playerEvasion", 10);
 
-  if (store.state.playerProfessionCharacteristics.evasion) {
-    store.state.playerEvasion = store.state.playerEvasion +
-      store.state.playerEquipmentCharacteristics.evasion +
-      store.state.playerBuffCharacteristics.evasion +
-      store.state.playerProfessionCharacteristics.evasion;
-  } else {
-    store.state.playerEvasion = store.state.playerEvasion +
-      store.state.playerEquipmentCharacteristics.evasion +
-      store.state.playerBuffCharacteristics.evasion;
-  }
+  store.state.playerCritChance = getNumberFromStorage("playerCritChance", 5);
 
-  if (store.state.playerProfessionCharacteristics.critChance) {
-    store.state.playerCritChance = store.state.playerCritChance +
-      store.state.playerEquipmentCharacteristics.critChance +
-      store.state.playerProfessionCharacteristics.critChance +
-      store.state.playerBuffCharacteristics.critChance;
-  } else {
-    store.state.playerCritChance = store.state.playerCritChance +
-      store.state.playerEquipmentCharacteristics.critChance +
-      store.state.playerBuffCharacteristics.critChance;
-  }
+  store.state.playerCritPower = getNumberFromStorage("playerCritPower", 30);
 
-  if (store.state.playerProfessionCharacteristics.critPower) {
-    store.state.playerCritPower = store.state.playerCritPower +
-      store.state.playerEquipmentCharacteristics.critPower +
-      store.state.playerProfessionCharacteristics.critPower +
-      store.state.playerBuffCharacteristics.critPower;
-  } else {
-    store.state.playerCritPower = store.state.playerCritPower +
-      store.state.playerEquipmentCharacteristics.critPower +
-      store.state.playerBuffCharacteristics.critPower;
-  }
+  store.state.playerProfession =
+    localStorage.getItem("playerProfession") || "standart";
 
-  if (store.state.playerProfession == "assassin" || store.state.playerProfession == "reaper" || store.state.playerProfession == "pathfinder") {
+  store.state.playerCurrentLocation = getNumberFromStorage(
+    "playerCurrentLocation",
+    9990,
+  );
+
+  store.state.playerGold = getNumberFromStorage("playerGold", 0);
+
+  store.state.playerResources = getObjectFromStorage("playerResources", {
+    wood: 0,
+    stone: 0,
+    iron: 0,
+  });
+
+  store.state.playerInventory = getObjectFromStorage("playerInventory", []);
+
+  store.state.playerCraftInventory = getObjectFromStorage(
+    "playerCraftInventory",
+    [],
+  );
+
+  store.state.playerInventorySize = getNumberFromStorage(
+    "playerInventorySize",
+    50,
+  );
+
+  store.state.playerEquipment = getObjectFromStorage("playerEquipment", {
+    weapon: 0,
+    helmet: 0,
+    upper: 0,
+    lower: 0,
+    gloves: 0,
+    boots: 0,
+    weaponDurability: 0,
+    helmetDurability: 0,
+    upperDurability: 0,
+    lowerDurability: 0,
+    glovesDurability: 0,
+    bootsDurability: 0,
+  });
+
+  store.state.playerLevelCharacteristics = getObjectFromStorage(
+    "playerLevelCharacteristics",
+    {
+      damage: 0,
+      armor: 0,
+      hp: 0,
+    },
+  );
+
+  store.state.playerEquipmentCharacteristics = getObjectFromStorage(
+    "playerEquipmentCharacteristics",
+    {
+      damage: 0,
+      armor: 0,
+      hp: 0,
+      evasion: 0,
+      critChance: 0,
+      critPower: 0,
+    },
+  );
+
+  store.state.playerBuffCharacteristics = getObjectFromStorage(
+    "playerBuffCharacteristics",
+    {
+      damage: 0,
+      armor: 0,
+      hp: 0,
+      evasion: 0,
+      critChance: 0,
+      critPower: 0,
+      drop: 0,
+      damageBuffDuration: 0,
+      armorBuffDuration: 0,
+      hpBuffDuration: 0,
+      evasionBuffDuration: 0,
+      critChanceBuffDuration: 0,
+      critPowerBuffDuration: 0,
+      dropBuffDuration: 0,
+    },
+  );
+
+  store.state.playerProfessionCharacteristics = getObjectFromStorage(
+    "playerProfessionCharacteristics",
+    {
+      damage: 0,
+      armor: 0,
+      hp: 0,
+      evasion: 0,
+      critChance: 0,
+      critPower: 0,
+    },
+  );
+
+  store.state.playerBuildings = getObjectFromStorage("playerBuildings", {
+    currentLevel0: 0,
+    currentLevel1: 0,
+    currentLevel2: 0,
+    currentLevel3: 0,
+    currentLevel4: 0,
+    currentLevel5: 0,
+  });
+
+  store.state.playerHeadquartesCharacteristics = getObjectFromStorage(
+    "playerHeadquartesCharacteristics",
+    {
+      damage: 0,
+      armor: 0,
+      critPower: 0,
+    },
+  );
+
+  store.state.accountStatus =
+    localStorage.getItem("accountStatus") || "Стандарт+";
+
+  /*
+    Берём реальный уровень штаба из playerBuildings
+    и обновляем его бонусы.
+
+    Это важно после:
+    - перезагрузки страницы;
+    - смерти персонажа;
+    - сброса данных;
+    - улучшения штаба.
+  */
+  camp.syncHeadquartersCharacteristics();
+
+  const baseDamage = Number(store.state.playerDamage || 0);
+  const baseArmor = Number(store.state.playerArmor || 0);
+  const baseMaxHp = Number(store.state.playerMaxHp || 0);
+  const baseEvasion = Number(store.state.playerEvasion || 0);
+  const baseCritChance = Number(store.state.playerCritChance || 0);
+  const baseCritPower = Number(store.state.playerCritPower || 0);
+
+  const levelCharacteristics = store.state.playerLevelCharacteristics;
+  const equipmentCharacteristics = store.state.playerEquipmentCharacteristics;
+  const buffCharacteristics = store.state.playerBuffCharacteristics;
+  const professionCharacteristics = store.state.playerProfessionCharacteristics;
+  const headquartersCharacteristics =
+    store.state.playerHeadquartesCharacteristics;
+
+  /*
+    Урон:
+    база + уровень + экипировка
+    × штаб
+    × профессия
+    + временный баф
+  */
+  const damageBeforeMultipliers =
+    baseDamage +
+    Number(levelCharacteristics.damage || 0) +
+    Number(equipmentCharacteristics.damage || 0);
+
+  const headquartersDamageMultiplier =
+    1 + Number(headquartersCharacteristics.damage || 0) / 100;
+
+  const professionDamageMultiplier =
+    1 + Number(professionCharacteristics.damage || 0) / 100;
+
+  store.state.playerDamage = Math.floor(
+    damageBeforeMultipliers *
+      headquartersDamageMultiplier *
+      professionDamageMultiplier +
+      Number(buffCharacteristics.damage || 0),
+  );
+
+  /*
+    Защита:
+    база + уровень + экипировка
+    × штаб
+    × профессия
+    + временный баф
+  */
+  const armorBeforeMultipliers =
+    baseArmor +
+    Number(levelCharacteristics.armor || 0) +
+    Number(equipmentCharacteristics.armor || 0);
+
+  const headquartersArmorMultiplier =
+    1 + Number(headquartersCharacteristics.armor || 0) / 100;
+
+  const professionArmorMultiplier =
+    1 + Number(professionCharacteristics.armor || 0) / 100;
+
+  store.state.playerArmor = Math.floor(
+    armorBeforeMultipliers *
+      headquartersArmorMultiplier *
+      professionArmorMultiplier +
+      Number(buffCharacteristics.armor || 0),
+  );
+
+  /*
+    HP:
+    база + уровень + экипировка
+    × профессия
+    + временный баф
+
+    Штаб HP не увеличивает.
+  */
+  const hpBeforeProfession =
+    baseMaxHp +
+    Number(levelCharacteristics.hp || 0) +
+    Number(equipmentCharacteristics.hp || 0);
+
+  const professionHpMultiplier =
+    1 + Number(professionCharacteristics.hp || 0) / 100;
+
+  store.state.playerMaxHp = Math.floor(
+    hpBeforeProfession * professionHpMultiplier +
+      Number(buffCharacteristics.hp || 0),
+  );
+
+  /*
+    Уклонение:
+    база + экипировка + профессия + баф.
+  */
+  store.state.playerEvasion =
+    baseEvasion +
+    Number(equipmentCharacteristics.evasion || 0) +
+    Number(professionCharacteristics.evasion || 0) +
+    Number(buffCharacteristics.evasion || 0);
+
+  /*
+    Шанс крита:
+    база + экипировка + профессия + баф.
+  */
+  store.state.playerCritChance =
+    baseCritChance +
+    Number(equipmentCharacteristics.critChance || 0) +
+    Number(professionCharacteristics.critChance || 0) +
+    Number(buffCharacteristics.critChance || 0);
+
+  /*
+    Критическая сила:
+    база + экипировка + профессия + штаб + баф.
+  */
+  store.state.playerCritPower =
+    baseCritPower +
+    Number(equipmentCharacteristics.critPower || 0) +
+    Number(professionCharacteristics.critPower || 0) +
+    Number(headquartersCharacteristics.critPower || 0) +
+    Number(buffCharacteristics.critPower || 0);
+
+  /*
+    У ассасина, жнеца и следопыта максимум уклонения 60%.
+    У других классов берём сохранённое значение или 50%.
+  */
+  if (
+    store.state.playerProfession === "assassin" ||
+    store.state.playerProfession === "reaper" ||
+    store.state.playerProfession === "pathfinder"
+  ) {
     store.state.playerMaxEvasion = 60;
-    localStorage.setItem("playerMaxEvasion", 60);
+    localStorage.setItem("playerMaxEvasion", "60");
+  } else {
+    store.state.playerMaxEvasion = getNumberFromStorage("playerMaxEvasion", 50);
   }
-  if (store.state.playerProfession == "knight" || store.state.playerProfession == "templar" || store.state.playerProfession == "titan") {
+
+  /*
+    У рыцаря, храмовника и титана уклонение всегда ограничено 10%.
+  */
+  if (
+    store.state.playerProfession === "knight" ||
+    store.state.playerProfession === "templar" ||
+    store.state.playerProfession === "titan"
+  ) {
     store.state.playerEvasion = 10;
-    localStorage.setItem("playerEvasion", 10);
-  }
-  if (store.state.playerEvasion > store.state.playerMaxEvasion) {
-    store.state.playerEvasion = store.state.playerMaxEvasion;
-  } else if (store.state.playerEvasion < 0) {
-    store.state.playerEvasion = 0;
+    localStorage.setItem("playerEvasion", "10");
   }
 
-  if (store.state.playerCritChance > 100) {
-    store.state.playerCritChance = 100;
-  } else if (store.state.playerCritChance < 0) {
-    store.state.playerCritChance = 0
-  }
+  store.state.playerEvasion = clamp(
+    store.state.playerEvasion,
+    0,
+    store.state.playerMaxEvasion,
+  );
 
-  if (store.state.playerCritPower > store.state.playerMaxCritPower) {
-    store.state.playerCritPower = store.state.playerMaxCritPower;
-  } else if (store.state.playerCritPower < 0) {
-    store.state.playerCritPower = 0;
-  }
+  store.state.playerCritChance = clamp(store.state.playerCritChance, 0, 100);
 
+  store.state.playerCritPower = clamp(
+    store.state.playerCritPower,
+    0,
+    store.state.playerMaxCritPower,
+  );
+
+  /*
+    Текущее HP не может быть больше итогового максимального HP.
+  */
   if (store.state.playerCurrentHp > store.state.playerMaxHp) {
     store.state.playerCurrentHp = store.state.playerMaxHp;
-    localStorage.setItem("playerCurrentHp", store.state.playerCurrentHp);
+
+    localStorage.setItem(
+      "playerCurrentHp",
+      String(store.state.playerCurrentHp),
+    );
   }
 }
