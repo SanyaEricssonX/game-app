@@ -1161,6 +1161,7 @@ export default {
       }
 
       const itemName = item.name || `Предмет ${item.id}`;
+
       const levelText = item.requiredLevel
         ? ` Уровень ${item.requiredLevel}.`
         : "";
@@ -1259,6 +1260,7 @@ export default {
       );
 
       this.inventoryCells = player.createInventory();
+
       player.equipmentCharacteristics();
     },
 
@@ -1402,10 +1404,12 @@ export default {
       this.selectedInventoryItem = item.cellId;
 
       event.dataTransfer.effectAllowed = "move";
+
       event.dataTransfer.setData(
         "application/x-game-inventory-item",
         JSON.stringify(this.draggedItem),
       );
+
       event.dataTransfer.setData("text/plain", String(item.id));
     },
 
@@ -1425,13 +1429,16 @@ export default {
 
       this.draggedEquipmentSlot = slot;
       this.selectedInventoryItem = null;
+
       this.hideTooltip();
 
       event.dataTransfer.effectAllowed = "move";
+
       event.dataTransfer.setData(
         "application/x-game-equipment-item",
         JSON.stringify(this.draggedItem),
       );
+
       event.dataTransfer.setData("text/plain", String(itemId));
     },
 
@@ -1567,6 +1574,7 @@ export default {
             targetSlot,
           )}.`,
         );
+
         return;
       }
 
@@ -1574,6 +1582,7 @@ export default {
         this.showInventoryModal(
           "Невозможно надеть предмет. Уровень предмета выше вашего.",
         );
+
         return;
       }
 
@@ -1610,6 +1619,7 @@ export default {
         this.showInventoryModal(
           "Невозможно надеть предмет: инвентарь переполнен, текущий предмет из слота некуда переместить.",
         );
+
         return;
       }
 
@@ -1632,6 +1642,7 @@ export default {
       this.$store.state.playerInventory = inventory;
 
       this.selectedInventoryItem = null;
+
       this.hideTooltip();
       this.refreshEquipmentAndInventory();
     },
@@ -1661,6 +1672,7 @@ export default {
       );
 
       const targetCellId = Number(targetItem.cellId);
+
       const targetIndex = inventory.findIndex((inventoryItem, index) => {
         const cellId =
           inventoryItem.cellId !== undefined ? inventoryItem.cellId : index;
@@ -1677,6 +1689,7 @@ export default {
           this.showInventoryModal(
             "Эту ячейку занимает расходник. Перетащите экипировку в пустую ячейку или в ячейку с другим снаряжением.",
           );
+
           return;
         }
 
@@ -1690,6 +1703,7 @@ export default {
       this.$store.state.playerInventory = inventory;
 
       this.selectedInventoryItem = null;
+
       this.hideTooltip();
       this.refreshEquipmentAndInventory();
     },
@@ -1718,7 +1732,7 @@ export default {
       if (this.tooltip.position === "bottom") {
         if (
           this.itemCategory(item.id) === "102" &&
-          [10217, 10218, 10219].includes(item.id)
+          [10217, 10218, 10219, 10220, 10221].includes(item.id)
         ) {
           this.tooltip.btnText = "Открыть";
         } else if (this.itemCategory(item.id) === "102") {
@@ -1735,35 +1749,45 @@ export default {
           case "name":
             content.push(item[key]);
             break;
+
           case "damage":
             content.push(`Урон: ${item[key]}`);
             break;
+
           case "armor":
             content.push(`Защита: ${item[key]}`);
             break;
+
           case "hp":
             content.push(`HP: ${item[key]}`);
             break;
+
           case "evasion":
             content.push(`Уклонение: ${item[key]}`);
             break;
+
           case "critChance":
             content.push(`Крит шанс: ${item[key]}`);
             break;
+
           case "critPower":
             content.push(`Крит сила: ${item[key]}`);
             break;
+
           case "desc":
             content.push(item[key]);
             break;
+
           case "durability":
             if (this.isEquipmentItem(item)) {
               content.push(`Прочность: ${durability}/${item[key]}`);
             }
             break;
+
           case "requiredLevel":
             content.push(`Уровень: ${item[key]}`);
             break;
+
           default:
             break;
         }
@@ -1813,6 +1837,66 @@ export default {
       }
     },
 
+    addChestCraftDrop(craftInventory, drop) {
+      drop.forEach((dropItem) => {
+        const existingItem = craftInventory.find((craftItem) => {
+          return Number(craftItem.craftItemId) === Number(dropItem.craftItemId);
+        });
+
+        if (existingItem) {
+          existingItem.count += Number(dropItem.count);
+        } else {
+          craftInventory.push({
+            craftItemId: dropItem.craftItemId,
+            count: Number(dropItem.count),
+          });
+        }
+      });
+
+      return craftInventory;
+    },
+
+    addChestResources(resourceDrop) {
+      const reward = {
+        gold: Number(resourceDrop?.gold || 0),
+        wood: Number(resourceDrop?.wood || 0),
+        stone: Number(resourceDrop?.stone || 0),
+        iron: Number(resourceDrop?.iron || 0),
+        isJackpot: Boolean(resourceDrop?.isJackpot),
+      };
+
+      this.$store.state.playerGold += reward.gold;
+
+      this.$store.state.playerResources.wood += reward.wood;
+      this.$store.state.playerResources.stone += reward.stone;
+      this.$store.state.playerResources.iron += reward.iron;
+
+      localStorage.setItem("playerGold", String(this.$store.state.playerGold));
+
+      localStorage.setItem(
+        "playerResources",
+        JSON.stringify(this.$store.state.playerResources),
+      );
+
+      return reward;
+    },
+
+    openChestRewardModal(drop, resources) {
+      this.$store.state.chestIsOpen.drop = drop;
+
+      this.$store.state.chestIsOpen.resources = {
+        gold: resources.gold,
+        wood: resources.wood,
+        stone: resources.stone,
+        iron: resources.iron,
+      };
+
+      this.$store.state.chestIsOpen.isJackpot = resources.isJackpot;
+      this.$store.state.chestIsOpen.visible = true;
+
+      this.showModal();
+    },
+
     useItem(item) {
       if (!item?.id) {
         return;
@@ -1824,6 +1908,7 @@ export default {
         this.showInventoryModal(
           "Невозможно надеть. Уровень предмета выше вашего.",
         );
+
         return;
       }
 
@@ -1876,6 +1961,7 @@ export default {
             "playerCurrentHp",
             String(this.$store.state.playerCurrentHp),
           );
+
           break;
         }
 
@@ -1937,6 +2023,7 @@ export default {
             this.showInventoryModal(
               "Невозможно открыть сундук. Нет магических ключей.",
             );
+
             removeUsedItem = false;
             break;
           }
@@ -1947,41 +2034,24 @@ export default {
             craftInventory.splice(keyIndex, 1);
           }
 
-          const drop = items.magicChestRandomDrop(item.id, item.amount);
+          const craftDrop = items.magicChestRandomDrop(item.id, item.amount);
 
-          if (drop.length > 0) {
-            drop.forEach((dropItem) => {
-              const existingItem = craftInventory.find((craftItem) => {
-                return (
-                  Number(craftItem.craftItemId) === Number(dropItem.craftItemId)
-                );
-              });
+          const resourceDrop = items.getChestResourceReward(item.id);
 
-              if (existingItem) {
-                existingItem.count += dropItem.count;
-              } else {
-                craftInventory.push({
-                  craftItemId: dropItem.craftItemId,
-                  count: dropItem.count,
-                });
-              }
-            });
+          const resources = this.addChestResources(resourceDrop);
 
-            this.$store.state.playerCraftInventory = craftInventory;
+          this.addChestCraftDrop(craftInventory, craftDrop);
 
-            localStorage.setItem(
-              "playerCraftInventory",
-              JSON.stringify(craftInventory),
-            );
+          this.$store.state.playerCraftInventory = craftInventory;
 
-            this.$store.state.chestIsOpen.drop = drop;
-            this.$store.state.chestIsOpen.visible = true;
+          localStorage.setItem(
+            "playerCraftInventory",
+            JSON.stringify(craftInventory),
+          );
 
-            this.updateCraftInventory();
-            this.showModal();
-          } else {
-            this.showInventoryModal("Сундук оказался пуст.");
-          }
+          this.updateCraftInventory();
+
+          this.openChestRewardModal(craftDrop, resources);
 
           break;
         }
@@ -2025,6 +2095,7 @@ export default {
         this.showInventoryModal(
           "Невозможно снять предмет. Инвентарь переполнен.",
         );
+
         return;
       }
 
@@ -2050,6 +2121,7 @@ export default {
       this.$store.state.playerEquipment = equipment;
 
       this.selectedInventoryItem = null;
+
       this.hideTooltip();
       this.refreshEquipmentAndInventory();
     },
@@ -2151,6 +2223,7 @@ export default {
         this.showInventoryModal(
           "Невозможно создать предмет. Не найден результат рецепта.",
         );
+
         return;
       }
 
@@ -2161,7 +2234,9 @@ export default {
       this.$store.state.playerCraftInventory = playerCraftInventory;
 
       localStorage.setItem("playerInventory", JSON.stringify(inventory));
+
       localStorage.setItem("playerResources", JSON.stringify(playerResources));
+
       localStorage.setItem(
         "playerCraftInventory",
         JSON.stringify(playerCraftInventory),
