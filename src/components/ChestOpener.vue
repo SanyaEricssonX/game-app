@@ -129,14 +129,11 @@ export default {
 
 <style scoped>
 .chest_opener-container {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  width: min(600px, 100%);
+  width: 100%;
+  max-width: none;
   padding: 30px 50px;
-  border: 1px solid var(--color-dark);
+  border: 0;
   background-color: var(--color-blue);
-  color: var(--color-light);
 }
 
 .chest_opener__heading {

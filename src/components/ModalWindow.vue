@@ -7,29 +7,35 @@
       aria-label="Модальное окно"
       @click.stop
     >
-      <slot />
+      <div class="modal-header">
+        <span class="modal-header__title"> Project R </span>
 
-      <button
-        class="close_btn"
-        type="button"
-        aria-label="Закрыть окно"
-        data-testid="modal-close-button"
-        data-action="close-modal"
-        @click="closeModal"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="12"
-          height="12"
-          aria-hidden="true"
-          focusable="false"
+        <button
+          class="close_btn"
+          type="button"
+          aria-label="Закрыть окно"
+          data-testid="modal-close-button"
+          data-action="close-modal"
+          @click="closeModal"
         >
-          <path
-            d="M23.707.293a1 1 0 0 0-1.414 0L12 10.586 1.707.293A1 1 0 0 0 .293 1.707L10.586 12 .293 22.293a1 1 0 0 0 1.414 1.414L12 13.414l10.293 10.293a1 1 0 0 0 1.414-1.414L13.414 12 23.707 1.707a1 1 0 0 0 0-1.414Z"
-          />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="12"
+            height="12"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M23.707.293a1 1 0 0 0-1.414 0L12 10.586 1.707.293A1 1 0 0 0 .293 1.707L10.586 12 .293 22.293a1 1 0 0 0 1.414 1.414L12 13.414l10.293 10.293a1 1 0 0 0 1.414-1.414L13.414 12 23.707 1.707a1 1 0 0 0 0-1.414Z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-content">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -83,32 +89,62 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.58);
   backdrop-filter: blur(2px);
 }
 
 .modal-position {
-  position: relative;
   display: flex;
-  width: fit-content;
-  max-width: 100%;
+  flex-direction: column;
+  width: min(680px, 100%);
   max-height: calc(100vh - 40px);
-  overflow: auto;
+  overflow: hidden;
+  border: 1px solid var(--color-dark);
+  background-color: var(--color-blue);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.38);
+}
+
+.modal-header {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 0 10px 0 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.42);
+  background-color: rgba(0, 0, 0, 0.14);
+  color: var(--color-light);
+}
+
+.modal-header__title {
+  font-family: Bahnschrift, sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.modal-content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .close_btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 20;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 28px;
   height: 28px;
   padding: 0;
-  border: 1px solid var(--color-dark);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 4px;
   background-color: var(--color-light);
   color: var(--color-dark);
@@ -143,16 +179,13 @@ export default {
   .modal {
     align-items: flex-start;
     padding: 12px;
+    overflow-y: auto;
   }
 
   .modal-position {
     width: 100%;
     max-height: calc(100vh - 24px);
-  }
-
-  .close_btn {
-    top: 6px;
-    right: 6px;
+    margin: auto 0;
   }
 }
 </style>
