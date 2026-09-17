@@ -63,11 +63,15 @@ export default {
       );
     },
 
-    nextRechargeIn() {
-      if (
-        !this.healerCartConfig ||
+    isFountainFull() {
+      return (
+        this.fountain.maxCharges > 0 &&
         this.fountain.currentCharges >= this.fountain.maxCharges
-      ) {
+      );
+    },
+
+    nextRechargeIn() {
+      if (!this.healerCartConfig || this.isFountainFull) {
         return 0;
       }
 
@@ -87,7 +91,7 @@ export default {
         return "";
       }
 
-      if (this.fountain.currentCharges >= this.fountain.maxCharges) {
+      if (this.isFountainFull) {
         return "Повозка полностью заряжена";
       }
 
@@ -122,6 +126,8 @@ export default {
 
     loadFountainState() {
       if (!this.healerCartConfig) {
+        this.stopRechargeChecker();
+
         this.fountain = {
           ...this.fountain,
           ...this.getDefaultFountainState(),
@@ -149,6 +155,8 @@ export default {
         };
 
         this.saveFountainState();
+        this.updateRechargeCheckerState();
+
         return;
       }
 
@@ -173,6 +181,7 @@ export default {
 
       this.checkRecharge();
       this.saveFountainState();
+      this.updateRechargeCheckerState();
     },
 
     saveFountainState() {
@@ -192,10 +201,8 @@ export default {
     },
 
     checkRecharge() {
-      if (
-        !this.healerCartConfig ||
-        this.fountain.currentCharges >= this.fountain.maxCharges
-      ) {
+      if (!this.healerCartConfig || this.isFountainFull) {
+        this.stopRechargeChecker();
         return;
       }
 
@@ -222,14 +229,38 @@ export default {
         intervalsPassed * this.fountain.rechargeInterval;
 
       this.saveFountainState();
+
+      if (this.isFountainFull) {
+        this.stopRechargeChecker();
+      }
+    },
+
+    updateRechargeCheckerState() {
+      if (!this.healerCartConfig || this.isFountainFull) {
+        this.stopRechargeChecker();
+        return;
+      }
+
+      this.startRechargeChecker();
     },
 
     startRechargeChecker() {
-      this.stopRechargeChecker();
+      if (
+        this.rechargeCheckInterval !== null ||
+        !this.healerCartConfig ||
+        this.isFountainFull
+      ) {
+        return;
+      }
 
       this.rechargeCheckInterval = window.setInterval(() => {
         this.now = Date.now();
+
         this.checkRecharge();
+
+        if (this.isFountainFull) {
+          this.stopRechargeChecker();
+        }
       }, 1000);
     },
 
@@ -269,16 +300,20 @@ export default {
 
       this.fountain.currentCharges -= hpToRestore;
 
-      /*
-        Store обновляется сразу.
-        Благодаря этому isPlayerFullHealth и canUseCharge
-        мгновенно перерисуют кнопку.
-      */
       store.state.playerCurrentHp = newPlayerCurrentHp;
 
       localStorage.setItem("playerCurrentHp", String(newPlayerCurrentHp));
 
       this.saveFountainState();
+
+      /*
+        После траты хотя бы одного заряда:
+        - Если запас не полный — запускается таймер.
+        - Если восстановили только часть HP, но зарядов не потратили
+          до максимума — таймер всё равно корректно продолжит работу.
+      */
+      this.now = Date.now();
+      this.updateRechargeCheckerState();
 
       downloadData();
 
@@ -286,6 +321,8 @@ export default {
     },
 
     breakHealerCart() {
+      this.stopRechargeChecker();
+
       localStorage.removeItem(FOUNTAIN_STORAGE_KEY);
 
       this.fountain = {
@@ -297,7 +334,6 @@ export default {
 
   created() {
     this.loadFountainState();
-    this.startRechargeChecker();
   },
 
   beforeUnmount() {
