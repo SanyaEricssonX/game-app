@@ -2,6 +2,9 @@
   <div class="modal" v-if="isModalOpen" @click.self="closeModal">
     <div
       class="modal-position"
+      :class="{
+        'modal-position--light': isWhatsNewModal,
+      }"
       role="dialog"
       aria-modal="true"
       aria-label="Модальное окно"
@@ -51,6 +54,15 @@ export default {
     },
   },
 
+  computed: {
+    isWhatsNewModal() {
+      return (
+        this.$store.state.modalNotification.visible &&
+        this.$store.state.modalNotification.from === "app"
+      );
+    },
+  },
+
   watch: {
     isModalOpen(isOpen) {
       if (isOpen) {
@@ -89,7 +101,8 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.58);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.62);
   backdrop-filter: blur(2px);
 }
 
@@ -101,7 +114,12 @@ export default {
   overflow: hidden;
   border: 1px solid var(--color-dark);
   background-color: var(--color-blue);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.38);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.modal-position--light {
+  background-color: var(--color-light);
+  color: var(--color-dark);
 }
 
 .modal-header {
@@ -113,9 +131,15 @@ export default {
   justify-content: space-between;
   min-height: 42px;
   padding: 0 10px 0 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.42);
-  background-color: rgba(0, 0, 0, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  background-color: rgba(0, 0, 0, 0.1);
   color: var(--color-light);
+}
+
+.modal-position--light .modal-header {
+  border-bottom-color: rgba(0, 0, 0, 0.22);
+  background-color: #f4f4f4;
+  color: var(--color-dark);
 }
 
 .modal-header__title {
@@ -124,7 +148,6 @@ export default {
   font-weight: 900;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  opacity: 0.9;
 }
 
 .modal-content {
@@ -144,10 +167,10 @@ export default {
   width: 28px;
   height: 28px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid currentColor;
   border-radius: 4px;
-  background-color: var(--color-light);
-  color: var(--color-dark);
+  background-color: transparent;
+  color: inherit;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease,
     color 0.15s ease, transform 0.1s ease;
@@ -164,7 +187,7 @@ export default {
 }
 
 .close_btn:focus-visible {
-  outline: 3px solid var(--color-light);
+  outline: 3px solid var(--color-green);
   outline-offset: 3px;
 }
 
@@ -173,6 +196,30 @@ export default {
   width: 12px;
   height: 12px;
   fill: currentColor;
+}
+
+.modal-position--light .modal-content {
+  scrollbar-color: #b8b8b8 var(--color-light);
+}
+
+/* Chrome, Edge, Safari */
+.modal-position--light .modal-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.modal-position--light .modal-content::-webkit-scrollbar-track {
+  background-color: var(--color-light);
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.modal-position--light .modal-content::-webkit-scrollbar-thumb {
+  border: 3px solid var(--color-light);
+  border-radius: 8px;
+  background-color: #aaaaaa;
+}
+
+.modal-position--light .modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: #777777;
 }
 
 @media (max-width: 650px) {

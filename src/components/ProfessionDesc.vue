@@ -4,14 +4,6 @@
       <h3 class="profession-title">
         {{ isSecondAct ? "Второй акт воплощения" : "Выбор воплощения" }}
       </h3>
-
-      <p class="profession-subtitle">
-        {{
-          isSecondAct
-            ? "Выберите дальнейший путь развития вашего персонажа."
-            : "Выберите боевой путь, который определит сильные и слабые стороны персонажа."
-        }}
-      </p>
     </div>
 
     <div
@@ -56,64 +48,68 @@
       :id="`profession-panel-${currentProfession.key}`"
       :aria-labelledby="`profession-tab-${currentProfession.key}`"
     >
-      <div class="profession-card__header">
-        <div class="profession-card__title-box">
-          <span class="profession-card__icon">
-            {{ currentProfession.icon }}
-          </span>
-
-          <div>
-            <h4 class="profession-card__title">
-              {{ currentProfession.name }}
-            </h4>
-
-            <span class="profession-card__type">
-              {{
-                isSecondAct
-                  ? "Специализация второго акта"
-                  : "Базовое воплощение"
-              }}
+      <div class="profession-card__scroll">
+        <div class="profession-card__header">
+          <div class="profession-card__title-box">
+            <span class="profession-card__icon">
+              {{ currentProfession.icon }}
             </span>
+
+            <div>
+              <h4 class="profession-card__title">
+                {{ currentProfession.name }}
+              </h4>
+
+              <span class="profession-card__type">
+                {{
+                  isSecondAct
+                    ? "Специализация второго акта"
+                    : "Базовое воплощение"
+                }}
+              </span>
+            </div>
           </div>
+        </div>
+
+        <p class="profession-card__description">
+          {{ currentProfession.description }}
+        </p>
+
+        <div class="profession-stats">
+          <h5 class="profession-stats__heading">Характеристики</h5>
+
+          <ul class="profession-stats__list">
+            <li
+              class="profession-stats__item"
+              v-for="stat in currentProfession.stats"
+              :key="stat.key"
+              :class="{
+                'profession-stats__item_negative': stat.isNegative,
+                'profession-stats__item_fixed': stat.isFixed,
+              }"
+            >
+              <span class="profession-stats__name">
+                {{ stat.icon }} {{ stat.label }}
+              </span>
+
+              <strong class="profession-stats__value">
+                {{ stat.value }}
+              </strong>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <p class="profession-card__description">
-        {{ currentProfession.description }}
-      </p>
-
-      <div class="profession-stats">
-        <h5 class="profession-stats__heading">Характеристики</h5>
-
-        <ul class="profession-stats__list">
-          <li
-            class="profession-stats__item"
-            v-for="stat in currentProfession.stats"
-            :key="stat.key"
-            :class="{
-              'profession-stats__item_negative': stat.isNegative,
-              'profession-stats__item_fixed': stat.isFixed,
-            }"
-          >
-            <span class="profession-stats__name">
-              {{ stat.icon }} {{ stat.label }}
-            </span>
-
-            <strong class="profession-stats__value">
-              {{ stat.value }}
-            </strong>
-          </li>
-        </ul>
+      <div class="profession-card__footer">
+        <base-button
+          class="profession-card__btn"
+          :data-testid="`choose-profession-${currentProfession.key}`"
+          :data-action="`choose-profession-${currentProfession.key}`"
+          @click="choseProfession(currentProfession.key)"
+        >
+          Выбрать воплощение
+        </base-button>
       </div>
-
-      <base-button
-        class="profession-card__btn"
-        :data-testid="`choose-profession-${currentProfession.key}`"
-        :data-action="`choose-profession-${currentProfession.key}`"
-        @click="choseProfession(currentProfession.key)"
-      >
-        Выбрать {{ currentProfession.name }}
-      </base-button>
     </section>
   </div>
 </template>
@@ -128,6 +124,7 @@ export default {
   data() {
     return {
       selectedTab: "",
+
       firstActProfessions: [
         {
           key: "warrior",
@@ -531,11 +528,11 @@ export default {
     availableProfessions: {
       immediate: true,
       handler(professions) {
-        const isSelectedProfessionAvailable = professions.some((profession) => {
+        const isCurrentTabAvailable = professions.some((profession) => {
           return profession.key === this.selectedTab;
         });
 
-        if (!isSelectedProfessionAvailable && professions.length > 0) {
+        if (!isCurrentTabAvailable && professions.length > 0) {
           this.selectedTab = professions[0].key;
         }
       },
@@ -591,40 +588,37 @@ export default {
 .profession-container {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   box-sizing: border-box;
   width: 100%;
-  min-height: 500px;
+  height: 600px;
   padding: 30px 50px;
-  border: 0;
+  overflow: hidden;
   background-color: var(--color-blue);
   color: var(--color-light);
 }
 
 .profession-header {
-  margin-bottom: 22px;
+  flex-shrink: 0;
+  margin-bottom: 20px;
   padding-right: 32px;
   text-align: center;
 }
 
 .profession-title {
-  margin-bottom: 10px;
+  margin-bottom: 9px;
+  color: var(--color-light);
   font-family: Bahnschrift, sans-serif;
   font-size: 24px;
   font-weight: 900;
   line-height: 1.2;
 }
 
-.profession-subtitle {
-  line-height: 1.45;
-  opacity: 0.9;
-}
-
 .profession-tabs {
   display: flex;
+  flex-shrink: 0;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .profession-tab {
@@ -636,12 +630,14 @@ export default {
   min-width: 120px;
   min-height: 40px;
   padding: 8px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.08);
   color: var(--color-light);
   cursor: pointer;
   font-family: Bahnschrift, sans-serif;
   font-size: 16px;
+  font-weight: 700;
   line-height: 1.1;
   transition: background-color 0.15s ease, border-color 0.15s ease,
     color 0.15s ease;
@@ -649,7 +645,7 @@ export default {
 
 .profession-tab:hover:not(.profession-tab_active) {
   border-color: var(--color-light);
-  background-color: rgba(255, 255, 255, 0.14);
+  background-color: rgba(255, 255, 255, 0.16);
 }
 
 .profession-tab_active {
@@ -677,11 +673,38 @@ export default {
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-height: 315px;
-  padding: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.74);
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.13);
+  background-color: rgba(0, 0, 0, 0.17);
+}
+
+.profession-card__scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 18px 18px 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: rgba(255, 255, 255, 0.65) rgba(0, 0, 0, 0.16);
+}
+
+.profession-card__scroll::-webkit-scrollbar {
+  width: 9px;
+}
+
+.profession-card__scroll::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.16);
+}
+
+.profession-card__scroll::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.profession-card__scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-light);
 }
 
 .profession-card__header {
@@ -696,43 +719,47 @@ export default {
 
 .profession-card__icon {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 46px;
   height: 46px;
   border: 1px solid rgba(255, 255, 255, 0.78);
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.12);
   font-size: 25px;
 }
 
 .profession-card__title {
   margin-bottom: 4px;
+  color: var(--color-light);
   font-family: Bahnschrift, sans-serif;
   font-size: 22px;
   font-weight: 900;
 }
 
 .profession-card__type {
+  color: rgba(255, 255, 255, 0.74);
   font-size: 13px;
-  opacity: 0.75;
 }
 
 .profession-card__description {
   margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.95);
   line-height: 1.5;
 }
 
 .profession-stats {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   padding: 14px;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 5px;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: rgba(0, 0, 0, 0.14);
 }
 
 .profession-stats__heading {
   margin-bottom: 10px;
+  color: var(--color-light);
   font-family: Bahnschrift, sans-serif;
   font-size: 17px;
   font-weight: 900;
@@ -754,6 +781,7 @@ export default {
   gap: 15px;
   padding-bottom: 7px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.95);
   line-height: 1.3;
 }
 
@@ -768,31 +796,44 @@ export default {
 
 .profession-stats__value {
   flex-shrink: 0;
-  color: var(--color-green);
+  color: #88f0bb;
   font-family: Bahnschrift, sans-serif;
   font-size: 17px;
   font-weight: 900;
 }
 
 .profession-stats__item_negative .profession-stats__value {
-  color: #ff8c84;
+  color: #ffaaa4;
 }
 
 .profession-stats__item_fixed .profession-stats__value {
-  color: #fff0a5;
+  color: #ffe69a;
   font-size: 15px;
 }
 
+.profession-card__footer {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 12px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .profession-card__btn {
-  align-self: center;
-  min-width: 205px;
-  margin-top: auto;
+  min-width: 220px;
 }
 
 @media (max-width: 650px) {
   .profession-container {
-    width: 100%;
-    padding: 25px 20px;
+    min-height: calc(100vh - 66px);
+    height: calc(100vh - 66px);
+    padding: 22px 18px;
+  }
+
+  .profession-header {
+    margin-bottom: 16px;
+    padding-right: 25px;
   }
 
   .profession-title {
@@ -801,33 +842,75 @@ export default {
 
   .profession-tabs {
     flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 7px;
+    margin-bottom: 14px;
   }
 
   .profession-tab {
     width: 100%;
+    min-height: 38px;
+    padding: 8px;
+  }
+
+  .profession-card__scroll {
+    padding: 15px 14px 8px;
+  }
+
+  .profession-card__title {
+    font-size: 20px;
+  }
+
+  .profession-card__description {
+    font-size: 14px;
+  }
+
+  .profession-stats {
+    padding: 12px;
+  }
+
+  .profession-card__footer {
+    padding: 10px 14px 14px;
   }
 
   .profession-card__btn {
-    align-self: stretch;
     width: 100%;
+    min-width: 0;
   }
 }
 
 @media (max-width: 420px) {
   .profession-container {
-    padding: 20px 15px;
+    padding: 18px 14px;
   }
 
-  .profession-card {
-    padding: 14px;
+  .profession-card__title-box {
+    gap: 9px;
+  }
+
+  .profession-card__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
   }
 
   .profession-card__title {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .profession-stats__item {
     gap: 8px;
+    font-size: 14px;
+  }
+
+  .profession-stats__value {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profession-tab {
+    transition: none;
   }
 }
 </style>
