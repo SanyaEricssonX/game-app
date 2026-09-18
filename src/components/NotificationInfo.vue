@@ -264,7 +264,7 @@
 
         <div class="main-box">
           <base-button
-            class="main__btn main__btn--yes"
+            :variant="2"
             data-testid="modal-confirm-button"
             data-action="confirm-action"
             @click="setAction(true)"
@@ -273,7 +273,7 @@
           </base-button>
 
           <base-button
-            class="main__btn main__btn--no"
+            :variant="3"
             data-testid="modal-cancel-button"
             data-action="cancel-action"
             @click="setAction(false)"
@@ -602,22 +602,6 @@ export default {
   display: flex;
   justify-content: center;
   gap: 20px;
-}
-
-.main__btn {
-  min-width: 135px;
-}
-
-.main__btn--yes:hover {
-  border-color: var(--color-green);
-  background-color: var(--color-green);
-  color: var(--color-light);
-}
-
-.main__btn--no:hover {
-  border-color: var(--color-red);
-  background-color: var(--color-red);
-  color: var(--color-light);
 }
 
 .update-block {

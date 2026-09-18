@@ -90,6 +90,7 @@
     <div class="chest_opener-footer">
       <base-button
         class="chest_opener__btn"
+        :variant="4"
         data-testid="chest-claim-rewards-button"
         data-action="claim-chest-rewards"
         @click="closeModal"

@@ -1610,13 +1610,13 @@ class Items {
       Награды ресурсами из сундуков.
 
       У древесины, камня и железа:
-      - одинаковый шанс 70%;
+      - одинаковый шанс 50%;
       - одинаковый разброс внутри сундука;
       - независимый бросок для каждого ресурса.
 
       Золото:
       - гарантированно в обычном диапазоне;
-      - с шансом 2% выпадает джекпот:
+      - с шансом 3% выпадает джекпот:
         ровно 2 × стоимость сундука.
     */
     this.chestResourceDrops = {
@@ -1624,10 +1624,10 @@ class Items {
         gold: {
           min: 8,
           max: 18,
-          jackpotChance: 2,
+          jackpotChance: 3,
         },
         resources: {
-          chance: 70,
+          chance: 50,
           min: 1,
           max: 4,
         },
@@ -1637,10 +1637,10 @@ class Items {
         gold: {
           min: 20,
           max: 45,
-          jackpotChance: 2,
+          jackpotChance: 3,
         },
         resources: {
-          chance: 70,
+          chance: 50,
           min: 3,
           max: 7,
         },
@@ -1650,10 +1650,10 @@ class Items {
         gold: {
           min: 45,
           max: 90,
-          jackpotChance: 2,
+          jackpotChance: 3,
         },
         resources: {
-          chance: 70,
+          chance: 50,
           min: 6,
           max: 12,
         },
@@ -1663,10 +1663,10 @@ class Items {
         gold: {
           min: 80,
           max: 150,
-          jackpotChance: 2,
+          jackpotChance: 3,
         },
         resources: {
-          chance: 70,
+          chance: 50,
           min: 10,
           max: 18,
         },
@@ -1676,10 +1676,10 @@ class Items {
         gold: {
           min: 160,
           max: 300,
-          jackpotChance: 2,
+          jackpotChance: 3,
         },
         resources: {
-          chance: 70,
+          chance: 50,
           min: 18,
           max: 30,
         },

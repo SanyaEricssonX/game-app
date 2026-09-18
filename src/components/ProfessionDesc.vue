@@ -103,6 +103,7 @@
       <div class="profession-card__footer">
         <base-button
           class="profession-card__btn"
+          :variant="4"
           :data-testid="`choose-profession-${currentProfession.key}`"
           :data-action="`choose-profession-${currentProfession.key}`"
           @click="choseProfession(currentProfession.key)"
