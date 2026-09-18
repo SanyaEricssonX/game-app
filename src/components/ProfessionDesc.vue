@@ -1,357 +1,117 @@
 <template>
   <div class="profession-container">
-    <div
-      class="profession_one"
-      v-if="
-        $store.state.playerLevel >= 4 &&
-        $store.state.playerProfession == 'standart'
-      "
-    >
-      <ul class="profession-nav">
-        <li
-          class="nav__item"
-          :class="{ active: isActiveBtn(1) }"
-          @click="activeContent(1)"
-        >
-          <h4 class="header">Воин</h4>
-        </li>
-        <li
-          class="nav__item"
-          :class="{ active: isActiveBtn(2) }"
-          @click="activeContent(2)"
-        >
-          <h4 class="header">Рыцарь</h4>
-        </li>
-        <li
-          class="nav__item"
-          :class="{ active: isActiveBtn(3) }"
-          @click="activeContent(3)"
-        >
-          <h4 class="header">Ассассин</h4>
-        </li>
-      </ul>
-      <ul class="profession-list">
-        <li class="profession__item warrior" v-if="selectedTab == 1">
-          <span class="desc warrior__desc"
-            ><strong class="profession__header">Воин</strong> - это настоящая
-            машина для убийств. Имея увеличенный урон, воин с легкостью
-            уничтожает врагов буквально втаптывая их в землю.</span
-          >
-          <span class="characteristic"
-            >Урон увеличен на {{ professionWarrior.damage }}%</span
-          >
-          <span class="characteristic"
-            >Шанс крита увеличен на {{ professionWarrior.critChance }}%</span
-          >
-          <span class="characteristic"
-            >Сила крита увеличена на {{ professionWarrior.critPower }}%</span
-          >
-          <base-button
-            class="btn warrior__btn"
-            @click="choseProfession('warrior')"
-            >Выбрать</base-button
-          >
-        </li>
-
-        <li class="profession__item knight" v-if="selectedTab == 2">
-          <span class="desc warrior__desc"
-            ><strong class="profession__header">Рыцарь</strong> всегда готов
-            противостоять даже самым опасным противникам, а все благодаря его
-            непревзойденной целеустремленности и желанию защишать слабых.</span
-          >
-          <span class="characteristic"
-            >Защита увеличена на {{ professionKnight.armor }}%</span
-          >
-          <span class="characteristic"
-            >HP увеличено на {{ professionKnight.hp }}%</span
-          >
-          <span class="characteristic"
-            >Уклонение фиксированно 10%</span
-          >
-          <base-button
-            class="btn warrior__btn"
-            @click="choseProfession('knight')"
-            >Выбрать</base-button
-          >
-        </li>
-
-        <li class="profession__item assassin" v-if="selectedTab == 3">
-          <span class="desc warrior__desc"
-            ><strong class="profession__header">Ассассин</strong> - смертоносный
-            убийца, который привык нападать из тени и наносить удары в самые
-            уязвимые места.
-          </span>
-          <span class="characteristic"
-            >Защита: {{ professionAssassin.armor }}%</span
-          >
-          <span class="characteristic">HP: {{ professionAssassin.hp }}%</span>
-          <span class="characteristic"
-            >Уклонение увеличено на {{ professionAssassin.evasion }}%</span
-          >
-          <span class="characteristic"
-            >Шанс крита увеличен на {{ professionAssassin.critChance }}%</span
-          >
-          <span class="characteristic"
-            >Сила крита увеличена на {{ professionAssassin.critPower }}%</span
-          >
-          <base-button
-            class="btn warrior__btn"
-            @click="choseProfession('assassin')"
-            >Выбрать</base-button
-          >
-        </li>
-      </ul>
+    <div class="profession-header">
+      <h3 class="profession-title">
+        {{ isSecondAct ? "Второй акт воплощения" : "Выбор воплощения" }}
+      </h3>
     </div>
 
     <div
-      class="profession_two"
-      v-else-if="
-        $store.state.playerLevel >= 13 &&
-        ($store.state.playerProfession == 'warrior' ||
-          $store.state.playerProfession == 'knight' ||
-          $store.state.playerProfession == 'assassin')
+      class="profession-tabs"
+      role="tablist"
+      :aria-label="
+        isSecondAct
+          ? 'Выбор специализации второго акта'
+          : 'Выбор базового воплощения'
       "
     >
-      <div
-        class="warriors-block"
-        v-if="$store.state.playerProfession == 'warrior'"
+      <button
+        v-for="profession in availableProfessions"
+        :key="profession.key"
+        class="profession-tab"
+        :class="{
+          'profession-tab_active': selectedTab === profession.key,
+        }"
+        type="button"
+        role="tab"
+        :aria-selected="selectedTab === profession.key"
+        :aria-controls="`profession-panel-${profession.key}`"
+        :id="`profession-tab-${profession.key}`"
+        :data-testid="`profession-tab-${profession.key}`"
+        :data-action="`select-profession-${profession.key}`"
+        @click="selectProfession(profession.key)"
       >
-        <ul class="profession-nav">
-          <li
-            class="nav__item"
-            :class="{ active: isActiveBtn(1) }"
-            @click="activeContent(1)"
-          >
-            <h4 class="header">Берсерк</h4>
-          </li>
-          <li
-            class="nav__item"
-            :class="{ active: isActiveBtn(2) }"
-            @click="activeContent(2)"
-          >
-            <h4 class="header">Гладиатор</h4>
-          </li>
-        </ul>
-        <ul class="profession-list">
-          <li class="profession__item berserk" v-if="selectedTab == 1">
-            <span class="desc berserk__desc"
-              ><strong class="profession__header">Берсерк</strong> - это уже не
-              человек. Он зверь, который невзирая на преграды мчится к цели и
-              разрывает ее на кусочки. Его ярость не угомонить, пока на поле боя
-              жив хоть один враг.</span
-            >
-            <span class="characteristic"
-              >Урон увеличен на {{ professionBerserk.damage }}%</span
-            >
-            <span class="characteristic"
-              >Защита: {{ professionBerserk.armor }}%</span
-            >
-            <span class="characteristic">HP: {{ professionBerserk.hp }}%</span>
-            <span class="characteristic"
-              >Уклонение увеличено на {{ professionBerserk.evasion }}%</span
-            >
-            <span class="characteristic"
-              >Шанс крита увеличен на {{ professionBerserk.critChance }}%</span
-            >
-            <span class="characteristic"
-              >Сила крита увеличена на {{ professionBerserk.critPower }}%</span
-            >
-            <base-button
-              class="btn berserk__btn"
-              @click="choseProfession('berserk')"
-              >Выбрать</base-button
-            >
-          </li>
+        <span class="profession-tab__icon">
+          {{ profession.icon }}
+        </span>
 
-          <li class="profession__item gladiator" v-if="selectedTab == 2">
-            <span class="desc gladiator__desc"
-              ><strong class="profession__header">Гладиатор</strong> рассчетлив
-              и практичен. В бою он внимательно наблюдает за действиями
-              противника и безжалостно наказывает, когда тот допускает малейшую
-              ошибку.</span
-            >
-            <span class="characteristic"
-              >Урон увеличен на {{ professionGladiator.damage }}%</span
-            >
-            <span class="characteristic"
-              >HP увеличено на {{ professionGladiator.hp }}%</span
-            >
-            <span class="characteristic"
-              >Уклонение увеличено на {{ professionGladiator.evasion }}%</span
-            >
-            <span class="characteristic"
-              >Шанс крита увеличен на
-              {{ professionGladiator.critChance }}%</span
-            >
-            <span class="characteristic"
-              >Сила крита увеличена на
-              {{ professionGladiator.critPower }}%</span
-            >
-            <base-button
-              class="btn gladiator__btn"
-              @click="choseProfession('gladiator')"
-              >Выбрать</base-button
-            >
-          </li>
-        </ul>
-      </div>
+        <span class="profession-tab__name">
+          {{ profession.name }}
+        </span>
+      </button>
+    </div>
 
-      <div
-        class="knights-block"
-        v-if="$store.state.playerProfession == 'knight'"
-      >
-        <ul class="profession-nav">
-          <li
-            class="nav__item"
-            :class="{ active: isActiveBtn(1) }"
-            @click="activeContent(1)"
-          >
-            <h4 class="header">Храмовник</h4>
-          </li>
-          <li
-            class="nav__item"
-            :class="{ active: isActiveBtn(2) }"
-            @click="activeContent(2)"
-          >
-            <h4 class="header">Титан</h4>
-          </li>
-        </ul>
-        <ul class="profession-list">
-          <li class="profession__item templar" v-if="selectedTab == 1">
-            <span class="desc templar__desc"
-              ><strong class="profession__header">Храмовник</strong> самый
-              живучий среди всех воплощений. Он выстоит перед натиском даже
-              самых свирепых врагов.</span
-            >
-            <span class="characteristic"
-              >Защита: {{ professionTemplar.armor }}%</span
-            >
-            <span class="characteristic">HP: {{ professionTemplar.hp }}%</span>
-            <span class="characteristic"
-              >Уклонение фиксированно 10%</span
-            >
-            <base-button
-              class="btn templar__btn"
-              @click="choseProfession('templar')"
-              >Выбрать</base-button
-            >
-          </li>
-
-          <li class="profession__item titan" v-if="selectedTab == 2">
-            <span class="desc titan__desc"
-              ><strong class="profession__header">Титан</strong> привык
-              рассчитывать только на самого себя, благодаря чему готов
-              преодолевать любые препятствия. Он не просто имеет высокую защиту,
-              но и вполне представляет опасность для любых врагов.
+    <section
+      class="profession-card"
+      v-if="currentProfession"
+      role="tabpanel"
+      :id="`profession-panel-${currentProfession.key}`"
+      :aria-labelledby="`profession-tab-${currentProfession.key}`"
+    >
+      <div class="profession-card__scroll">
+        <div class="profession-card__header">
+          <div class="profession-card__title-box">
+            <span class="profession-card__icon">
+              {{ currentProfession.icon }}
             </span>
-            <span class="characteristic"
-              >Урон увеличен на {{ professionTitan.damage }}%</span
+
+            <div>
+              <h4 class="profession-card__title">
+                {{ currentProfession.name }}
+              </h4>
+
+              <span class="profession-card__type">
+                {{
+                  isSecondAct
+                    ? "Специализация второго акта"
+                    : "Базовое воплощение"
+                }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <p class="profession-card__description">
+          {{ currentProfession.description }}
+        </p>
+
+        <div class="profession-stats">
+          <h5 class="profession-stats__heading">Характеристики</h5>
+
+          <ul class="profession-stats__list">
+            <li
+              class="profession-stats__item"
+              v-for="stat in currentProfession.stats"
+              :key="stat.key"
+              :class="{
+                'profession-stats__item_negative': stat.isNegative,
+                'profession-stats__item_fixed': stat.isFixed,
+              }"
             >
-            <span class="characteristic"
-              >Защита увеличена на {{ professionTitan.armor }}%</span
-            >
-            <span class="characteristic"
-              >HP увеличено на {{ professionTitan.hp }}%</span
-            >
-            <span class="characteristic"
-              >Уклонение фиксированно 10%</span
-            >
-            <span class="characteristic"
-              >Шанс крита увеличен на {{ professionTitan.critChance }}%</span
-            >
-            <span class="characteristic"
-              >Сила крита увеличена на {{ professionTitan.critPower }}%</span
-            >
-            <base-button
-              class="btn titan__btn"
-              @click="choseProfession('titan')"
-              >Выбрать</base-button
-            >
-          </li>
-        </ul>
+              <span class="profession-stats__name">
+                {{ stat.icon }} {{ stat.label }}
+              </span>
+
+              <strong class="profession-stats__value">
+                {{ stat.value }}
+              </strong>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div
-        class="assassins-block"
-        v-if="$store.state.playerProfession == 'assassin'"
-      >
-        <ul class="profession-nav">
-          <li
-            class="nav__item"
-            :class="{ active: isActiveBtn(1) }"
-            @click="activeContent(1)"
-          >
-            <h4 class="header">Жнец</h4>
-          </li>
-          <li
-            class="nav__item"
-            :class="{ active: isActiveBtn(2) }"
-            @click="activeContent(2)"
-          >
-            <h4 class="header">Следопыт</h4>
-          </li>
-        </ul>
-        <ul class="profession-list">
-          <li class="profession__item reaper" v-if="selectedTab == 1">
-            <span class="desc reaper__desc"
-              ><strong class="profession__header">Жнец</strong> невероятно
-              опасный противник, который молниеносно вырезает врагов на поле
-              боя. Многие считают, что сама смерть покровительствует ему.</span
-            >
-            <span class="characteristic"
-              >Защита: {{ professionReaper.armor }}%</span
-            >
-            <span class="characteristic">HP: {{ professionReaper.hp }}%</span>
-            <span class="characteristic"
-              >Уклонение увеличено на {{ professionReaper.evasion }}%</span
-            >
-            <span class="characteristic"
-              >Шанс крита увеличен на {{ professionReaper.critChance }}%</span
-            >
-            <span class="characteristic"
-              >Сила крита увеличена на {{ professionReaper.critPower }}%</span
-            >
-            <base-button
-              class="btn reaper__btn"
-              @click="choseProfession('reaper')"
-              >Выбрать</base-button
-            >
-          </li>
-
-          <li class="profession__item pathfinder" v-if="selectedTab == 2">
-            <span class="desc pathfinder__desc"
-              ><strong class="profession__header">Следопыт</strong> выслеживает
-              врага и разделывается с ним мгновенно и безжалостно.</span
-            >
-            <span class="characteristic"
-              >Урон увеличен на {{ professionPathfinder.damage }}%</span
-            >
-            <span class="characteristic"
-              >Защита увеличена на {{ professionPathfinder.armor }}%</span
-            >
-            <span class="characteristic"
-              >HP увеличено на {{ professionPathfinder.hp }}%</span
-            >
-            <span class="characteristic"
-              >Уклонение увеличено на {{ professionPathfinder.evasion }}%</span
-            >
-            <span class="characteristic"
-              >Шанс крита увеличен на
-              {{ professionPathfinder.critChance }}%</span
-            >
-            <span class="characteristic"
-              >Сила крита увеличена на
-              {{ professionPathfinder.critPower }}%</span
-            >
-            <base-button
-              class="btn pathfinder__btn"
-              @click="choseProfession('pathfinder')"
-              >Выбрать</base-button
-            >
-          </li>
-        </ul>
+      <div class="profession-card__footer">
+        <base-button
+          class="profession-card__btn"
+          :variant="4"
+          :data-testid="`choose-profession-${currentProfession.key}`"
+          :data-action="`choose-profession-${currentProfession.key}`"
+          @click="choseProfession(currentProfession.key)"
+        >
+          Выбрать воплощение
+        </base-button>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -361,36 +121,455 @@ import { downloadData } from "@/services/downloadData";
 
 export default {
   name: "profession-desc",
-  extends: {},
-  props: {},
+
   data() {
     return {
-      selectedTab: 1,
-      professionWarrior: {},
-      professionKnight: {},
-      professionAssassin: {},
-      professionBerserk: {},
-      professionGladiator: {},
-      professionTemplar: {},
-      professionTitan: {},
-      professionReaper: {},
-      professionPathfinder: {},
+      selectedTab: "",
+
+      firstActProfessions: [
+        {
+          key: "warrior",
+          name: "Воин",
+          icon: "⚔️",
+          description:
+            "Настоящая машина для убийств. Воин делает ставку на высокий урон и быстро уничтожает противников.",
+          characteristics: player.warriorProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "damage",
+              label: "Урон",
+              icon: "⚔️",
+              type: "increase",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+        {
+          key: "knight",
+          name: "Рыцарь",
+          icon: "🛡️",
+          description:
+            "Стойкий защитник. Рыцарь получает больше защиты и здоровья, но его уклонение всегда равно 10%.",
+          characteristics: player.knightProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "fixed",
+              value: "Фиксированно 10%",
+            },
+          ],
+        },
+        {
+          key: "assassin",
+          name: "Ассассин",
+          icon: "🗡️",
+          description:
+            "Смертоносный убийца, который наносит точные удары по уязвимым местам врага. Сильнее в критах и уклонении, но слабее в защите.",
+          characteristics: player.assassinProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "increase",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+      ],
+
+      warriorSecondAct: [
+        {
+          key: "berserk",
+          name: "Берсерк",
+          icon: "🔥",
+          description:
+            "Это уже не человек, а зверь. Берсерк жертвует живучестью ради огромного урона и неудержимой ярости.",
+          characteristics: player.berserkProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "damage",
+              label: "Урон",
+              icon: "⚔️",
+              type: "increase",
+            },
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+        {
+          key: "gladiator",
+          name: "Гладиатор",
+          icon: "🏟️",
+          description:
+            "Расчётливый боец, который наказывает противника за ошибки. Сочетает урон, критические удары и высокую мобильность.",
+          characteristics: player.gladiatorProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "damage",
+              label: "Урон",
+              icon: "⚔️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "increase",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+      ],
+
+      knightSecondAct: [
+        {
+          key: "templar",
+          name: "Храмовник",
+          icon: "✠",
+          description:
+            "Самый живучий среди воплощений. Храмовник выдерживает натиск даже самых опасных противников.",
+          characteristics: player.templarProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "fixed",
+              value: "Фиксированно 10%",
+            },
+          ],
+        },
+        {
+          key: "titan",
+          name: "Титан",
+          icon: "🗿",
+          description:
+            "Мощный и выносливый боец. Титан сочетает высокую защиту, здоровье и достойный урон.",
+          characteristics: player.titanProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "damage",
+              label: "Урон",
+              icon: "⚔️",
+              type: "increase",
+            },
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "fixed",
+              value: "Фиксированно 10%",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+      ],
+
+      assassinSecondAct: [
+        {
+          key: "reaper",
+          name: "Жнец",
+          icon: "💀",
+          description:
+            "Невероятно опасный противник, который действует быстро и беспощадно. Жнец получает сильные бонусы к критическим ударам.",
+          characteristics: player.reaperProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "increase",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+        {
+          key: "pathfinder",
+          name: "Следопыт",
+          icon: "🏹",
+          description:
+            "Выслеживает врага и расправляется с ним мгновенно. Следопыт сочетает урон, мобильность и критические удары.",
+          characteristics: player.pathfinderProfessionCharacteristics,
+          statConfig: [
+            {
+              key: "damage",
+              label: "Урон",
+              icon: "⚔️",
+              type: "increase",
+            },
+            {
+              key: "armor",
+              label: "Защита",
+              icon: "🛡️",
+              type: "increase",
+            },
+            {
+              key: "hp",
+              label: "HP",
+              icon: "❤️",
+              type: "increase",
+            },
+            {
+              key: "evasion",
+              label: "Уклонение",
+              icon: "🌀",
+              type: "increase",
+            },
+            {
+              key: "critChance",
+              label: "Шанс крита",
+              icon: "💢",
+              type: "increase",
+            },
+            {
+              key: "critPower",
+              label: "Сила крита",
+              icon: "💥",
+              type: "increase",
+            },
+          ],
+        },
+      ],
     };
   },
-  computed: {},
-  components: {},
-  watch: {},
-  methods: {
-    activeContent(tabNumber) {
-      this.selectedTab = tabNumber;
+
+  computed: {
+    isSecondAct() {
+      return (
+        this.$store.state.playerLevel >= 13 &&
+        ["warrior", "knight", "assassin"].includes(
+          this.$store.state.playerProfession,
+        )
+      );
     },
 
-    isActiveBtn(tabNumber) {
-      return this.selectedTab == tabNumber;
+    availableProfessions() {
+      if (!this.isSecondAct) {
+        return this.firstActProfessions;
+      }
+
+      if (this.$store.state.playerProfession === "warrior") {
+        return this.warriorSecondAct;
+      }
+
+      if (this.$store.state.playerProfession === "knight") {
+        return this.knightSecondAct;
+      }
+
+      if (this.$store.state.playerProfession === "assassin") {
+        return this.assassinSecondAct;
+      }
+
+      return [];
+    },
+
+    currentProfession() {
+      const profession = this.availableProfessions.find((item) => {
+        return item.key === this.selectedTab;
+      });
+
+      if (!profession) {
+        return null;
+      }
+
+      return {
+        ...profession,
+        stats: this.createProfessionStats(profession),
+      };
+    },
+  },
+
+  watch: {
+    availableProfessions: {
+      immediate: true,
+      handler(professions) {
+        const isCurrentTabAvailable = professions.some((profession) => {
+          return profession.key === this.selectedTab;
+        });
+
+        if (!isCurrentTabAvailable && professions.length > 0) {
+          this.selectedTab = professions[0].key;
+        }
+      },
+    },
+  },
+
+  methods: {
+    selectProfession(professionKey) {
+      this.selectedTab = professionKey;
+    },
+
+    createProfessionStats(profession) {
+      return profession.statConfig.map((stat) => {
+        if (stat.type === "fixed") {
+          return {
+            ...stat,
+            value: stat.value,
+            isFixed: true,
+            isNegative: false,
+          };
+        }
+
+        const value = Number(profession.characteristics[stat.key] || 0);
+
+        return {
+          ...stat,
+          value: value > 0 ? `+${value}%` : `${value}%`,
+          isFixed: false,
+          isNegative: value < 0,
+        };
+      });
     },
 
     choseProfession(profession) {
       this.$store.state.playerProfession = profession;
+
       localStorage.setItem("playerProfession", profession);
 
       player.professionCharacteristics();
@@ -398,26 +577,11 @@ export default {
 
       this.closeModal();
     },
+
     closeModal() {
       this.$emit("hide-modal");
     },
   },
-  beforeCreate() {},
-  created() {
-    this.professionWarrior = player.warriorProfessionCharacteristics;
-    this.professionKnight = player.knightProfessionCharacteristics;
-    this.professionAssassin = player.assassinProfessionCharacteristics;
-
-    this.professionBerserk = player.berserkProfessionCharacteristics;
-    this.professionGladiator = player.gladiatorProfessionCharacteristics;
-
-    this.professionTemplar = player.templarProfessionCharacteristics;
-    this.professionTitan = player.titanProfessionCharacteristics;
-
-    this.professionReaper = player.reaperProfessionCharacteristics;
-    this.professionPathfinder = player.pathfinderProfessionCharacteristics;
-  },
-  mounted() {},
 };
 </script>
 
@@ -425,59 +589,329 @@ export default {
 .profession-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 600px;
   padding: 30px 50px;
-  max-width: 600px;
+  overflow: hidden;
   background-color: var(--color-blue);
-  border: 1px solid var(--color-dark);
-}
-.profession-nav {
-  display: flex;
-  justify-content: space-evenly;
-  margin-bottom: 20px;
-}
-.nav__item {
-  padding: 5px 10px;
-  outline: 1px solid var(--color-light);
-  cursor: pointer;
-}
-.nav__item:hover {
-  outline: 1px solid var(--color-dark);
-  background-color: var(--color-light);
-  color: var(--color-dark);
-}
-.profession-list {
-  display: flex;
-  flex-direction: row;
-}
-.profession__item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.profession__header {
-  font-size: 20px;
-}
-.header {
-  font-size: 20px;
-}
-.desc {
-  margin-bottom: 20px;
-}
-.characteristic {
-  margin-bottom: 10px;
-}
-.btn {
-  margin-top: 10px;
-  padding: 7px 20px;
-}
-.btn:hover {
-  background-color: var(--color-green);
   color: var(--color-light);
 }
-.active {
-  outline: 1px solid var(--color-dark);
+
+.profession-header {
+  flex-shrink: 0;
+  margin-bottom: 20px;
+  padding-right: 32px;
+  text-align: center;
+}
+
+.profession-title {
+  margin-bottom: 9px;
+  color: var(--color-light);
+  font-family: Bahnschrift, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.profession-tabs {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.profession-tab {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 120px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.08);
+  color: var(--color-light);
+  cursor: pointer;
+  font-family: Bahnschrift, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.profession-tab:hover:not(.profession-tab_active) {
+  border-color: var(--color-light);
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.profession-tab_active {
+  border-color: var(--color-light);
   background-color: var(--color-light);
   color: var(--color-dark);
+}
+
+.profession-tab:focus-visible {
+  position: relative;
+  z-index: 2;
+  outline: 3px solid var(--color-green);
+  outline-offset: 3px;
+}
+
+.profession-tab__icon {
+  font-size: 18px;
+}
+
+.profession-tab__name {
+  white-space: nowrap;
+}
+
+.profession-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.17);
+}
+
+.profession-card__scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 18px 18px 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: rgba(255, 255, 255, 0.65) rgba(0, 0, 0, 0.16);
+}
+
+.profession-card__scroll::-webkit-scrollbar {
+  width: 9px;
+}
+
+.profession-card__scroll::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.16);
+}
+
+.profession-card__scroll::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.profession-card__scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-light);
+}
+
+.profession-card__header {
+  margin-bottom: 16px;
+}
+
+.profession-card__title-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profession-card__icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.12);
+  font-size: 25px;
+}
+
+.profession-card__title {
+  margin-bottom: 4px;
+  color: var(--color-light);
+  font-family: Bahnschrift, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.profession-card__type {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 13px;
+}
+
+.profession-card__description {
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.5;
+}
+
+.profession-stats {
+  margin-bottom: 8px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.14);
+}
+
+.profession-stats__heading {
+  margin-bottom: 10px;
+  color: var(--color-light);
+  font-family: Bahnschrift, sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.profession-stats__list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profession-stats__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.3;
+}
+
+.profession-stats__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.profession-stats__name {
+  min-width: 0;
+}
+
+.profession-stats__value {
+  flex-shrink: 0;
+  color: #88f0bb;
+  font-family: Bahnschrift, sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.profession-stats__item_negative .profession-stats__value {
+  color: #ffaaa4;
+}
+
+.profession-stats__item_fixed .profession-stats__value {
+  color: #ffe69a;
+  font-size: 15px;
+}
+
+.profession-card__footer {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 12px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.profession-card__btn {
+  min-width: 220px;
+}
+
+@media (max-width: 650px) {
+  .profession-container {
+    min-height: calc(100vh - 66px);
+    height: calc(100vh - 66px);
+    padding: 22px 18px;
+  }
+
+  .profession-header {
+    margin-bottom: 16px;
+    padding-right: 25px;
+  }
+
+  .profession-title {
+    font-size: 21px;
+  }
+
+  .profession-tabs {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .profession-tab {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px;
+  }
+
+  .profession-card__scroll {
+    padding: 15px 14px 8px;
+  }
+
+  .profession-card__title {
+    font-size: 20px;
+  }
+
+  .profession-card__description {
+    font-size: 14px;
+  }
+
+  .profession-stats {
+    padding: 12px;
+  }
+
+  .profession-card__footer {
+    padding: 10px 14px 14px;
+  }
+
+  .profession-card__btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .profession-container {
+    padding: 18px 14px;
+  }
+
+  .profession-card__title-box {
+    gap: 9px;
+  }
+
+  .profession-card__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
+  }
+
+  .profession-card__title {
+    font-size: 18px;
+  }
+
+  .profession-stats__item {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .profession-stats__value {
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profession-tab {
+    transition: none;
+  }
 }
 </style>

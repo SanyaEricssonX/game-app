@@ -5,8 +5,10 @@ export default createStore({
     triggerSortEnemies: false,
     triggerUpdateInventory: false,
     triggerUpdateShop: false,
+
     playerExperience: 0,
     playerLevel: 1,
+
     playerMaxHp: 100,
     playerCurrentHp: 100,
     playerDamage: 10,
@@ -16,11 +18,20 @@ export default createStore({
     playerMaxCritPower: 300,
     playerCritChance: 5,
     playerCritPower: 30,
+
     playerProfession: "standart",
+
     playerInventorySize: 50,
     playerCurrentLocation: 9990,
+
     playerGold: 0,
-    playerResources: { wood: 0, stone: 0, iron: 0 },
+
+    playerResources: {
+      wood: 0,
+      stone: 0,
+      iron: 0,
+    },
+
     defaultPlayerCharacteristics: {
       damage: 10,
       armor: 5,
@@ -29,6 +40,7 @@ export default createStore({
       critChance: 5,
       critPower: 30,
     },
+
     playerEquipmentCharacteristics: {
       damage: 0,
       armor: 0,
@@ -37,7 +49,13 @@ export default createStore({
       critChance: 0,
       critPower: 0,
     },
-    playerLevelCharacteristics: { damage: 0, armor: 0, hp: 0 },
+
+    playerLevelCharacteristics: {
+      damage: 0,
+      armor: 0,
+      hp: 0,
+    },
+
     playerBuffCharacteristics: {
       damage: 0,
       armor: 0,
@@ -54,6 +72,7 @@ export default createStore({
       critPowerBuffDuration: 0,
       dropBuffDuration: 0,
     },
+
     playerProfessionCharacteristics: {
       damage: 0,
       armor: 0,
@@ -62,13 +81,17 @@ export default createStore({
       critChance: 0,
       critPower: 0,
     },
+
     playerHeadquartesCharacteristics: {
       damage: 0,
       armor: 0,
       critPower: 0,
     },
+
     playerInventory: [],
+
     playerCraftInventory: [],
+
     playerEquipment: {
       weapon: 0,
       helmet: 0,
@@ -83,19 +106,62 @@ export default createStore({
       glovesDurability: 0,
       bootsDurability: 0,
     },
+
     levelIsUp: false,
     professionIsChosen: false,
-    chestIsOpen: { visible: false, drop: [] },
+
+    chestIsOpen: {
+      visible: false,
+
+      /*
+        Материалы и рецепты, которые выпали из сундука.
+        Формат:
+        [{ craftItemId: 1030, count: 2 }]
+      */
+      drop: [],
+
+      /*
+        Обычные игровые ресурсы из сундука.
+        Формат:
+        {
+          gold: 0,
+          wood: 0,
+          stone: 0,
+          iron: 0
+        }
+      */
+      resources: {
+        gold: 0,
+        wood: 0,
+        stone: 0,
+        iron: 0,
+      },
+
+      /*
+        true, если сработал шанс 2%:
+        золото = 2 × стоимость открытого сундука.
+      */
+      isJackpot: false,
+    },
+
     modalNotification: {
       visible: false,
       text: "",
       from: "",
-      resources: { gold: 0, wood: 0, stone: 0, iron: 0 },
+      resources: {
+        gold: 0,
+        wood: 0,
+        stone: 0,
+        iron: 0,
+      },
     },
+
     actionType: false,
+
     accountId: "TBD",
     accountStatus: "Стандарт+",
     playerBp: "TBD",
+
     playerBuildings: {
       currentLevel0: 0,
       currentLevel1: 0,
@@ -105,35 +171,52 @@ export default createStore({
       currentLevel5: 0,
     },
   },
+
   getters: {
     currentActionType: (state) => state.actionType,
   },
+
   mutations: {
     setTriggerMethod(state, value) {
       state.triggerSortEnemies = value;
       state.triggerUpdateInventory = value;
       state.triggerUpdateShop = value;
     },
+
     setActionType(state, type) {
       state.actionType = type;
     },
   },
+
   actions: {
     triggerSortEnemies({ commit }) {
       commit("setTriggerMethod", true);
-      setTimeout(() => commit("setTriggerMethod", false), 1000);
+
+      setTimeout(() => {
+        commit("setTriggerMethod", false);
+      }, 1000);
     },
+
     triggerUpdateInventory({ commit }) {
       commit("setTriggerMethod", true);
-      setTimeout(() => commit("setTriggerMethod", false), 1000);
+
+      setTimeout(() => {
+        commit("setTriggerMethod", false);
+      }, 1000);
     },
+
     triggerUpdateShop({ commit }) {
       commit("setTriggerMethod", true);
-      setTimeout(() => commit("setTriggerMethod", false), 1000);
+
+      setTimeout(() => {
+        commit("setTriggerMethod", false);
+      }, 1000);
     },
+
     updateActionType({ commit }, type) {
       commit("setActionType", type);
     },
   },
+
   modules: {},
 });

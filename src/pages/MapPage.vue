@@ -138,7 +138,7 @@
           <ul class="result-list" v-for="log in battleLog" :key="log.id">
             <li class="result__item">{{ log }}</li>
           </ul>
-          <base-button @click="resetSelection"
+          <base-button :variant="4" @click="resetSelection"
             >Найти новых противников</base-button
           >
         </div>
@@ -209,7 +209,7 @@ export default {
         this.$store.state.playerEvasion,
         this.$store.state.playerCritChance,
         this.$store.state.playerCritPower,
-        enemy
+        enemy,
       );
 
       setTimeout(() => {
@@ -226,7 +226,7 @@ export default {
           this.$store.state.playerCurrentHp = this.$store.state.playerMaxHp;
           localStorage.setItem(
             "playerCurrentHp",
-            this.$store.state.playerCurrentHp
+            this.$store.state.playerCurrentHp,
           );
 
           this.sortEnemies();
@@ -258,7 +258,7 @@ export default {
         this.$store.state.playerExperience += battleResult.experience;
         localStorage.setItem(
           "playerExperience",
-          this.$store.state.playerExperience
+          this.$store.state.playerExperience,
         );
         player.characteristics();
 
@@ -273,7 +273,7 @@ export default {
         if (this.$store.state.playerBuffCharacteristics.dropBuffDuration > 0) {
           dropGold =
             Math.floor(
-              Math.random() * (drop.gold - minDropGold + 1) + minDropGold
+              Math.random() * (drop.gold - minDropGold + 1) + minDropGold,
             ) * this.$store.state.playerBuffCharacteristics.drop;
 
           this.$store.state.playerGold += dropGold;
@@ -301,7 +301,7 @@ export default {
           }
         } else {
           dropGold = Math.floor(
-            Math.random() * (drop.gold - minDropGold + 1) + minDropGold
+            Math.random() * (drop.gold - minDropGold + 1) + minDropGold,
           );
 
           this.$store.state.playerGold += dropGold;
@@ -325,7 +325,7 @@ export default {
         // Дроп с локаций
         const locationCraftDrop = map.drop(this.currentLocation);
         let playerCraftInventory = JSON.parse(
-          JSON.stringify(this.$store.state.playerCraftInventory)
+          JSON.stringify(this.$store.state.playerCraftInventory),
         );
 
         if (locationCraftDrop.length > 0) {
@@ -345,7 +345,7 @@ export default {
         locationCraftDrop.forEach((dropItem) => {
           // Ищем соответствующий элемент в инвентаре
           const existingItem = playerCraftInventory.find(
-            (invItem) => invItem.craftItemId === dropItem.craftItemId
+            (invItem) => invItem.craftItemId === dropItem.craftItemId,
           );
 
           if (existingItem) {
@@ -363,13 +363,13 @@ export default {
         this.$store.state.playerCraftInventory = playerCraftInventory;
         localStorage.setItem(
           "playerCraftInventory",
-          JSON.stringify(this.$store.state.playerCraftInventory)
+          JSON.stringify(this.$store.state.playerCraftInventory),
         );
 
         localStorage.setItem("playerGold", this.$store.state.playerGold);
         localStorage.setItem(
           "playerResources",
-          JSON.stringify(this.$store.state.playerResources)
+          JSON.stringify(this.$store.state.playerResources),
         );
 
         // Проверяем время действия бафов
@@ -432,7 +432,7 @@ export default {
 
         localStorage.setItem(
           "playerEquipment",
-          JSON.stringify(this.$store.state.playerEquipment)
+          JSON.stringify(this.$store.state.playerEquipment),
         );
 
         player.equipmentCharacteristics();
@@ -466,7 +466,7 @@ export default {
 
         // Находим текущую локацию
         const currentMap = this.maps.find(
-          (map) => map.id == this.currentLocation
+          (map) => map.id == this.currentLocation,
         );
         if (!currentMap) return;
 
@@ -483,7 +483,7 @@ export default {
         // Дополнительно фильтруем по уровню игрока (+1 уровня)
         const maxAllowedLevel = playerLevel + 1;
         availableEnemies = availableEnemies.filter(
-          (enemy) => enemy.level <= maxAllowedLevel
+          (enemy) => enemy.level <= maxAllowedLevel,
         );
 
         // Если нет подходящих врагов, выходим
@@ -492,7 +492,7 @@ export default {
         // Определяем случайное количество врагов (от 3 до 6)
         const enemyCount = Math.min(
           Math.floor(Math.random() * 4) + 3,
-          availableEnemies.length // теперь без дублирования, поэтому просто availableEnemies.length
+          availableEnemies.length, // теперь без дублирования, поэтому просто availableEnemies.length
         );
 
         // Создаем копию массива для работы
@@ -500,26 +500,26 @@ export default {
 
         // Гарантируем минимум 2 врага уровня игрока
         const playerLevelEnemies = remainingEnemies.filter(
-          (e) => e.level === playerLevel
+          (e) => e.level === playerLevel,
         );
 
         // Добавляем 2 врагов уровня игрока (если есть)
         if (playerLevelEnemies.length >= 2) {
           // Выбираем случайных 2 врагов уровня игрока
           const shuffled = [...playerLevelEnemies].sort(
-            () => 0.5 - Math.random()
+            () => 0.5 - Math.random(),
           );
           this.sortedEnemies.push(shuffled[0], shuffled[1]);
 
           // Удаляем их из оставшихся врагов
           remainingEnemies = remainingEnemies.filter(
-            (e) => e.id !== shuffled[0].id && e.id !== shuffled[1].id
+            (e) => e.id !== shuffled[0].id && e.id !== shuffled[1].id,
           );
         } else if (playerLevelEnemies.length === 1) {
           // Если только 1 враг уровня игрока
           this.sortedEnemies.push(playerLevelEnemies[0]);
           remainingEnemies = remainingEnemies.filter(
-            (e) => e.id !== playerLevelEnemies[0].id
+            (e) => e.id !== playerLevelEnemies[0].id,
           );
         }
 
@@ -530,7 +530,7 @@ export default {
         ) {
           // Случайный индекс
           const randomIndex = Math.floor(
-            Math.random() * remainingEnemies.length
+            Math.random() * remainingEnemies.length,
           );
           this.sortedEnemies.push(remainingEnemies[randomIndex]);
 
@@ -542,7 +542,7 @@ export default {
         // Добавляем любых подходящих врагов
         if (this.sortedEnemies.length < enemyCount) {
           const additionalEnemies = availableEnemies.filter(
-            (e) => !this.sortedEnemies.some((se) => se.id === e.id)
+            (e) => !this.sortedEnemies.some((se) => se.id === e.id),
           );
 
           while (
@@ -550,7 +550,7 @@ export default {
             additionalEnemies.length > 0
           ) {
             const randomIndex = Math.floor(
-              Math.random() * additionalEnemies.length
+              Math.random() * additionalEnemies.length,
             );
             this.sortedEnemies.push(additionalEnemies[randomIndex]);
             additionalEnemies.splice(randomIndex, 1);
@@ -565,14 +565,14 @@ export default {
           const testEnemies = this.enemies.filter(
             (enemy) =>
               enemy.type === "test" &&
-              !this.sortedEnemies.some((e) => e.id === enemy.id)
+              !this.sortedEnemies.some((e) => e.id === enemy.id),
           );
           this.sortedEnemies.push(...testEnemies);
         }
         // Сохраняем врагов в local storage
         localStorage.setItem(
           "sortedEnemies",
-          JSON.stringify(this.sortedEnemies)
+          JSON.stringify(this.sortedEnemies),
         );
       }
     },

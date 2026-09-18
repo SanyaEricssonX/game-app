@@ -6,7 +6,9 @@
         Версия {{ update.version }} <span class="date">{{ update.date }}</span>
       </h3>
       <ul>
-        <li class="update__item" v-for="(change, i) in update.changes" :key="i">{{ change }}</li>
+        <li class="update__item" v-for="(change, i) in update.changes" :key="i">
+          {{ change }}
+        </li>
       </ul>
     </div>
   </div>
@@ -31,7 +33,7 @@ export default {
 .update-block {
   border-left: 4px solid var(--color-green);
   padding: 10px 15px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .update__title {
   margin-bottom: 15px;
